@@ -13,6 +13,7 @@ import VerifyEmail from './Screens/VerifyEmail';
 import WalkThroughScreen from './Screens/WalkthroughScreen';
 import {moderateScale} from 'react-native-size-matters';
 import {enableScreens} from 'react-native-screens';
+import Home from './Screens/Home';
 
 enableScreens();
 const AppNavigator = () => {
@@ -33,7 +34,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'LoginScreen'}
+          initialRouteName={'Home'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
@@ -41,6 +42,8 @@ const AppNavigator = () => {
             component={WalkThroughScreen}
           />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen name="Home" component={Home} />
+
           <RootNav.Screen name="VerifyEmail" component={VerifyEmail} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />

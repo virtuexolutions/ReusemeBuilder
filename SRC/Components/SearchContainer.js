@@ -25,7 +25,7 @@ const SearchContainer = ({
   inputStyle,
   placeHolder,
   rightIcon,
-  height
+  height,
 }) => {
   return (
     <GestureHandlerRootView>
@@ -80,14 +80,6 @@ const SearchContainer = ({
 
           {input && (
             <>
-              <Icon
-                name={'search'}
-                as={FontAwesome}
-                size={moderateScale(17, 0.3)}
-                color={'#E7DFDC'}
-                // style={{backgroundColor : 'red'}}
-              />
-
               <TextInput
                 placeholder={placeHolder ? placeHolder : 'Search here'}
                 placeholderTextColor={'#E7DFDC'}
@@ -98,8 +90,9 @@ const SearchContainer = ({
                 }}
                 style={[
                   {
-                    marginLeft: moderateScale(10, 0.3),
+                    marginLeft: moderateScale(15, 0.3),
                     width: windowWidth * 0.61,
+                    // paddingTop : moderateScale(10,.6),
                     // backgroundColor:'black',
                     // height : windowHeight * 0.05,
                     // fontSize: moderateScale(15, 0.3),
@@ -108,6 +101,17 @@ const SearchContainer = ({
                   },
                   inputStyle && inputStyle,
                 ]}
+              />
+              <Icon
+              style={{
+                position :'absolute' ,
+                right: 10,
+              }}
+                name={'search'}
+                as={FontAwesome}
+                size={moderateScale(17, 0.3)}
+                color={'#E7DFDC'}
+                // style={{backgroundColor : 'red'}}
               />
               {/* <Icon
               name={'filter'}
@@ -150,7 +154,7 @@ const styles = ScaledSheet.create({
     borderColor: '#EAEBEC',
     backgroundColor: Color.white,
     borderRadius: moderateScale(5, 0.3),
-    paddingVertical: moderateScale(8, 0.3),
+    // paddingVertical: moderateScale(8, 0.3),
     paddingHorizontal: moderateScale(10, 0.3),
 
     //  elevation: 5,
