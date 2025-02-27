@@ -295,7 +295,7 @@ const styles = ScaledSheet.create({
     // justifyContent: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: moderateScale(20, 0.3),
+    paddingHorizontal: moderateScale(10, 0.3),
     paddingVertical: moderateScale(35, 0.3),
     alignItems: 'center',
     // backgroundColor: 'red',
