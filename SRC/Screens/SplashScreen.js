@@ -4,59 +4,42 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+import { ImageBackground, SafeAreaView } from 'react-native';
+import Color from '../Assets/Utilities/Color';
 
 const SplashScreen = () => {
   // const backgroundImage = require('../Assets/Images/splash.gif');
   return (
-    <View style={styles.container}>
-      <View style={styles.logo_Container}>
-        <CustomImage
-          source={require('../Assets/Images/logo.png')}
-          style={styles.logo}
-        />
-      </View>
-      <CustomText style={styles.text}>
-        
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-        efficitur consectetur ligula eget ultrices.
-      </CustomText>
-    </View>
+    <SafeAreaView >
+     <ImageBackground imageStyle={{
+      width:'100%',height:'100%'
+     }} style={styles.container} source={require('../Assets/Images/bluebgc.png')}>
+     <View style={styles.logoStyle}>
+      <CustomText style={styles.text}>Logo</CustomText>
+      <CustomText isBold style={styles.text}>Here</CustomText>
+     </View>
+     </ImageBackground>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     height: windowHeight,
     width: windowWidth,
     alignItems: 'center',
   },
-  logo_Container: {
-    height: windowHeight * 0.1,
-    width: windowWidth * 0.6,
-  },
-  logo: {
-    height: '100%',
-    width: '100%',
-  },
-  bottomImage: {
-    width: windowWidth * 0.4,
-    height: windowWidth * 0.3,
-  },
   text:{
-    width:'80%',
-    textAlign:'center',
-    fontSize:moderateScale(11,.6),
-    position:'absolute',
-    bottom:35,
-
+    fontSize:moderateScale(30,0.3),
+    color:Color.white
   },
+  logoStyle:{
+    flexDirection:'row',
+  }
+ 
 
-  LogoText: {
-    fontSize: moderateScale(35, 0.3),
-    fontWeight: 'bold',
-  },
 });
 
 export default SplashScreen;

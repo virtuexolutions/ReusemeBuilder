@@ -10,10 +10,12 @@ import VerifyNumber from './Screens/VerifyNumber';
 import ChangePassword from './Screens/ChangePassword';
 import ResetPassword from './Screens/ResetPassword';
 import VerifyEmail from './Screens/VerifyEmail';
-import WalkThroughScreen from './Screens/WalkthroughScreen';
 import {moderateScale} from 'react-native-size-matters';
 import {enableScreens} from 'react-native-screens';
 import Home from './Screens/Home';
+import SplashScreen from './Screens/SplashScreen';
+import WalkThroughScreen from './Screens/WalkthroughScreen';
+import SignupScreen from './Screens/SignupScreen';
 
 enableScreens();
 const AppNavigator = () => {
@@ -34,12 +36,21 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'Home'}
+          // initialRouteName={'Home'}
+          initialRouteName={'SignupScreen'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
-            name="WalkThroughScreen"
+            name="WalkthroughScreen"
             component={WalkThroughScreen}
+          />
+          <RootNav.Screen
+            name="SplashScreen"
+            component={SplashScreen}
+          />
+           <RootNav.Screen
+            name="SignupScreen"
+            component={SignupScreen}
           />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />

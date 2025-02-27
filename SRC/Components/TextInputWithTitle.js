@@ -44,13 +44,14 @@ const TextInputWithTitle = props => {
       <View
         style={[
           styles.fieldSet,
+          props.style,
           {
             width: windowWidth * props.viewWidth,
             borderWidth: props.border,
             // borderColor: Color.veryLightGray,
             backgroundColor: props.backgroundColor,
             borderBottomWidth: props.borderBottomWidth,
-            borderColor: Color.lightGrey,
+            borderColor: props.borderColor || Color.lightGrey,
           },
           props.elevation && {
             shadowColor: Color.themeColor,
@@ -248,7 +249,7 @@ const styles = ScaledSheet.create({
   fieldSet: {
     width: Dimensions.get('window').width * 0.9,
     height: Dimensions.get('window').height * 0.06,
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
     borderRadius: 8,
     alignItems: 'center',
     // justifyContent: 'center',
