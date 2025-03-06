@@ -19,8 +19,11 @@ import {
   
   import {color} from 'native-base/lib/typescript/theme/styled-system';
   import CustomButton from '../Components/CustomButton';
+import { useDispatch } from 'react-redux';
+import { setUserToken } from '../Store/slices/auth-slice';
   
-  const SignupScreen = ({navigationService}) => {
+  const SignupScreen = ({navigation}) => {
+    const dispatch = useDispatch()
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState(''); 
     const [email, setEmail] = useState(''); 
@@ -29,7 +32,7 @@ import {
       <SafeAreaView style={styles.container}>
         <Icon
           onPress={() => {
-            navigationService.goback();
+            navigation.goback();
           }}
           as={Ionicons}
           name="arrow-back"
@@ -91,6 +94,9 @@ import {
         <CustomButton
           text={'Create Account'}
           textColor={Color.white}
+          onPress={()=>{
+            dispatch(setUserToken({token: "abcdef"}))          
+}}
           style={{
             width: windowWidth * 0.55,
             height: moderateScale(45, 0.3),
@@ -105,8 +111,15 @@ import {
               paddingTop:windowHeight *0.09,
              
             }}>Do You Have An Account ?</CustomText>
-        <TouchableOpacity activeOpacity={0.8}>
-          <CustomText isBold style={{
+        <TouchableOpacity 
+        onPress={()=>{
+          navigation.navigate("LoginScreen")
+        }}
+        activeOpacity={0.8}>
+          
+          <CustomText 
+          
+          isBold style={{
               fontSize: moderateScale(18, 0.3),
               color: Color.blue,
             }}>Log in</CustomText>

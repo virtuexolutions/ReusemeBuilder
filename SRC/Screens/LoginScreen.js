@@ -18,8 +18,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {color} from 'native-base/lib/typescript/theme/styled-system';
 import CustomButton from '../Components/CustomButton';
+import { setUserToken } from '../Store/slices/auth-slice';
+import { useDispatch } from 'react-redux';
 
-const LoginScreen = ({navigationService}) => {
+const LoginScreen = ({navigation}) => {
+  const dispatch= useDispatch();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   return (
@@ -76,35 +79,48 @@ const LoginScreen = ({navigationService}) => {
         activeOpacity={0.8}
         style={{
           alignSelf: 'flex-end',
+          marginTop:moderateScale(7,0.2),
           right: moderateScale(42, 0.3),
         }}>
         <CustomText
           style={{
             fontSize: moderateScale(11, 0.3),
             color: Color.darkbrown,
+
           }}>
           Forgot password
         </CustomText>
       </TouchableOpacity>
       <CustomButton
+      
         text={'Log In'}
         textColor={Color.white}
+        width={windowWidth * 0.35}
+        
         style={{
-          width: windowWidth * 0.35,
           height: moderateScale(40, 0.3),
           borderRadius: moderateScale(20, 0.3),
           backgroundColor: Color.darkBlue,
-          top:windowHeight *0.05
+          // top:windowHeight *0.05
+          marginTop:windowHeight *0.05
         }}
+        onPress={() =>{
+        dispatch(setUserToken({token:'abcdef'}))
+        // navigation.navigate('SignupScreen')
+
+      }}
       />
       <CustomText style={{
             fontSize: moderateScale(11, 0.3),
             color: Color.darkbrown,
-            paddingTop:windowHeight *0.1,
+            paddingTop:windowHeight *0.05,
            
           }}>Don’t have an accout ?</CustomText>
       <TouchableOpacity activeOpacity={0.8}>
-        <CustomText isBold style={{
+        <CustomText onPress={() => {
+          navigation.navigate('SignupScreen')
+        }}
+        isBold style={{
             fontSize: moderateScale(18, 0.3),
             color: Color.blue,
           }}>Sign Up</CustomText>

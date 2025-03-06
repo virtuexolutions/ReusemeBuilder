@@ -20,38 +20,33 @@ import SignupScreen from './Screens/SignupScreen';
 enableScreens();
 const AppNavigator = () => {
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ AppNavigator ~ token:", token)
+  const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
 
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    // const firstScreen =
-    //   walkThrough == false
-    //     ? 'WalkThroughScreen'
-    //     : token == null
-    //     ?'LoginScreen'
-    //     // ? 'Start'
-    //     : 'MyDrawer';
+    const firstScreen =
+      walkThrough == false
+        ? 'WalkthroughScreen'
+        : token == null
+        ? 'LoginScreen'
+        : // ? 'Start'
+          'Home';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          // initialRouteName={'Home'}
-          initialRouteName={'SignupScreen'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
             name="WalkthroughScreen"
             component={WalkThroughScreen}
           />
-          <RootNav.Screen
-            name="SplashScreen"
-            component={SplashScreen}
-          />
-           <RootNav.Screen
-            name="SignupScreen"
-            component={SignupScreen}
-          />
+          <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="SignupScreen" component={SignupScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />
 

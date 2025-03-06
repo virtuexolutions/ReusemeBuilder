@@ -17,13 +17,15 @@ import CustomText from './CustomText';
 import CustomImage from './CustomImage';
 const {height, width} = Dimensions.get('window');
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import {useDispatch, useSelector} from 'react-redux';
 import {imageUrl} from '../Config';
-import {setUserLogout, setUserLogoutAuth} from '../Store/slices/auth';
+import {setUserLogout, setUserLogoutAuth} from '../Store/slices/auth-slice';
 import LinearGradient from 'react-native-linear-gradient';
 import {setUserLogOut} from '../Store/slices/common';
 import navigationService from '../navigationService';
+import { setUserToken } from '../Store/slices/auth-slice';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -148,7 +150,7 @@ const Header = props => {
             size={moderateScale(25, 0.3)}
             color={Color.black}
             onPress={() => {
-              navigationN.toggleDrawer();
+              // navigationN.toggleDrawer();
 
               // navigationN.dispatch(DrawerActions.toggleDrawer())
             }}
@@ -178,6 +180,16 @@ const Header = props => {
       )}
 
       {/* <CustomText isBold style={{color : Color.white , fontSize : moderateScale(20,0.6)}} >Hola!!</CustomText> */}
+      <Icon
+name={"logout"}
+as={MaterialCommunityIcons}
+size={moderateScale(24,0.2)}
+color={Color.black}
+style={{right:-140, top: 2}}
+onPress={()=>{
+  dispatch(setUserLogoutAuth())
+}}
+/>
       {!hideUser && cart ? (
         <View
           style={{
@@ -249,6 +261,7 @@ const Header = props => {
           />
         </View>
       )}
+      
     </View>
   );
 };
