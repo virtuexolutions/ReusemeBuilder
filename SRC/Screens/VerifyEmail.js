@@ -19,34 +19,40 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import CustomText from '../Components/CustomText';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomButton from '../Components/CustomButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {Icon} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import {Formik} from 'formik';
-import {forgotpasswordSchema} from '../Constant/schema';
+
 
 const VerifyEmail = props => {
   const dispatch = useDispatch();
   const navigationN = useNavigation();
-  const {user_type} = useSelector(state => state.authReducer);
+  const [email, setEmail] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
 
   const sendOTP = async values => {
     console.log('asdhkasdjagsdjags');
     const url = 'password/email';
+    if(!email.includes("@")){
+      return ToastAndroid.show("Email is invalid", ToastAndroid.SHORT);
+    }
 
     setIsLoading(true);
-    const response = await Post(url, {email: values.email}, apiHeader());
+    const response = await Post(url, {email: email}, apiHeader());
     setIsLoading(false);
     console.log('response data =========================>', response?.data);
     if (response != undefined) {
       Platform.OS == 'android'
-        ? ToastAndroid.show(`OTP sent to ${values.email}`, ToastAndroid.SHORT)
-        : alert(`OTP sent to ${values.email}`);
+        ? ToastAndroid.show(`OTP sent to ${email}`, ToastAndroid.SHORT)
+        : alert(`OTP sent to ${email}`);
       // fromForgot
       //   ?
-      navigationN.navigate('VerifyNumber',{email : values.email});
+      navigationN.navigate('VerifyNumber',{
+        code: response?.data?.data[0]?.code,
+        email : response?.data?.data[0]?.email});
       // : navigationService.navigate('VerifyNumber', {
       //     email: `${email}`,
       //   });
@@ -70,7 +76,7 @@ const VerifyEmail = props => {
             name={'arrowleft'}
             as={AntDesign}
             size={moderateScale(22, 0.3)}
-            color={Color.white}
+            color={Color.darkBlue}
             onPress={() => {
               navigationN.goBack();
             }}
@@ -86,60 +92,36 @@ const VerifyEmail = props => {
             Forgot your password ? don't worry, jsut take a simple step and
             create your new password!
           </CustomText>
-          <Formik
-            initialValues={{
-              email: '',
-            }}
-            validationSchema={forgotpasswordSchema}
-            onSubmit={sendOTP}>
-            {({values, handleChange, handleSubmit, touched, errors}) => {
-              console.log(
-                '🚀 ~ VerifyEmail ~ errors:',
-                errors.email,
-                '======================= uuuuuuu',
-              );
-              return (
-                <View style={styles.text_input}>
-                  <TextInputWithTitle
-                    title={'Email  *'}
-                    placeholder={'Email'}
-                    setText={handleChange('email')}
-                    value={values.email}
-                    viewHeight={0.06}
-                    viewWidth={0.8}
-                    inputWidth={0.75}
-                    border={1}
-                    borderRadius={moderateScale(30, 0.3)}
-                    borderColor={'#000'}
-                    backgroundColor={Color.white}
-                    marginTop={moderateScale(10, 0.3)}
-                    color={Color.black}
-                    placeholderColor={Color.veryLightGray}
-                  />
-                  {touched.email && errors.email && (
-                    <CustomText textAlign={'left'} style={styles.schemaText}>
-                      {errors.email}
-                    </CustomText>
-                  )}
+          
+          <View style={styles.text_input}>
+          <TextInputWithTitle
+          iconName={'mail'}
+          iconType={Ionicons}
+          color={Color.blue}
+          setText={setEmail}
+          value={email}
+          placeholder={'Type your Email'}
+          placeholderColor={Color.grey}
+          viewWidth={0.7}
+          borderBottomWidth={2}
+          borderColor={Color.blue}
+          marginTop={moderateScale(30,0.3)}
+        />
+                 
                   <CustomButton
                     text={isLoading ? <ActivityIndicator size={'small'} color={Color.white}/>:'submit'}
                     textColor={Color.white}
-                    width={windowWidth * 0.8}
+                    width={windowWidth * 0.65}
                     height={windowHeight * 0.06}
                     marginTop={moderateScale(20, 0.3)}
-                    onPress={
-                      handleSubmit
-                      // navigationN.navigate('VerifyNumber');
-                    }
+                    onPress={sendOTP}
                     borderRadius={30}
-                    bgColor={
-                      user_type === 'Rider' ? Color.darkBlue : Color.themeBlack
-                    }
+                    bgColor={Color.darkBlue}
+                    // bgColor={
+                    //   user_type === 'Rider' ? Color.darkBlue : Color.themeBlack
+                    // }
                   />
                 </View>
-              );
-            }}
-          </Formik>
         </KeyboardAwareScrollView>
       </View>
     </>
@@ -157,7 +139,7 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(24, 0.6),
   },
   txt3: {
-    color: Color.themeLightGray,
+    color: Color.black,
     fontSize: moderateScale(11, 0.6),
     textAlign: 'center',
     width: '80%',
@@ -173,17 +155,24 @@ const styles = ScaledSheet.create({
     borderRadius: moderateScale(5, 0.3),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Color.themeBlack,
+    // backgroundColor: Color.themeBlack,
     zIndex: 1,
   },
   text_input: {
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0.45,
     width: windowWidth * 0.9,
-    borderColor: Color.mediumGray,
-    height: windowHeight * 0.25,
-    borderRadius: 20,
+    borderColor: Color.lightGrey,
+    elevation:3,
+    paddingVertical: moderateScale(20, 0.6),
+    // height: windowHeight * 0.36,
+    shadowRadius: 25,
+    shadowColor: "grey",
+    shadowOpacity:0.6,
+    shadowOffset:{width:0, height:1},
+    borderRadius: 25,
     paddingTop: windowHeight * 0.03,
+
     paddingHorizontal: moderateScale(30, 0.6),
   },
   container: {

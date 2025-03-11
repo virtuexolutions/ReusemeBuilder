@@ -39,7 +39,8 @@ const VerifyNumber = props => {
 
   //params
   const email = props?.route?.params?.email;
-  const phoneNumber = props?.route?.params?.phoneNumber;
+  console.log("🚀 ~ email:", email)
+  const codeNumber = props?.route?.params?.code;
   const {user_type} = useSelector(state => state.authReducer);
 
   //states
@@ -114,6 +115,7 @@ const VerifyNumber = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
+<View style={{backgroundColor:Color.white}}>
 
       <TouchableOpacity
         onPress={() => {
@@ -129,18 +131,17 @@ const VerifyNumber = props => {
           borderRadius: moderateScale(5, 0.3),
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: Color.themeBlack,
           zIndex: 1,
         }}>
         <Icon
           name={'arrowleft'}
           as={AntDesign}
           size={moderateScale(22, 0.3)}
-          color={Color.white}
+          color={Color.darkBlue}
           onPress={() => {
             navigationN.goBack();
           }}
-        />
+          />
       </TouchableOpacity>
 
       <KeyboardAwareScrollView
@@ -155,6 +156,9 @@ const VerifyNumber = props => {
         }}>
         <CustomText style={styles.h1}>Verification</CustomText>
         <CustomText style={styles.h2}>Sent a verification code </CustomText>
+        <CustomText 
+        // style={{color:Color.blue}}
+        >Here's Code : {codeNumber}</CustomText>
         <CodeField
           placeholder={'0'}
           ref={ref}
@@ -166,9 +170,9 @@ const VerifyNumber = props => {
           textContentType="oneTimeCode"
           renderCell={({index, symbol, isFocused}) => (
             <View
-              onLayout={getCellOnLayoutHandler(index)}
-              key={index}
-              style={[styles.cellRoot, isFocused && styles.focusCell]}>
+            onLayout={getCellOnLayoutHandler(index)}
+            key={index}
+            style={[styles.cellRoot, isFocused && styles.focusCell]}>
               <CustomText
                 style={[styles.cellText, isFocused && {color: Color.black}]}>
                 {symbol || (isFocused ? <Cursor /> : null)}
@@ -181,10 +185,10 @@ const VerifyNumber = props => {
         </CustomText>
         {
           <TouchableOpacity
-            disabled={timerLabel == 'Resend otp ' ? false : true}
-            onPress={() => {
-              settimerLabel('ReSend in '), settime(120);
-            }}>
+          disabled={timerLabel == 'Resend otp ' ? false : true}
+          onPress={() => {
+            settimerLabel('ReSend in '), settime(120);
+          }}>
             <CustomText style={[styles.txt4]}>
               {timerLabel} {time}
             </CustomText>
@@ -201,9 +205,10 @@ const VerifyNumber = props => {
           onPress={() => {
             VerifyOTP()
           }}
-          bgColor={user_type === 'Rider' ? Color.darkBlue : Color.themeBlack}
-        />
+          bgColor={Color.darkBlue}
+          />
       </KeyboardAwareScrollView>
+</View>
     </>
   );
 };
@@ -248,7 +253,7 @@ const styles = ScaledSheet.create({
     height: moderateScale(45, 0.3),
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: Color.themeBlack,
+    borderColor: Color.darkBlue,
     borderWidth: 1,
     borderRadius: moderateScale(5, 0.3),
   },
@@ -257,13 +262,13 @@ const styles = ScaledSheet.create({
     borderWidth: 1,
   },
   cellText: {
-    color: Color.themeBlack,
+    color: Color.blue,
     fontSize: moderateScale(20, 0.3),
     textAlign: 'center',
   },
   h1: {
     fontSize: moderateScale(22, 0.6),
-    color: Color.themeBlack,
+    color: Color.black,
     textAlign: 'left',
     width: '80%',
     fontWeight: '700',
@@ -271,7 +276,7 @@ const styles = ScaledSheet.create({
   },
   h2: {
     fontSize: moderateScale(20.6),
-    color: Color.mediumGray,
+    color: Color.black,
     textAlign: 'left',
     width: '80%',
     fontWeight: '600',

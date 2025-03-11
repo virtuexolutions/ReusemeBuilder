@@ -25,8 +25,9 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from '../Store/slices/common';
 import { Post } from '../Axios/AxiosInterceptorFunction';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation, route}) => {
   const dispatch= useDispatch();
+  const fromSignup = route?.params?.fromSignup;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Icon
+    {fromSignup &&  <Icon
         onPress={() => {
           navigationService.goback();
         }}
@@ -68,7 +69,7 @@ const LoginScreen = ({navigation}) => {
           top: moderateScale(20, 0.3),
           left: moderateScale(10, 0.3),
         }}
-      />
+      />}
       <CustomText isBold style={styles.welcomeText}>
         Welcome!
       </CustomText>
@@ -117,6 +118,9 @@ const LoginScreen = ({navigation}) => {
         marginTop={moderateScale(30, 0.3)}
       />
       <TouchableOpacity
+      onPress={()=>{
+        navigation.navigate("VerifyEmail")
+      }}
         activeOpacity={0.8}
         style={{
           alignSelf: 'flex-end',

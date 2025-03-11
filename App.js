@@ -17,6 +17,7 @@ import {
   requestWritePermission,
 } from './SRC/Utillity/utils';
 import AppNavigator from './SRC/appNavigation';
+import ResetPassword from './SRC/Screens/ResetPassword';
 
 const App = () => {
 
@@ -48,6 +49,7 @@ const MainContainer = () => {
     return <SplashScreen />;
   }
   return <AppNavigator />;
+  // return <ResetPassword/>;
 };
 
 const useloader = value => {

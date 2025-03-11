@@ -16,6 +16,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomText from '../Components/CustomText';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomButton from '../Components/CustomButton';
@@ -34,15 +35,15 @@ const ResetPassword = props => {
 
   const navigationN = useNavigation();
   const [password, setPassword] = useState('');
-  const [ConfirmPass, setConfirmPass] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const resetPassword = async values => {
+  const resetPassword = async () => {
     const url = 'password/reset';
     const data = {
       email: email,
-      password: values.password,
-      confirm_password: values.confirmPassword,
+      password: password,
+      confirm_password: confirmPassword,
     };
     setIsLoading(true);
     const response = await Post(url, data, apiHeader());
@@ -68,7 +69,7 @@ const ResetPassword = props => {
             name={'arrowleft'}
             as={AntDesign}
             size={moderateScale(22, 0.3)}
-            color={Color.white}
+            color={Color.darkBlue}
             onPress={() => {
               navigationN.goBack();
             }}
@@ -84,62 +85,41 @@ const ResetPassword = props => {
             Forgot your password ? don't worry, jsut take a simple step and
             create your new password!
           </CustomText>
-          <Formik
-            initialValues={{
-              password: '',
-              confirmPassword: '',
-            }}
-            validationSchema={forgotpassword}
-            onSubmit={resetPassword}>
-            {({values, handleChange, handleSubmit, touched, errors}) => {
-              return (
-                <View style={styles.text_input}>
-                  <TextInputWithTitle
-                    title={'new password *'}
-                    titleText={'New Password'}
-                    placeholder={'New Password'}
-                    setText={handleChange('password')}
-                    value={values.password}
-                    secureText={true}
-                    viewHeight={0.06}
-                    viewWidth={0.8}
-                    inputWidth={0.55}
-                    border={1}
-                    borderRadius={moderateScale(30, 0.3)}
-                    borderColor={'#000'}
-                    backgroundColor={Color.white}
-                    marginTop={moderateScale(10, 0.3)}
-                    color={Color.black}
-                    placeholderColor={Color.veryLightGray}
-                  />
-                  {touched.password && errors.password && (
-                    <CustomText style={styles.schemaText}>
-                      {errors.password}
-                    </CustomText>
-                  )}
-                  <TextInputWithTitle
-                    title={'new password *'}
-                    titleText={'New Password'}
-                    placeholder={'New Password'}
-                    setText={handleChange('confirmPassword')}
-                    value={values.confirmPassword}
-                    secureText={true}
-                    viewHeight={0.06}
-                    viewWidth={0.8}
-                    inputWidth={0.7}
-                    border={1}
-                    borderRadius={moderateScale(30, 0.3)}
-                    borderColor={'#000'}
-                    backgroundColor={Color.white}
-                    marginTop={moderateScale(10, 0.3)}
-                    color={Color.black}
-                    placeholderColor={Color.veryLightGray}
-                  />
-                  {touched.password && errors.password && (
-                    <CustomText style={styles.schemaText}>
-                      {errors.password}
-                    </CustomText>
-                  )}
+
+             
+          <View style={styles.text_input}>
+          <TextInputWithTitle
+      iconSize={moderateScale(20,0.3)}
+        iconName={'key'}
+        iconType={Ionicons}
+        color={Color.blue}
+        secureText={true}
+        setText={setPassword}
+        value={password}
+        placeholder={'Password'}
+        placeholderColor={Color.grey}
+        viewWidth={0.7}
+        borderBottomWidth={2}
+        borderColor={Color.blue}
+        marginTop={moderateScale(30, 0.3)}
+      />
+                 
+                 <TextInputWithTitle
+      iconSize={moderateScale(20,0.3)}
+        iconName={'key'}
+        iconType={Ionicons}
+        color={Color.blue}
+        secureText={true}
+        setText={setConfirmPassword}
+        value={confirmPassword}
+        placeholder={'Confirm New Password'}
+        placeholderColor={Color.grey}
+        viewWidth={0.7}
+        borderBottomWidth={2}
+        borderColor={Color.blue}
+        marginTop={moderateScale(30, 0.3)}
+      />
+                 
                   <CustomButton
                     text={
                       isLoading ? (
@@ -149,19 +129,17 @@ const ResetPassword = props => {
                       )
                     }
                     textColor={Color.white}
-                    width={windowWidth * 0.8}
+                    width={windowWidth * 0.65}
                     height={windowHeight * 0.065}
                     marginTop={moderateScale(20, 0.3)}
-                    onPress={handleSubmit}
+                    onPress={resetPassword}
                     borderRadius={30}
                     bgColor={
-                      user_type == 'Rider' ? Color.darkBlue : Color.themeBlack
+                      Color.darkBlue
                     }
                   />
                 </View>
-              );
-            }}
-          </Formik>
+     
         </KeyboardAwareScrollView>
       </View>
     </>
@@ -172,14 +150,14 @@ const styles = ScaledSheet.create({
   main_container: {
     height: windowHeight,
     width: windowWidth,
-    backgroundColor: 'white',
+    backgroundColor:Color.white,
   },
   txt2: {
     color: Color.black,
     fontSize: moderateScale(24, 0.6),
   },
   txt3: {
-    color: Color.themeLightGray,
+    color: Color.black,
     fontSize: moderateScale(11, 0.6),
     textAlign: 'center',
     width: '80%',
@@ -195,17 +173,22 @@ const styles = ScaledSheet.create({
     borderRadius: moderateScale(5, 0.3),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Color.themeBlack,
+    // backgroundColor: Color.themeBlack,
     zIndex: 1,
   },
   text_input: {
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0.45,
     width: windowWidth * 0.9,
-    borderColor: Color.mediumGray,
+    borderColor: Color.lightGrey,
+    elevation:3,
     paddingVertical: moderateScale(10, 0.6),
     // height: windowHeight * 0.36,
-    borderRadius: 20,
+    shadowRadius: 25,
+    shadowColor: "grey",
+    shadowOpacity:0.6,
+    shadowOffset:{width:0, height:1},
+    borderRadius: 25,
     paddingTop: windowHeight * 0.03,
     paddingHorizontal: moderateScale(30, 0.6),
   },
