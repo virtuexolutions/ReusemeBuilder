@@ -9,8 +9,10 @@ import SearchContainer from '../Components/SearchContainer';
 import {FlatList, ScrollView} from 'native-base';
 import CustomImage from '../Components/CustomImage';
 import {Rating} from 'react-native-ratings';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+  const userData = useSelector(state => state.commonReducer.userData);
   const category = [
     {
       id: 1,
@@ -86,7 +88,7 @@ const Home = () => {
 
       <View style={styles.text_con}>
         <CustomText isBold style={styles.h1}>
-          hello, ryan
+          hello, {userData?.name}
         </CustomText>
         <CustomText style={styles.h2}>0 - 5 years of experience</CustomText>
       </View>
@@ -162,7 +164,7 @@ const Home = () => {
           keyExtractor={item => item.id}
           data={dummyData}
           ListFooterComponent={() => {
-            return <View style={{height: windowHeight * 0.15}} />;
+            return <View style={{height: windowHeight * 0.2}} />;
           }}
           renderItem={({item, index}) => {
             console.log('🚀  Home  item:', item);

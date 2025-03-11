@@ -15,7 +15,7 @@ import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import ScreenBoiler from '../Components/ScreenBoiler';
-import {setWalkThrough} from '../Store/slices/auth-slice';
+import {setWalkThrough} from '../Store/slices/auth';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import {useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';

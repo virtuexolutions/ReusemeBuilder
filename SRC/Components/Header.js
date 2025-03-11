@@ -21,18 +21,17 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import {useDispatch, useSelector} from 'react-redux';
 import {imageUrl} from '../Config';
-import {setUserLogout, setUserLogoutAuth} from '../Store/slices/auth-slice';
+import {setUserLogout, setUserLogoutAuth} from '../Store/slices/auth';
 import LinearGradient from 'react-native-linear-gradient';
 import {setUserLogOut} from '../Store/slices/common';
 import navigationService from '../navigationService';
-import { setUserToken } from '../Store/slices/auth-slice';
 
 const Header = props => {
   const dispatch = useDispatch();
   const notification = useSelector(state => state.commonReducer.notification);
   const cartData = useSelector(state => state.commonReducer.cart);
   const navigationN = useNavigation();
-  // console.log("🚀 ~ Header ~ navigation:", navigationN)
+  console.log("🚀 ~ Header ~ navigation:", navigationN)
   const [isModalVisible, setModalVisible] = useState(false);
   const {
     title,
@@ -185,7 +184,7 @@ name={"logout"}
 as={MaterialCommunityIcons}
 size={moderateScale(24,0.2)}
 color={Color.black}
-style={{right:-140, top: 2}}
+style={{right:-135, top: 2}}
 onPress={()=>{
   dispatch(setUserLogoutAuth())
 }}

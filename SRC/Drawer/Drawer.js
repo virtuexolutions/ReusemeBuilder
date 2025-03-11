@@ -10,7 +10,7 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserLogOut} from '../Store/slices/common';
-import {setUserLogoutAuth, SetUserRole} from '../Store/slices/auth-slice';
+import {setUserLogoutAuth, SetUserRole} from '../Store/slices/auth';
 import {setUserToken} from '../Store/slices/auth';
 // import ReferFriendModal from '../Screens/ReferFriendScreen'
 

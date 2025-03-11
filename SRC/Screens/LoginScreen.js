@@ -1,12 +1,14 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import {Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,13 +20,39 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {color} from 'native-base/lib/typescript/theme/styled-system';
 import CustomButton from '../Components/CustomButton';
-import { setUserToken } from '../Store/slices/auth-slice';
+import { setUserToken } from '../Store/slices/auth';
 import { useDispatch } from 'react-redux';
+import { setUserData } from '../Store/slices/common';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const LoginScreen = ({navigation}) => {
   const dispatch= useDispatch();
-  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const Login = async () =>{
+    const url="login";
+    const body={
+      email: email,
+      password:password,
+      // photo:null,
+    };
+    for(let key in body){
+      if(body[key] == ""){
+        return ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT);
+      }
+    }
+    setIsLoading(true);
+    const response = await Post(url, body,apiHeader());
+    setIsLoading(false);
+    if(response != undefined){
+        dispatch(setUserData(response?.data?.user_info));
+        dispatch(setUserToken({token: response?.data?.token }));
+    }
+
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Icon
@@ -47,7 +75,7 @@ const LoginScreen = ({navigation}) => {
       <CustomText isBold style={styles.subtextStyle}>
         Log in to your Approvedocx
       </CustomText>
-      <TextInputWithTitle
+      {/* <TextInputWithTitle
         iconName={'user'}
         iconType={FontAwesome}
         color={Color.blue}
@@ -59,7 +87,20 @@ const LoginScreen = ({navigation}) => {
         borderBottomWidth={2}
         borderColor={Color.blue}
         marginTop={moderateScale(40,0.3)}
-      />
+      /> */}
+      <TextInputWithTitle
+          iconName={'mail'}
+          iconType={Ionicons}
+          color={Color.blue}
+          setText={setEmail}
+          value={email}
+          placeholder={'Type your Email'}
+          placeholderColor={Color.grey}
+          viewWidth={0.7}
+          borderBottomWidth={2}
+          borderColor={Color.blue}
+          marginTop={moderateScale(30,0.3)}
+        />
       <TextInputWithTitle
       iconSize={moderateScale(20,0.3)}
         iconName={'key'}
@@ -93,7 +134,7 @@ const LoginScreen = ({navigation}) => {
       </TouchableOpacity>
       <CustomButton
       
-        text={'Log In'}
+        text={ isLoading ? <ActivityIndicator color={'white'} size={moderateScale(12,0.2)}/> :'Log In'}
         textColor={Color.white}
         width={windowWidth * 0.35}
         
@@ -105,7 +146,8 @@ const LoginScreen = ({navigation}) => {
           marginTop:windowHeight *0.05
         }}
         onPress={() =>{
-        dispatch(setUserToken({token:'abcdef'}))
+          Login()
+        // dispatch(setUserToken({token:'abcdef'}))
         // navigation.navigate('SignupScreen')
 
       }}

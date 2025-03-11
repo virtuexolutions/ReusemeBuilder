@@ -1,12 +1,15 @@
 import {
+  ActivityIndicator,
     SafeAreaView,
+    ScrollView,
     StyleSheet,
     Text,
+    ToastAndroid,
     TouchableOpacity,
     View,
   } from 'react-native';
   import React, {useState} from 'react';
-  import {windowHeight, windowWidth} from '../Utillity/utils';
+  import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
   import Color from '../Assets/Utilities/Color';
   import {Icon} from 'native-base';
   import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,21 +18,48 @@ import {
   import CustomText from '../Components/CustomText';
   import TextInputWithTitle from '../Components/TextInputWithTitle';
   import FontAwesome from 'react-native-vector-icons/FontAwesome';
-  import Feather from 'react-native-vector-icons/Feather';
-  
-  import {color} from 'native-base/lib/typescript/theme/styled-system';
   import CustomButton from '../Components/CustomButton';
 import { useDispatch } from 'react-redux';
-import { setUserToken } from '../Store/slices/auth-slice';
+import { setUserToken } from '../Store/slices/auth';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { setUserData } from '../Store/slices/common';
   
   const SignupScreen = ({navigation}) => {
     const dispatch = useDispatch()
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState(''); 
+    const [confirmPassword, setConfirmPassword] = useState(''); 
     const [email, setEmail] = useState(''); 
+    console.log("🚀 ~ SignupScreen ~ email:", email)
+    const [isLoading, setIsLoading] = useState(false);
+
+    const signUp = async () =>{
+      const url="register";
+      const body={
+        name:userName,
+        email: email,
+        password:password,
+        confirm_password:confirmPassword,
+      };
+      for(let key in body){
+        if(body[key] == ""){
+          return ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT);
+        }
+      }
+      setIsLoading(true);
+      const response = await Post(url, body,apiHeader());
+      setIsLoading(false);
+      if(response != undefined){
+          dispatch(setUserData(response?.data?.user_info));
+          dispatch(setUserToken({token: response?.data?.token }));
+      }
+
+    }
     
     return (
+        <ScrollView>
       <SafeAreaView style={styles.container}>
+
         <Icon
           onPress={() => {
             navigation.goback();
@@ -91,11 +121,28 @@ import { setUserToken } from '../Store/slices/auth-slice';
           borderColor={Color.blue}
           marginTop={moderateScale(30, 0.3)}
         />
+        <TextInputWithTitle
+        iconSize={moderateScale(20,0.3)}
+          iconName={'key'}
+          iconType={Ionicons}
+          color={Color.blue}
+          secureText={true}
+          setText={setConfirmPassword}
+          value={confirmPassword}
+          placeholder={'Confirm Your Password'}
+          placeholderColor={Color.grey}
+          viewWidth={0.7}
+          borderBottomWidth={2}
+          borderColor={Color.blue}
+          marginTop={moderateScale(30, 0.3)}
+        />
         <CustomButton
-          text={'Create Account'}
+          text={ isLoading ? <ActivityIndicator color={"white"} size={moderateScale(24,0.2)}/> :'Create Account'}
           textColor={Color.white}
           onPress={()=>{
-            dispatch(setUserToken({token: "abcdef"}))          
+            // console.log("first");
+            signUp();
+            // dispatch(setUserToken({token: "abcdef"}))          
 }}
           style={{
             width: windowWidth * 0.55,
@@ -104,6 +151,7 @@ import { setUserToken } from '../Store/slices/auth-slice';
             backgroundColor: Color.darkBlue,
             top:windowHeight *0.055
           }}
+
         />
         <CustomText style={{
               fontSize: moderateScale(11, 0.3),
@@ -124,7 +172,9 @@ import { setUserToken } from '../Store/slices/auth-slice';
               color: Color.blue,
             }}>Log in</CustomText>
         </TouchableOpacity>
+
       </SafeAreaView>
+        </ScrollView>
     );
   };
   
