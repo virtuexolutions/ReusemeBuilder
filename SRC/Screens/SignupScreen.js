@@ -62,7 +62,7 @@ import { setUserData } from '../Store/slices/common';
 
         <Icon
           onPress={() => {
-            navigation.goback();
+            navigation.goBack();
           }}
           as={Ionicons}
           name="arrow-back"
