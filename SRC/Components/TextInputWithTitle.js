@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -9,13 +9,13 @@ import {
   Platform,
 } from 'react-native';
 
-import {Icon} from 'native-base';
+import { Icon } from 'native-base';
 import Color from '../Assets/Utilities/Color';
-import {useState} from 'react';
-import {moderateScale, scale, ScaledSheet} from 'react-native-size-matters';
+import { useState } from 'react';
+import { moderateScale, scale, ScaledSheet } from 'react-native-size-matters';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Foundation from 'react-native-vector-icons/Foundation';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 import CustomText from './CustomText';
 
 const TextInputWithTitle = props => {
@@ -61,7 +61,6 @@ const TextInputWithTitle = props => {
             },
             shadowOpacity: 0.32,
             shadowRadius: 5.46,
-
             elevation: 5,
           },
           props.marginBottom && {
@@ -88,9 +87,9 @@ const TextInputWithTitle = props => {
             alignItems: props.alignItems,
           },
           props.iconName &&
-            !props.rightIcon && {
-              paddingLeft: moderateScale(15, 0.3),
-            },
+          !props.rightIcon && {
+            paddingLeft: moderateScale(15, 0.3),
+          },
         ]}>
         {props.foundation && (
           <Foundation
@@ -129,7 +128,7 @@ const TextInputWithTitle = props => {
             ]}
             size={moderateScale(17, 0.3)}
             onPress={props.onPressLeft}
-            // color={props.iconColor ? props.iconColor :'black'}
+          // color={props.iconColor ? props.iconColor :'black'}
           />
         )}
 
@@ -142,21 +141,21 @@ const TextInputWithTitle = props => {
                 },
                 Platform.OS === 'android'
                   ? [
-                      styles.inputBox,
-                      {
-                        paddingBottom: 10,
-                        fontSize: props?.fontSize
-                          ? props?.fontSize
-                          : moderateScale(12, 0.6),
-                        fontWeight: '400',
-                      },
-                    ]
+                    styles.inputBox,
+                    {
+                      paddingBottom: 10,
+                      fontSize: props?.fontSize
+                        ? props?.fontSize
+                        : moderateScale(12, 0.6),
+                      fontWeight: '400',
+                    },
+                  ]
                   : [
-                      styles.inputBox,
-                      {
-                        paddingBottom: 0,
-                      },
-                    ],
+                    styles.inputBox,
+                    {
+                      paddingBottom: 0,
+                    },
+                  ],
               ]}
               onChangeText={text => props.setText(text)}
               value={props.value}
@@ -203,7 +202,7 @@ const TextInputWithTitle = props => {
                 },
                 Platform.OS === 'android'
                   ? styles.inputBox
-                  : [styles.inputBox, {paddingBottom: 0}],
+                  : [styles.inputBox, { paddingBottom: 0 }],
                 props.numberOfLines > 1 && {
                   textAlignVertical: 'top',
                 },
@@ -236,8 +235,8 @@ const TextInputWithTitle = props => {
               numberOfLines={props.numberOfLines || 1}
               editable={props.disable ? false : true}
               autoCapitalize="none"
-              // onPressIn={()=>{console.log('fdadsas');}}
-              // textAlignVertical={props.textAlignVertical}
+            // onPressIn={()=>{console.log('fdadsas');}}
+            // textAlignVertical={props.textAlignVertical}
             />
           </TouchableOpacity>
         )}
@@ -259,7 +258,7 @@ const styles = ScaledSheet.create({
     // textTransform: 'capitalize',
   },
   inputBox: {
-    paddingLeft: moderateScale(20, 0.6),
+    paddingLeft: moderateScale(10, 0.6),
     borderRadius: 8,
     fontSize: moderateScale(14, 0.3),
     // textTransform: 'capitalize',

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Icon} from 'native-base';
+import React, { useState } from 'react';
+import { Icon } from 'native-base';
 import {
   View,
   Platform,
@@ -8,22 +8,22 @@ import {
   ToastAndroid,
   Alert,
 } from 'react-native';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 import CustomText from './CustomText';
 import CustomImage from './CustomImage';
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import {useDispatch, useSelector} from 'react-redux';
-import {imageUrl} from '../Config';
-import {setUserLogout, setUserLogoutAuth} from '../Store/slices/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { imageUrl } from '../Config';
+import { setUserLogout, setUserLogoutAuth } from '../Store/slices/auth';
 import LinearGradient from 'react-native-linear-gradient';
-import {setUserLogOut} from '../Store/slices/common';
+import { setUserLogOut } from '../Store/slices/common';
 import navigationService from '../navigationService';
 
 const Header = props => {
@@ -31,7 +31,6 @@ const Header = props => {
   const notification = useSelector(state => state.commonReducer.notification);
   const cartData = useSelector(state => state.commonReducer.cart);
   const navigationN = useNavigation();
-  console.log("🚀 ~ Header ~ navigation:", navigationN)
   const [isModalVisible, setModalVisible] = useState(false);
   const {
     title,
@@ -58,10 +57,10 @@ const Header = props => {
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const token = useSelector(state => state.authReducer.token);
   const statusArray = [
-    {label: 'Change Password', value: 'ChangePassword'},
-    {label: 'Terms & Conditions', value: 'TermsAndConditions'},
-    {label: 'Financial Breakdown', value: 'FinancialBreakDown'},
-    {label: 'Logout', value: 'Logout'},
+    { label: 'Change Password', value: 'ChangePassword' },
+    { label: 'Terms & Conditions', value: 'TermsAndConditions' },
+    { label: 'Financial Breakdown', value: 'FinancialBreakDown' },
+    { label: 'Logout', value: 'Logout' },
   ];
 
   const Confirm = () => {
@@ -92,9 +91,9 @@ const Header = props => {
           height: height,
         },
       ]}
-      // start={{x: 0, y: 0}}
-      // end={{x: 1, y: 1}}
-      // colors={headerColor ? headerColor : Color.themeBgColor}
+    // start={{x: 0, y: 0}}
+    // end={{x: 1, y: 1}}
+    // colors={headerColor ? headerColor : Color.themeBgColor}
     >
       <View
         style={{
@@ -180,16 +179,16 @@ const Header = props => {
 
       {/* <CustomText isBold style={{color : Color.white , fontSize : moderateScale(20,0.6)}} >Hola!!</CustomText> */}
       <Icon
-name={"logout"}
-as={MaterialCommunityIcons}
-size={moderateScale(24,0.2)}
-color={Color.black}
-style={{right:-135, top: 2}}
-onPress={()=>{
-  dispatch(setUserLogoutAuth())
-}}
-/>
-      {!hideUser && cart ? (
+        name={"logout"}
+        as={MaterialCommunityIcons}
+        size={moderateScale(24, 0.2)}
+        color={Color.black}
+        style={{ right: -135, top: 2 }}
+        onPress={() => {
+          dispatch(setUserLogoutAuth())
+        }}
+      />
+      {/* {!hideUser && cart ? (
         <View
           style={{
             // backgroundColor: 'red',
@@ -259,8 +258,26 @@ onPress={()=>{
             }}
           />
         </View>
-      )}
-      
+       )} */}
+      {!hideUser &&
+        <View
+          style={{
+            width: windowWidth * 0.1,
+            height: windowWidth * 0.1,
+            borderRadius: (windowWidth * 0.1) / 2,
+            backgroundColor: 'red',
+            overflow: 'hidden',
+          }}>
+          <CustomImage
+            source={require('../Assets/Images/dummyman5.png')}
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
+          />
+        </View>
+      }
+
     </View>
   );
 };
@@ -308,7 +325,7 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(10, 0.3),
-    paddingVertical: moderateScale(35, 0.3),
+    paddingVertical: moderateScale(20, 0.3),
     alignItems: 'center',
     // backgroundColor: 'red',
   },

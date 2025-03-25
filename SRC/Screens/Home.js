@@ -1,17 +1,19 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
-import {moderateScale} from 'react-native-size-matters';
+import { windowHeight, windowWidth } from '../Utillity/utils';
+import { moderateScale } from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import SearchContainer from '../Components/SearchContainer';
-import {FlatList, ScrollView} from 'native-base';
+import { FlatList, ScrollView } from 'native-base';
 import CustomImage from '../Components/CustomImage';
-import {Rating} from 'react-native-ratings';
+import { Rating } from 'react-native-ratings';
 import { useSelector } from 'react-redux';
+import navigationService from '../navigationService';
 
 const Home = () => {
+  console.log('heeeeeeeeeeeeloooooooooooo')
   const userData = useSelector(state => state.commonReducer.userData);
   const category = [
     {
@@ -41,43 +43,44 @@ const Home = () => {
       heading: 'Creative',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/resume.jpeg')
     },
-    {
-      id: 2,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    },
-    {
-      id: 3,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    },
-    {
-      id: 4,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    },
-    {
-      id: 5,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    },
-    {
-      id: 6,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    },
-    {
-      id: 7,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    },
+    // {
+    //   id: 2,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    // },
+    // {
+    //   id: 3,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    // },
+    // {
+    //   id: 4,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    // },
+    // {
+    //   id: 5,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    // },
+    // {
+    //   id: 6,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    // },
+    // {
+    //   id: 7,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    // },
   ];
 
   return (
@@ -96,7 +99,7 @@ const Home = () => {
         style={{
           height: windowHeight * 0.07,
           paddingHorizontal: moderateScale(10, 0.6),
-          marginVertical :moderateScale(10,.6)
+          marginVertical: moderateScale(10, .6)
         }}>
         <SearchContainer
           width={windowWidth * 0.95}
@@ -104,7 +107,7 @@ const Home = () => {
           // rightIcon={true}
           placeHolder={'search ..'}
           input={true}
-          // data=
+        // data=
         />
       </View>
 
@@ -124,7 +127,7 @@ const Home = () => {
             height: windowHeight * 0.05,
           }}
           data={category}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <View style={styles.category_con}>
                 <CustomText>{item?.text}</CustomText>
@@ -164,15 +167,15 @@ const Home = () => {
           keyExtractor={item => item.id}
           data={dummyData}
           ListFooterComponent={() => {
-            return <View style={{height: windowHeight * 0.2}} />;
+            return <View style={{ height: windowHeight * 0.2 }} />;
           }}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             console.log('🚀  Home  item:', item);
             return (
-              <View style={styles.card}>
+              <TouchableOpacity onPress={() => navigationService.navigate('ResumeScreen')} style={styles.card}>
                 <View style={styles.card_image}>
                   <CustomImage
-                    source={require('../Assets/Images/card_image.png')}
+                    source={item?.image}
                     style={{
                       height: '100%',
                       width: '100%',
@@ -210,11 +213,11 @@ const Home = () => {
                     </CustomText>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />
-        <View style={{height: windowHeight * 0.14}} />
+        <View style={{ height: windowHeight * 0.14 }} />
       </View>
     </ImageBackground>
   );

@@ -1,21 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import navigationService from './navigationService';
-import {useSelector} from 'react-redux';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { useSelector } from 'react-redux';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Drawer from './Drawer/Drawer';
 import LoginScreen from './Screens/LoginScreen';
 import VerifyNumber from './Screens/VerifyNumber';
 import ChangePassword from './Screens/ChangePassword';
 import ResetPassword from './Screens/ResetPassword';
 import VerifyEmail from './Screens/VerifyEmail';
-import {moderateScale} from 'react-native-size-matters';
-import {enableScreens} from 'react-native-screens';
+import { moderateScale } from 'react-native-size-matters';
+import { enableScreens } from 'react-native-screens';
 import Home from './Screens/Home';
 import SplashScreen from './Screens/SplashScreen';
 import WalkThroughScreen from './Screens/WalkthroughScreen';
 import SignupScreen from './Screens/SignupScreen';
+import ResumeScreen from './Screens/ResumeScreen';
+import EditResume from './Screens/EditResume';
+import ResumeFinalScreen from './Screens/ResumeFinalScreen';
 
 enableScreens();
 const AppNavigator = () => {
@@ -31,15 +34,15 @@ const AppNavigator = () => {
       walkThrough == false
         ? 'WalkthroughScreen'
         : token == null
-        ? 'LoginScreen'
-        : // ? 'Start'
+          ? 'LoginScreen'
+          : // ? 'Start'
           'Home';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
-          screenOptions={{headerShown: false}}>
+          screenOptions={{ headerShown: false }}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
             name="WalkthroughScreen"
@@ -54,6 +57,9 @@ const AppNavigator = () => {
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
+          <RootNav.Screen name="ResumeScreen" component={ResumeScreen} />
+          <RootNav.Screen name="EditResume" component={EditResume} />
+          <RootNav.Screen name="ResumeFinalScreen" component={ResumeFinalScreen} />
         </RootNav.Navigator>
       </NavigationContainer>
     );
