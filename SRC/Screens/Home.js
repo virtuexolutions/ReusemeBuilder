@@ -1,55 +1,66 @@
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
-import { windowHeight, windowWidth } from '../Utillity/utils';
-import { moderateScale } from 'react-native-size-matters';
+import {windowHeight, windowWidth} from '../Utillity/utils';
+import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import SearchContainer from '../Components/SearchContainer';
-import { FlatList, ScrollView } from 'native-base';
+import {FlatList, ScrollView} from 'native-base';
 import CustomImage from '../Components/CustomImage';
-import { Rating } from 'react-native-ratings';
-import { useSelector } from 'react-redux';
+import {Rating} from 'react-native-ratings';
+import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 
 const Home = () => {
-  console.log('heeeeeeeeeeeeloooooooooooo')
   const userData = useSelector(state => state.commonReducer.userData);
+  const [selectedCategoty, setSelectedCategory] = useState({
+    id: 1,
+    text: 'resume',
+    subtext: 'tempaletes',
+  });
   const category = [
     {
       id: 1,
-      text: 'resume ',
+      text: 'resume',
       subtext: 'tempaletes',
     },
     {
       id: 2,
-      text: 'cv',
+      text: 'email',
       subtext: 'tempaletes',
     },
     {
       id: 3,
-      text: 'cover ',
+      text: 'cover',
       subtext: 'latter',
     },
     {
       id: 4,
-      text: 'career ',
+      text: 'career',
       subtext: 'blog',
     },
   ];
-  const dummyData = [
+  const resumeData = [
     {
       id: 1,
-      heading: 'Creative',
+      heading: 'Creative ',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-      image: require('../Assets/Images/resume.jpeg')
+      image: require('../Assets/Images/resume.jpeg'),
     },
     // {
     //   id: 2,
     //   heading: 'Creative',
     //   description:
     //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    //   image: require('../Assets/Images/resume.jpeg'),
     // },
     // {
     //   id: 3,
@@ -82,7 +93,40 @@ const Home = () => {
     //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
     // },
   ];
-
+  const coverletterData = [
+    {
+      id: 1,
+      heading: 'Creative',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/coverletter.png'),
+    },
+    // {
+    //   id: 2,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    //   image: require('../Assets/Images/resume.jpeg'),
+    // },
+  ];
+  const careerBlogdata = [
+    {
+      id: 1,
+      heading: 'Creative',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/blogbg.png'),
+    },
+  ];
+  const cvdata = [
+    {
+      id: 1,
+      heading: 'Creative',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/email.jpeg'),
+    },
+  ];
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -99,7 +143,7 @@ const Home = () => {
         style={{
           height: windowHeight * 0.07,
           paddingHorizontal: moderateScale(10, 0.6),
-          marginVertical: moderateScale(10, .6)
+          marginVertical: moderateScale(10, 0.6),
         }}>
         <SearchContainer
           width={windowWidth * 0.95}
@@ -107,7 +151,7 @@ const Home = () => {
           // rightIcon={true}
           placeHolder={'search ..'}
           input={true}
-        // data=
+          // data=
         />
       </View>
 
@@ -127,12 +171,16 @@ const Home = () => {
             height: windowHeight * 0.05,
           }}
           data={category}
-          renderItem={({ item, index }) => {
+          renderItem={({item, index}) => {
             return (
-              <View style={styles.category_con}>
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedCategory(item);
+                }}
+                style={styles.category_con}>
                 <CustomText>{item?.text}</CustomText>
                 <CustomText>{item?.subtext}</CustomText>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />
@@ -146,7 +194,7 @@ const Home = () => {
               fontSize: moderateScale(15, 0.6),
             },
           ]}>
-          Resume Templates
+          {selectedCategoty?.text} {selectedCategoty?.subtext}
         </CustomText>
         <CustomText style={styles.txt}>See more</CustomText>
       </View>
@@ -165,14 +213,27 @@ const Home = () => {
           }}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
-          data={dummyData}
+          data={
+            selectedCategoty?.text == 'resume'
+              ? resumeData
+              : selectedCategoty?.text == 'cover'
+              ? coverletterData
+              : selectedCategoty?.text == 'career'
+              ? careerBlogdata
+              : cvdata
+          }
           ListFooterComponent={() => {
-            return <View style={{ height: windowHeight * 0.2 }} />;
+            return <View style={{height: windowHeight * 0.2}} />;
           }}
-          renderItem={({ item, index }) => {
-            console.log('🚀  Home  item:', item);
+          renderItem={({item, index}) => {
             return (
-              <TouchableOpacity onPress={() => navigationService.navigate('ResumeScreen')} style={styles.card}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigationService.navigate('ResumeScreen', {
+                    data: item?.image,
+                  })
+                }
+                style={styles.card}>
                 <View style={styles.card_image}>
                   <CustomImage
                     source={item?.image}
@@ -216,8 +277,9 @@ const Home = () => {
               </TouchableOpacity>
             );
           }}
+        
         />
-        <View style={{ height: windowHeight * 0.14 }} />
+        <View style={{height: windowHeight * 0.14}} />
       </View>
     </ImageBackground>
   );
