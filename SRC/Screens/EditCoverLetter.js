@@ -7,18 +7,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import React, { useState } from 'react';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import {moderateScale} from 'react-native-size-matters';
-import {Icon} from 'native-base';
+import { moderateScale } from 'react-native-size-matters';
+import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import { useSelector } from 'react-redux';
 
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
@@ -54,6 +55,7 @@ const EditCoverLetter = props => {
   const [companyCity, setCompanyCity] = useState('');
   const [summaryDetails, setsummaryDetails] = useState('');
 
+  const userData = useSelector(state => state.commonReducer.userData);
   const onPressConfirm = () => {
     const data = {
       name: name,
@@ -74,14 +76,15 @@ const EditCoverLetter = props => {
       name: name,
       phone: phone,
       summary: summary,
-      datae: date,
+      date: date,
       details: details,
       managerName: managerName,
       subject: subject,
+      email: userData?.email
     };
     type == 'email' ?
-    navigationService.navigate('FinalEmail', {data: body}) :
-    navigationService.navigate('FinalCoverLetter', {data: data});
+      navigationService.navigate('FinalEmail', { data: body }) :
+      navigationService.navigate('FinalCoverLetter', { data: data });
   };
 
   return (

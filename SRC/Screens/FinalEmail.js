@@ -1,5 +1,7 @@
 import {
+  ActivityIndicator,
   FlatList,
+  I18nManager,
   ImageBackground,
   ScrollView,
   StyleSheet,
@@ -7,21 +9,39 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import React, { useState } from 'react';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import {moderateScale} from 'react-native-size-matters';
-import {Icon} from 'native-base';
+import { moderateScale } from 'react-native-size-matters';
+import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 
 const FinalEmail = props => {
   const data = props?.route?.params?.data;
+  const fromHome = props?.route?.params?.fromHome;
+  console.log("🚀 ~ data:", data)
+  const token = useSelector(state => state.authReducer.token);
+  const [loading, setLoading] = useState(false)
+
+  const saveEmailData = async () => {
+    const url = 'auth/mail'
+    setLoading(true)
+    const response = await Post(url, data, apiHeader(token))
+    console.log("🚀 ~ saveEmailData ~ response:", response?.data)
+    setLoading(false)
+    if (response?.data != undefined) {
+      setLoading(false)
+      navigationService.navigate('Home')
+    }
+  }
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -33,7 +53,7 @@ const FinalEmail = props => {
             <View style={styles.titlecontainer}>
               {/* <CustomText style={styles.title}>pamela miller</CustomText> */}
               <CustomText isBold style={styles.title2}>
-             {data?.subject}
+                {data?.subject}
               </CustomText>
             </View>
 
@@ -48,7 +68,7 @@ const FinalEmail = props => {
               {`  Dear ${data?.managerName}`}
             </CustomText>
 
-            <CustomText style={styles.per_text}>{data?.details.replace(/\. /g, ".\n\n") }</CustomText>
+            <CustomText style={styles.per_text}>{data?.details.replace(/\. /g, ".\n\n")}</CustomText>
             <View
               style={[
                 styles.per_data,
@@ -79,11 +99,19 @@ const FinalEmail = props => {
           </View>
 
           <CustomButton
-            text={'confirm'}
+            text={
+              loading ?
+                <ActivityIndicator
+                  size="small"
+                  style={styles.indicatorStyle
+                  }
+                  color={Color.darkBlue}
+                /> : fromHome ? 'Go Back' : 'Save'}
             textColor={Color.darkBlue}
             onPress={() => {
-              navigationService.navigate('Home')
+              // navigationService.navigate('Home')
               // onPressConfirm();
+              saveEmailData()
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}
@@ -119,7 +147,10 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
     marginVertical: moderateScale(30, 0.6),
   },
-
+  indicatorStyle: {
+    paddingRight: 5,
+    paddingLeft: I18nManager.isRTL ? 5 : 0,
+  },
   titlecontainer: {
     alignItems: 'center',
     paddingVertical: moderateScale(15, 0.6),

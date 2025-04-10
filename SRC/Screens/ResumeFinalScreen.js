@@ -1,16 +1,55 @@
-import { ImageBackground, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { windowHeight, windowWidth } from '../Utillity/utils'
+import { ActivityIndicator, Alert, I18nManager, ImageBackground, Platform, StyleSheet, Text, ToastAndroid, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils'
 import Header from '../Components/Header'
 import { moderateScale } from 'react-native-size-matters'
 import Color from '../Assets/Utilities/Color'
 import CustomText from '../Components/CustomText'
 import CustomButton from '../Components/CustomButton'
 import navigationService from '../navigationService'
+import { Get, Post } from '../Axios/AxiosInterceptorFunction'
+import { useSelector } from 'react-redux'
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
 
 const ResumeFinalScreen = (props) => {
     const data = props?.route?.params?.data;
-    console.log("🚀 ~ ResumeFinalScreen ~ data:", data)
+    const fromHome = props?.route?.params?.fromHome;
+    // const [data, setData] = useState({})
+    const token = useSelector(state => state.authReducer.token);
+    const [loading, setLoading] = useState(false)
+    const isFocused = useIsFocused()
+
+    // useEffect(() => {
+    //     getResumeData()
+    // }, [isFocused])
+
+    // const getResumeData = async () => {
+    //     const url = 'auth/resumes'
+    //     setLoading(true)
+    //     const response = await Get(url, token)
+    //     setLoading(false)
+    //     console.log("🚀 ~ getResumeData ~ response:", response?.data)
+    //     if (response?.data != undefined) {
+    //         setLoading(false)
+    //         setData(response?.data?.data[1])
+    //     }
+    // }
+
+    const onPressSave = async () => {
+        const url = `auth/resumes`
+        setLoading(true)
+        const response = await Post(url, data, apiHeader(token))
+        console.log("🚀 ~ onPressSave ~ response:", response)
+        setLoading(false)
+        console.log("🚀 ~ onPressConfirm ~ response:", response?.data)
+        if (response?.data != undefined) {
+            setLoading(false)
+            navigationService.navigate('Home')
+            Platform.OS == 'android'
+                ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+                : Alert.alert('Saved');
+        }
+    }
     return (
         <ImageBackground
             style={styles.bg_container}
@@ -26,7 +65,7 @@ const ResumeFinalScreen = (props) => {
                         marginTop: moderateScale(10, 0.6)
                     }} />
                     <CustomText isBold style={[styles.sub_heading, {
-                        marginTop: moderateScale(30, 0.6),
+                        marginTop: moderateScale(10, 0.6),
                         width: windowWidth * 0.5,
                     }]}>Profile</CustomText>
                     <CustomText style={styles.description}>{data?.summaryDetails}</CustomText>
@@ -61,7 +100,6 @@ const ResumeFinalScreen = (props) => {
                         width: windowWidth * 0.25,
                         marginTop: moderateScale(12, 0.6),
                     }} />
-
                 </View>
                 <View style={styles.right_view}>
                     <CustomText isBold style={[styles.sub_heading, {
@@ -71,7 +109,6 @@ const ResumeFinalScreen = (props) => {
                     <CustomText style={styles.description}>{data?.phone}</CustomText>
                     <CustomText style={styles.description}>{data?.email}</CustomText>
                     <CustomText style={styles.description}>{data?.address}</CustomText>
-                    <CustomText style={styles.description}>Linkdin | Protfolio</CustomText>
                     <View style={{
                         backgroundColor: '#741b47',
                         height: moderateScale(2, 0.6),
@@ -85,57 +122,176 @@ const ResumeFinalScreen = (props) => {
                     <CustomText style={styles.description}>{data?.education}</CustomText>
                     <CustomText style={styles.description}>anythonygentile@gmail.com</CustomText>
                     <CustomText style={styles.description}>Sans Franciso, CA 12345</CustomText>
-                    <CustomText style={styles.description}>Linkdin | Protfolio</CustomText>
                     <View style={{
                         backgroundColor: '#741b47',
                         height: moderateScale(2, 0.6),
                         width: windowWidth * 0.25,
                         marginTop: moderateScale(12, 0.6),
                     }} />
-                    {data?.skills.map((item) => {
-                        return (
-                            <CustomText isBold style={[styles.sub_heading, {
-                                marginTop: moderateScale(20, 0.6),
-                                width: windowWidth * 0.5,
-                            }]}>Key Skills</CustomText>
-                        )
-                    })
-
-                    }
-                    {/* <CustomText style={[styles.description, {
-                        marginTop: moderateScale(5, 0.6)
-                    }]}>Software Development</CustomText>
-                    <CustomText style={[styles.description, {
-                        marginTop: moderateScale(5, 0.6)
-                    }]}>Phyton</CustomText>
-                    <CustomText style={[styles.description, {
-                        marginTop: moderateScale(5, 0.6)
-                    }]}>Full-Stack Development</CustomText>
-                    <CustomText style={[styles.description, {
-                        marginTop: moderateScale(5, 0.6)
-                    }]}>Quakity assurance</CustomText>
-                    <CustomText style={[styles.description, {
-                        marginTop: moderateScale(5, 0.6)
-                    }]}>user-centered design</CustomText>
                     <CustomText isBold style={[styles.sub_heading, {
                         marginTop: moderateScale(20, 0.6),
                         width: windowWidth * 0.5,
-                    }]}>Certification</CustomText> */}
+                    }]}>Skills</CustomText>
+                    {JSON.parse(data?.skills || '[]')?.map((item, index) => {
+                        return (
+                            <CustomText
+                                key={index}
+                                style={[
+                                    styles.description,
+                                    {
+                                        fontSize: moderateScale(12, 0.6),
+                                        width: windowWidth * 0.5,
+                                    },
+                                ]}
+                            >
+                                {item}
+                            </CustomText>
+                        );
+                    })}
+
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.25,
+                        marginTop: moderateScale(12, 0.6),
+                    }} />
+                    <CustomText isBold style={[styles.sub_heading, {
+                        marginTop: moderateScale(20, 0.6),
+                        width: windowWidth * 0.5,
+                    }]}>Certificate</CustomText>
                     <CustomText style={styles.description}>{data?.CertificateName}</CustomText>
                     <CustomText style={styles.description}>{data?.CertificatePlaceName}</CustomText>
+                    <CustomText style={styles.description}>{data?.CertificatYear}</CustomText>
                 </View>
             </View>
+            {/* {loading ?
+                <ActivityIndicator
+                    size="large"
+                    style={styles.indicatorStyle}
+                    color={Color.white}
+                />
+                : (
+                    <> */}
+            {/* <View style={styles.main_view}>
+                <View style={styles.left_view}>
+                    <CustomText isBold style={styles.heading}>{data?.name}</CustomText>
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.45,
+                        marginTop: moderateScale(10, 0.6)
+                    }} />
+                    <CustomText isBold style={[styles.sub_heading, {
+                        marginTop: moderateScale(10, 0.6),
+                        width: windowWidth * 0.5,
+                    }]}>Profile</CustomText>
+                    <CustomText style={styles.description}>{data?.summaryDetails}</CustomText>
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.3,
+                        marginTop: moderateScale(20, 0.6),
+
+                    }} />
+                    <CustomText isBold style={[styles.sub_heading, {
+                        width: windowWidth * 0.5,
+                        marginTop: moderateScale(20, 0.6)
+                    }]}>professional Experience</CustomText>
+
+                    <CustomText style={{
+                        fontSize: moderateScale(12, 0.6),
+                        marginTop: moderateScale(10, 0.6),
+                        color: '#79244b',
+                    }}>{data?.positonName}</CustomText>
+                    <CustomText style={{
+                        fontSize: moderateScale(12, 0.6),
+                        marginTop: moderateScale(2, 0.6),
+                        color: '#79244b',
+                    }}>{data?.DateofJoining + ' - ' + data?.DateofEnding} </CustomText>
+                    <CustomText style={styles.description}>
+                        {data?.summaryDetails}
+                    </CustomText>
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.25,
+                        marginTop: moderateScale(12, 0.6),
+                    }} />
+                </View>
+                <View style={styles.right_view}>
+                    <CustomText isBold style={[styles.sub_heading, {
+                        marginTop: moderateScale(30, 0.6),
+                        width: windowWidth * 0.5,
+                    }]}>CONTACT</CustomText>
+                    <CustomText style={styles.description}>{data?.phone}</CustomText>
+                    <CustomText style={styles.description}>{data?.email}</CustomText>
+                    <CustomText style={styles.description}>{data?.address}</CustomText>
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.25,
+                        marginTop: moderateScale(12, 0.6),
+                    }} />
+                    <CustomText isBold style={[styles.sub_heading, {
+                        marginTop: moderateScale(20, 0.6),
+                        width: windowWidth * 0.5,
+                    }]}>Education</CustomText>
+                    <CustomText style={styles.description}>{data?.education}</CustomText>
+                    <CustomText style={styles.description}>anythonygentile@gmail.com</CustomText>
+                    <CustomText style={styles.description}>Sans Franciso, CA 12345</CustomText>
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.25,
+                        marginTop: moderateScale(12, 0.6),
+                    }} />
+                    <CustomText isBold style={[styles.sub_heading, {
+                        marginTop: moderateScale(20, 0.6),
+                        width: windowWidth * 0.5,
+                    }]}>Skills</CustomText>
+                    {data?.skills.map((item) => {
+                        return (
+                            <CustomText style={[styles.description, {
+                                fontSize: moderateScale(12, 0.6),
+                                width: windowWidth * 0.5,
+                            }]}>{item}</CustomText>
+                        )
+                    })
+                    }
+                    <View style={{
+                        backgroundColor: '#741b47',
+                        height: moderateScale(2, 0.6),
+                        width: windowWidth * 0.25,
+                        marginTop: moderateScale(12, 0.6),
+                    }} />
+                    <CustomText isBold style={[styles.sub_heading, {
+                        marginTop: moderateScale(20, 0.6),
+                        width: windowWidth * 0.5,
+                    }]}>Certificate</CustomText>
+                    <CustomText style={styles.description}>{data?.CertificateName}</CustomText>
+                    <CustomText style={styles.description}>{data?.CertificatePlaceName}</CustomText>
+                    <CustomText style={styles.description}>{data?.CertificatYear}</CustomText>
+                </View>
+            </View> */}
             <CustomButton
-                text={'Print'}
+                text={loading ?
+                    <ActivityIndicator
+                        size="small"
+                        style={styles.indicatorStyle}
+                        color={Color.white}
+                    /> : fromHome ? 'Go Back' : 'Save'}
                 textColor={Color.white}
                 onPress={() => {
-                    navigationService.navigate('Home')
+                    // navigationService.navigate('Home')
+                    fromHome ? navigationService.navigate("Home") :
+                        onPressSave()
                 }} width={windowWidth * 0.7}
                 height={windowHeight * 0.060}
                 borderRadius={moderateScale(20, 0.3)}
                 bgColor={Color.darkBlue}
                 marginTop={moderateScale(20, 0.6)}
             />
+
         </ImageBackground>
     )
 }
@@ -167,15 +323,19 @@ const styles = StyleSheet.create({
         height: windowHeight * 0.75,
         width: windowWidth * 0.55,
         paddingHorizontal: moderateScale(10, 0.6),
-        paddingVertical: moderateScale(50, 0.6)
+        paddingVertical: moderateScale(40, 0.6)
     },
     heading: {
         color: '#79244b',
         fontSize: moderateScale(20, 0.6),
     },
     description: {
-        fontSize: moderateScale(11, 0.6),
+        fontSize: moderateScale(9, 0.6),
         color: '#79244b',
+    },
+    indicatorStyle: {
+        paddingRight: 5,
+        paddingLeft: I18nManager.isRTL ? 5 : 0,
     },
     sub_heading: {
         color: '#79244b',

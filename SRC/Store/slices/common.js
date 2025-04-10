@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   userData: {},
@@ -18,7 +18,6 @@ const initialState = {
   dropoffLocation: {},
   rideInfo: {},
 };
-console.log("🚀 ~ rideInfo:",initialState?.rideInfo)
 
 const CommonSlice = createSlice({
   name: 'commonReducer',
@@ -59,7 +58,7 @@ const CommonSlice = createSlice({
       const itemId = action.payload.id;
       console.log('🚀 ~ AddToCart ~ action.payload:', action.payload);
 
-      state.cart.push({date: moment(), ...action.payload});
+      state.cart.push({ date: moment(), ...action.payload });
     },
 
     RemoveToCart(state, action) {
@@ -250,7 +249,7 @@ export const {
   setLoaction,
   setPickupLocation,
   setDropoffLocation,
-  setRideinfo ,
+  setRideinfo,
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

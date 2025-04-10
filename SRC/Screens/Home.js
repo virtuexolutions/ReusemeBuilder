@@ -1,25 +1,39 @@
 import {
+  ActivityIndicator,
   ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
-import {moderateScale} from 'react-native-size-matters';
+import { windowHeight, windowWidth } from '../Utillity/utils';
+import { moderateScale } from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import SearchContainer from '../Components/SearchContainer';
-import {FlatList, ScrollView} from 'native-base';
+import { FlatList, Icon, ScrollView } from 'native-base';
 import CustomImage from '../Components/CustomImage';
-import {Rating} from 'react-native-ratings';
-import {useSelector} from 'react-redux';
+import { Rating } from 'react-native-ratings';
+import { useSelector } from 'react-redux';
 import navigationService from '../navigationService';
+import { useIsFocused } from '@react-navigation/core';
+import { Get } from '../Axios/AxiosInterceptorFunction';
+import { date } from 'yup';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const Home = () => {
   const userData = useSelector(state => state.commonReducer.userData);
+  const isFocused = useIsFocused()
+  const token = useSelector(state => state.authReducer.token);
+  const [loading, setLoading] = useState(false)
+  const [saveresumeData, setSaveResumeData] = useState([])
+  console.log("🚀 ~ Home ~ saveresumeData:", saveresumeData)
+  const [emailData, setEmailData] = useState([])
+  const [dropDown, setDropDown] = useState(false)
+  const [showCategory, setshowCategory] = useState('resume')
   const [selectedCategoty, setSelectedCategory] = useState({
     id: 1,
     text: 'resume',
@@ -127,6 +141,8 @@ const Home = () => {
       image: require('../Assets/Images/email.jpeg'),
     },
   ];
+
+
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -144,15 +160,34 @@ const Home = () => {
           height: windowHeight * 0.07,
           paddingHorizontal: moderateScale(10, 0.6),
           marginVertical: moderateScale(10, 0.6),
+          flexDirection: "row",
+          justifyContent: 'space-between',
+          alignItems: "center"
         }}>
         <SearchContainer
-          width={windowWidth * 0.95}
+          width={windowWidth * 0.8}
           height={moderateScale(50, 0.6)}
           // rightIcon={true}
           placeHolder={'search ..'}
           input={true}
-          // data=
+        // data=
         />
+        <TouchableOpacity onPress={() => navigationService.navigate('SavedTemplates')} style={{
+          width: windowWidth * 0.12,
+          height: windowWidth * 0.12,
+          borderRadius: moderateScale(12, 0.6),
+          alignItems: "center",
+          justifyContent: 'center',
+          backgroundColor: Color.white
+        }}>
+          <Icon
+            name={'save-alt'}
+            as={MaterialIcons}
+            size={moderateScale(22, 0.6)}
+            color={Color.darkBlue}
+            style={{ alignSelf: "center", }}
+          />
+        </TouchableOpacity>
       </View>
 
       <CustomText style={styles.h3}>What do you need</CustomText>
@@ -170,8 +205,10 @@ const Home = () => {
             width: '100%',
             height: windowHeight * 0.05,
           }}
+          horizontal
           data={category}
-          renderItem={({item, index}) => {
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -196,7 +233,86 @@ const Home = () => {
           ]}>
           {selectedCategoty?.text} {selectedCategoty?.subtext}
         </CustomText>
-        <CustomText style={styles.txt}>See more</CustomText>
+        {selectedCategoty?.text === 'Saved' ?
+          <TouchableOpacity onPress={() => setDropDown(!dropDown)} style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: "center"
+          }}>
+            <CustomText style={[styles.txt, {
+              marginRight: moderateScale(3, 0.6)
+            }]}>Select category</CustomText>
+            <Icon
+              name={dropDown ? 'up' : 'down'}
+              as={AntDesign}
+              size={moderateScale(13, 0.6)}
+              color={Color.white}
+            />
+          </TouchableOpacity>
+          :
+          <CustomText style={styles.txt}>See more</CustomText>
+        }
+        {dropDown && (
+          <View style={styles.con}>
+            {category.map((item) => {
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: moderateScale(10, 0.6),
+                    paddingVertical: moderateScale(1, 0.6)
+                  }}>
+                  <CustomText
+                    onPress={() => {
+                      setshowCategory(item?.text)
+                      setDropDown(false)
+                    }}
+                    style={{
+                      fontSize: moderateScale(14, 0.6),
+                      color: Color.darkBlue,
+                      paddingHorizontal: moderateScale(5, 0.6),
+                      textTransform: 'capitalize'
+                    }}>
+                    {item?.text === 'Saved' ? '' : item?.text}
+                  </CustomText>
+                  {showCategory === item?.text &&
+                    <Icon
+                      style={{
+                        paddingTop: moderateScale(2, 0.6),
+                      }}
+                      name="check"
+                      as={AntDesign}
+                      size={moderateScale(14, 0.6)}
+                      color={Color.darkBlue}
+                    />
+                  }
+                </View>
+              )
+            })
+            }
+            {/* <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingHorizontal: moderateScale(10, 0.6),
+              }}>
+              <CustomText
+                onPress={() => {
+                  // setFilterPlaces('topRated')
+                  // findNearestMcDonalds()
+                }}
+                style={{
+                  fontSize: moderateScale(14, 0.6),
+                  color: Color.black,
+                  paddingHorizontal: moderateScale(5, 0.6),
+                  textTransform: 'capitalize'
+                }}>
+                top Rated
+              </CustomText>
+            </View> */}
+          </View>
+        )}
       </View>
       <View
         style={{
@@ -205,82 +321,90 @@ const Home = () => {
           paddingHorizontal: moderateScale(10, 0.6),
           paddingBottom: moderateScale(12, 0.2),
         }}>
-        <FlatList
+        {loading ? <ActivityIndicator size="small"
           style={{
-            // width: '100%',
-            height: '100%',
-            // backgroundColor:"red"
+            marginTop: moderateScale(20, 0.6)
           }}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          data={
-            selectedCategoty?.text == 'resume'
-              ? resumeData
-              : selectedCategoty?.text == 'cover'
-              ? coverletterData
-              : selectedCategoty?.text == 'career'
-              ? careerBlogdata
-              : cvdata
-          }
-          ListFooterComponent={() => {
-            return <View style={{height: windowHeight * 0.2}} />;
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigationService.navigate('ResumeScreen', {
-                    data: item?.image,
-                    type :selectedCategoty?.text
-                  })
-                }
-                style={styles.card}>
-                <View style={styles.card_image}>
-                  <CustomImage
-                    source={item?.image}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                    }}
-                  />
-                </View>
-                <View style={styles.content}>
-                  <View>
-                    <CustomText style={styles.heading}>
-                      {item?.heading}
-                    </CustomText>
-                    <CustomText style={styles.description}>
-                      {item?.description}
-                    </CustomText>
-                  </View>
-                  <View style={styles.ratingView}>
-                    <Rating
-                      type="custom"
-                      startingValue={4}
-                      ratingCount={5}
-                      imageSize={moderateScale(12, 0.3)}
-                      style={
-                        {
-                          // width: windowWidth * 0.04,
-                        }
-                      }
-                      ratingBackgroundColor={'white'}
-                    />
-                    <CustomText
-                      style={{
-                        fontSize: moderateScale(12, 0.2),
-                        color: Color.grey,
-                      }}>
-                      1/16
-                    </CustomText>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        
-        />
-        <View style={{height: windowHeight * 0.14}} />
+          color={Color.darkBlue} />
+          : (
+            <FlatList
+              style={{
+                // width: '100%',
+                height: '100%',
+                // backgroundColor:"red"
+              }}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={item => item.id}
+              data={
+                selectedCategoty?.text == 'resume'
+                  ? resumeData
+                  : selectedCategoty?.text == 'cover'
+                    ? coverletterData
+                    : selectedCategoty?.text == 'career'
+                      ? careerBlogdata
+                      : cvdata
+              }
+              ListFooterComponent={() => {
+                return <View style={{ height: windowHeight * 0.2 }} />;
+              }}
+              renderItem={({ item, index }) => {
+                return (
+
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigationService.navigate('ResumeScreen', {
+                        data: item?.image,
+                        type: selectedCategoty?.text
+                      })
+                    }
+                    style={styles.card}>
+                    <View style={styles.card_image}>
+                      <CustomImage
+                        source={item?.image}
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                        }}
+                      />
+                    </View>
+                    <View style={styles.content}>
+                      <View>
+                        <CustomText style={styles.heading}>
+                          {item?.heading}
+                        </CustomText>
+                        <CustomText style={styles.description}>
+                          {item?.description}
+                        </CustomText>
+                      </View>
+                      <View style={styles.ratingView}>
+                        <Rating
+                          type="custom"
+                          startingValue={4}
+                          ratingCount={5}
+                          imageSize={moderateScale(12, 0.3)}
+                          style={
+                            {
+                              // width: windowWidth * 0.04,
+                            }
+                          }
+                          ratingBackgroundColor={'white'}
+                        />
+                        <CustomText
+                          style={{
+                            fontSize: moderateScale(12, 0.2),
+                            color: Color.grey,
+                          }}>
+                          1/16
+                        </CustomText>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          )
+        }
+        <View style={{ height: windowHeight * 0.14 }} />
       </View>
     </ImageBackground>
   );
@@ -375,5 +499,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: moderateScale(5, 0.4),
+  },
+  con: {
+    backgroundColor: Color.lightGrey,
+    height: windowHeight * 0.12,
+    borderWidth: 1,
+    borderColor: Color.lightGrey,
+    width: windowWidth * 0.4,
+    borderRadius: moderateScale(10, 0.6),
+    zIndex: 1,
+    position: 'absolute',
+    right: 20,
+    top: 35,
+  },
+  LogoText: {
+    fontSize: moderateScale(35, 0.3),
+    fontWeight: 'bold',
   },
 });

@@ -4,10 +4,11 @@ import Color from '../Assets/Utilities/Color';
 import {FONTS} from '../Constant/theme';
 
 const CustomText = props => {
-  const {children, numberOfLines, textAlign, style, isBold, onPress} = props;
+  const {children, numberOfLines, textAlign,disabled, style, isBold, onPress} = props;
   return (
     <Text
       onPress={onPress}
+      disabled={disabled}
       style={[
         {
           textTransform: 'capitalize',

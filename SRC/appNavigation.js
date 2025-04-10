@@ -24,6 +24,7 @@ import EditCoverLetter from './Screens/EditCoverLetter';
 import EditBlogPost from './Screens/EditBlogPost';
 import FinalBlogPost from './Screens/FinalBlogPost';
 import FinalEmail from './Screens/FinalEmail';
+import SavedTemplates from './Screens/SavedTemplates';
 
 enableScreens();
 const AppNavigator = () => {
@@ -53,6 +54,7 @@ const AppNavigator = () => {
             component={WalkThroughScreen}
           />
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="SavedTemplates" component={SavedTemplates} />
           <RootNav.Screen name="SignupScreen" component={SignupScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />

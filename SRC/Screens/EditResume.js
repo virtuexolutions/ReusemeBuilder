@@ -1,6 +1,6 @@
-import { FlatList, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, FlatList, ImageBackground, Platform, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { windowHeight, windowWidth } from '../Utillity/utils'
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils'
 import Header from '../Components/Header'
 import Color from '../Assets/Utilities/Color'
 import CustomText from '../Components/CustomText'
@@ -11,8 +11,12 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import TextInputWithTitle from '../Components/TextInputWithTitle'
 import CustomButton from '../Components/CustomButton'
 import navigationService from '../navigationService'
+import { Post } from '../Axios/AxiosInterceptorFunction'
+import { useSelector } from 'react-redux'
 
 const EditResume = () => {
+    const token = useSelector(state => state.authReducer.token);
+    console.log("🚀 ~ EditResume ~ token:", token)
     const [personalDataTab, setPersonalDataTab] = useState(true)
     const [summary, setSummary] = useState(true)
     const [email, setEmail] = useState('')
@@ -21,11 +25,11 @@ const EditResume = () => {
     const [date, setDate] = useState(new Date())
     const [month, setMonth] = useState(new Date())
     const [year, setYear] = useState(new Date())
-    const [details, setDetails] = useState('')
+    const [details, setDetails] = useState("")
     const [skillVisible, setSkillVisible] = useState(true)
     const [skills, setSkill] = useState([])
     const [skillsVal, setSkillVal] = useState([])
-    const [phone, setphone] = useState([])
+    const [phone, setphone] = useState('')
     const [education, seteducation] = useState(true)
     const [experience, setexperience] = useState(true)
     const [Certificate, setCertificate] = useState(true)
@@ -39,14 +43,14 @@ const EditResume = () => {
     const [experiencePlaceName, setexperiencePlaceName] = useState('')
     const [DateofJoining, setDateofJoining] = useState('')
     const [DateofEnding, setDateofEnding] = useState('')
-    const [summaryDetails, setsummaryDetails] = useState('')
+    const [summaryDetails, setsummaryDetails] = useState("")
+    const [loading, setLoading] = useState(false)
 
-
-    const onPressConfirm = () => {
+    const onPressConfirm = async () => {
         const data = {
             name: name,
             email: email,
-            data: date,
+            date: date,
             month: month,
             summary: summary,
             address: address,
@@ -54,7 +58,6 @@ const EditResume = () => {
             skills: skills,
             phone: phone,
             education: education,
-            Certificate: Certificate,
             degreeName: degreeName,
             degreePlaceName: degreePlaceName,
             degreeYear: degreeYear,
@@ -65,9 +68,22 @@ const EditResume = () => {
             experiencePlaceName: experiencePlaceName,
             DateofJoining: DateofJoining,
             DateofEnding: DateofEnding,
-            summaryDetails: summaryDetails
+            summaryDetails: summaryDetails,
         }
-        navigationService.navigate('ResumeFinalScreen', { data: data })
+        navigationService.navigate('ResumeFinalScreen', { data: data, fromHome: true })
+        // console.log("🚀 ~ onPressConfirm ~ data:", data)
+        // const url = `auth/resumes`
+        // setLoading(true)
+        // const response = await Post(url, data, apiHeader(token))
+        // setLoading(false)
+        // console.log("🚀 ~ onPressConfirm ~ response:", response?.data)
+        // if (response?.data != undefined) {
+        //     setLoading(false)
+        //     navigationService.navigate('ResumeFinalScreen', { data: data })
+        //     Platform.OS == 'android'
+        //         ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+        //         : Alert.alert('Saved');
+        // }
     }
 
     return (
@@ -224,7 +240,7 @@ const EditResume = () => {
                                     placeholderColor={Color.grey}
                                     viewWidth={0.84}
                                     viewHeight={0.2}
-                                    inputHeight={windowHeight*0.195}
+                                    inputHeight={windowHeight * 0.195}
                                     marginTop={moderateScale(10, 0.3)}
                                     style={styles.text_input}
                                     backgroundColor={Color.lightGrey}
@@ -549,7 +565,13 @@ const EditResume = () => {
                         }
                     </View>
                     <CustomButton
-                        text={'confirm'}
+                        text={loading ?
+                            <ActivityIndicator
+                                size="small"
+                                style={styles.indicatorStyle}
+                                color={Color.darkBlue}
+                            />
+                            : 'confirm'}
                         textColor={Color.darkBlue}
                         onPress={() => {
                             console.log("first", skills);
