@@ -224,6 +224,7 @@ const EditResume = () => {
                                     placeholderColor={Color.grey}
                                     viewWidth={0.84}
                                     viewHeight={0.2}
+                                    inputHeight={windowHeight*0.195}
                                     marginTop={moderateScale(10, 0.3)}
                                     style={styles.text_input}
                                     backgroundColor={Color.lightGrey}

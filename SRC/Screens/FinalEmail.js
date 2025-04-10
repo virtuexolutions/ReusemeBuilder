@@ -20,7 +20,7 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 
-const FinalCoverLetter = props => {
+const FinalEmail = props => {
   const data = props?.route?.params?.data;
   return (
     <ImageBackground
@@ -29,23 +29,11 @@ const FinalCoverLetter = props => {
       <Header title={'Edit cover letter'} hideUser={true} showBack={true} />
       <View style={styles.main_view}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ImageBackground
-            style={styles.letter_bg}
-            source={require('../Assets/Images/coverletterbg.png')}>
+          <View style={styles.letter_bg}>
             <View style={styles.titlecontainer}>
-              <CustomText style={styles.title}>pamela miller</CustomText>
+              {/* <CustomText style={styles.title}>pamela miller</CustomText> */}
               <CustomText isBold style={styles.title2}>
-                your professional title
-              </CustomText>
-            </View>
-            <View style={styles.per_data}>
-              <CustomText style={styles.per_text}>your address</CustomText>
-              <CustomText style={styles.per_text}>
-                your city ,state ,zip code
-              </CustomText>
-              <CustomText style={styles.per_text}>your phone number</CustomText>
-              <CustomText style={styles.per_text}>
-                your email address
+             {data?.subject}
               </CustomText>
             </View>
 
@@ -53,62 +41,14 @@ const FinalCoverLetter = props => {
               style={[
                 styles.per_text,
                 {
-                  paddingVertical: moderateScale(4, 0.6),
+                  paddingVertical: moderateScale(10, 0.6),
                   // backgroundColor :'red'
                 },
               ]}>
-              {data?.date}
-            </CustomText>
-            <View style={styles.per_data}>
-              <CustomText style={styles.per_text}>
-                {data?.managerName}
-              </CustomText>
-              <CustomText style={styles.per_text}>
-                {data?.companyName}
-              </CustomText>
-              <CustomText style={styles.per_text}>
-                {data?.degreeYear}
-              </CustomText>
-              <CustomText style={styles.per_text}>
-                company city, state, zip code
-              </CustomText>
-            </View>
-            <CustomText
-              style={[
-                styles.per_text,
-                {
-                  paddingVertical: moderateScale(7, 0.6),
-                  //   marginHorizontal : moderateScale(10,.6),
-                },
-              ]}>
-              subject :{' '}
-              <CustomText
-                style={[
-                  styles.per_text,
-                  {
-                    paddingVertical: moderateScale(10, 0.6),
-                    marginLeft: moderateScale(5, 0.6),
-                  },
-                ]}>
-                {data?.subject}
-              </CustomText>
-            </CustomText>
-            <CustomText
-              style={[
-                styles.per_text,
-                {
-                  paddingVertical: moderateScale(5, 0.6),
-                },
-              ]}>
-              Drear Mr./Ms. {''}
-              <CustomText style={styles.per_text}>
-                {data?.managerName}
-              </CustomText>
+              {`  Dear ${data?.managerName}`}
             </CustomText>
 
-            <CustomText style={styles.per_text}>
-              {data?.details.replace(/\. /g, '.\n\n')}
-            </CustomText>
+            <CustomText style={styles.per_text}>{data?.details.replace(/\. /g, ".\n\n") }</CustomText>
             <View
               style={[
                 styles.per_data,
@@ -116,21 +56,33 @@ const FinalCoverLetter = props => {
                   paddingVertical: moderateScale(10, 0.6),
                 },
               ]}>
-              <CustomText style={styles.per_text}>regard ,</CustomText>
-              <CustomText style={styles.per_text}>{data?.name}</CustomText>
-              <CustomText style={styles.per_text}>{data?.phone}</CustomText>
-              <CustomText style={styles.per_text}>{data?.email}</CustomText>
-              <CustomText style={styles.per_text}>
-                Linkdin.com/username
+              <CustomText
+                style={[
+                  styles.per_text,
+                  {
+                    paddingTop: moderateScale(10, 0.6),
+                  },
+                ]}>
+                kind regard ,
               </CustomText>
+              <CustomText
+                style={[
+                  styles.per_text,
+                  {
+                    paddingTop: moderateScale(20, 0.6),
+                  },
+                ]}>
+                {data?.name}
+              </CustomText>
+              <CustomText style={styles.per_text}>{data?.phone}</CustomText>
             </View>
-          </ImageBackground>
+          </View>
 
           <CustomButton
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
-              navigationService.navigate('Home');
+              navigationService.navigate('Home')
               // onPressConfirm();
             }}
             width={windowWidth * 0.8}
@@ -145,7 +97,7 @@ const FinalCoverLetter = props => {
   );
 };
 
-export default FinalCoverLetter;
+export default FinalEmail;
 
 const styles = StyleSheet.create({
   bg_container: {
@@ -153,20 +105,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: windowHeight,
     justifyContent: 'center',
-    // alignItems: 'left',
-    // paddingHorizontal: moderateScale(10, 0.6),
   },
   main_view: {
     width: windowWidth * 0.9,
     height: windowHeight * 0.9,
     paddingVertical: moderateScale(15, 0.6),
+    alignItems: 'center',
   },
   letter_bg: {
     width: windowWidth * 0.9,
-    height: windowHeight * 0.77,
+    height: windowHeight * 0.6,
     paddingHorizontal: moderateScale(20, 0.6),
-    // paddingVertical: moderateScale(15, 0.6),
-    // backgroundColor: 'red',
+    backgroundColor: Color.white,
+    marginVertical: moderateScale(30, 0.6),
   },
 
   titlecontainer: {
@@ -181,10 +132,13 @@ const styles = StyleSheet.create({
     letterSpacing: 3,
   },
   title2: {
-    fontSize: moderateScale(10, 0.6),
-    textTransform: 'uppercase',
+    fontSize: moderateScale(12, 0.6),
+    textTransform: 'capitalize',
     width: '100%',
     textAlign: 'center',
+    // color: Color.darkGray,
+    // paddingVertical: moderateScale(30, 0.6),
+    paddingTop: moderateScale(30, 0.6),
   },
   per_data: {
     alignItems: 'flex-start',
@@ -194,5 +148,6 @@ const styles = StyleSheet.create({
   per_text: {
     textTransform: 'capitalize',
     fontSize: moderateScale(11, 0.6),
+    // color: Color.darkGray,
   },
 });

@@ -22,7 +22,6 @@ import navigationService from '../navigationService';
 
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
-  console.log('🚀 ~ EditCoverLetter ~ type:', type);
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [summary, setSummary] = useState(true);
   const [email, setEmail] = useState('');
@@ -71,6 +70,17 @@ const EditCoverLetter = props => {
       subject: subject,
       date: date,
     };
+    const body = {
+      name: name,
+      phone: phone,
+      summary: summary,
+      datae: date,
+      details: details,
+      managerName: managerName,
+      subject: subject,
+    };
+    type == 'email' ?
+    navigationService.navigate('FinalEmail', {data: body}) :
     navigationService.navigate('FinalCoverLetter', {data: data});
   };
 
@@ -78,7 +88,11 @@ const EditCoverLetter = props => {
     <ImageBackground
       style={styles.bg_container}
       source={require('../Assets/Images/bg.png')}>
-      <Header title={'Edit Resume'} hideUser={true} showBack={true} />
+      <Header
+        title={type == 'email' ? 'edit email' : 'Edit cover letter'}
+        hideUser={true}
+        showBack={true}
+      />
       <View style={styles.main_view}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {type == 'email' ? (
@@ -90,7 +104,7 @@ const EditCoverLetter = props => {
                     height:
                       personalDataTab === true
                         ? windowHeight * 0.11
-                        : windowHeight * 0.7,
+                        : windowHeight * 0.3,
                   },
                 ]}>
                 <View
@@ -132,7 +146,7 @@ const EditCoverLetter = props => {
                       setText={setName}
                       value={name}
                     />
-                    <CustomText isBold style={styles.text}>
+                    {/* <CustomText isBold style={styles.text}>
                       Email :
                     </CustomText>
                     <TextInputWithTitle
@@ -218,7 +232,7 @@ const EditCoverLetter = props => {
                           value={year}
                         />
                       </View>
-                    </View>
+                    </View> */}
                     <CustomText isBold style={styles.text}>
                       Phone Number :
                     </CustomText>
@@ -244,7 +258,7 @@ const EditCoverLetter = props => {
                     height:
                       summary === true
                         ? windowHeight * 0.11
-                        : windowHeight * 0.36,
+                        : windowHeight * 0.31,
                     marginTop: moderateScale(15, 0.6),
                   },
                 ]}>
@@ -264,8 +278,7 @@ const EditCoverLetter = props => {
                         {
                           color: Color.veryLightGray,
                           width: windowWidth * 0.8,
-                    marginTop: moderateScale(15, 0.6),
-
+                          marginTop: moderateScale(15, 0.6),
                         },
                       ]}>
                       Enter a brief description of your professional background
@@ -291,7 +304,7 @@ const EditCoverLetter = props => {
                       placeholder={'Details'}
                       placeholderColor={Color.grey}
                       viewWidth={0.84}
-                      // inputHeight={windowHeight * 0.07}
+                      inputHeight={windowHeight * 0.145}
                       viewHeight={0.15}
                       marginTop={moderateScale(10, 0.3)}
                       style={styles.text_input}
@@ -302,82 +315,97 @@ const EditCoverLetter = props => {
                     />
                   </>
                 )}
+              </View>
+              <View
+                style={[
+                  styles.btn_view,
+                  {
+                    height:
+                      Certificate === true
+                        ? windowHeight * 0.09
+                        : windowHeight * 0.4,
+                    marginTop: moderateScale(15, 0.6),
+                    alignSelf: 'center',
+                  },
+                ]}>
                 <View
-                  style={[
-                    styles.btn_view,
-                    {
-                      height:
-                        Certificate === true
-                          ? windowHeight * 0.09
-                          : windowHeight * 0.3,
-                      marginTop: moderateScale(25, 0.6),
-                      // marginRight: moderateScale(15,.6)
-                    },
-                  ]}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                    }}>
-                    <View>
-                      <CustomText isBold style={styles.btn_txt}>
-                        subject
-                      </CustomText>
-                      <CustomText
-                        style={[
-                          styles.btn_sub_txt,
-                          {
-                            color: Color.veryLightGray,
-                            width: windowWidth * 0.8,
-                          },
-                        ]}>
-                        Enter your subject for cover Letter
-                      </CustomText>
-                    </View>
-                    <Icon
-                      name="down"
-                      onPress={() => setCertificate(!Certificate)}
-                      as={AntDesign}
-                      color={Color.black}
-                      size={moderateScale(18, 0.6)}
-                    />
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                  }}>
+                  <View>
+                    <CustomText isBold style={styles.btn_txt}>
+                      subject
+                    </CustomText>
+                    <CustomText
+                      style={[
+                        styles.btn_sub_txt,
+                        {
+                          color: Color.veryLightGray,
+                          width: windowWidth * 0.8,
+                        },
+                      ]}>
+                      Enter your subject for cover Letter
+                    </CustomText>
                   </View>
-                  {Certificate === false && (
-                    <>
-                      <CustomText isBold style={styles.text}>
-                        subject :
-                      </CustomText>
-                      <TextInputWithTitle
-                        iconSize={moderateScale(20, 0.3)}
-                        color={Color.blue}
-                        placeholder={'Enter subject '}
-                        placeholderColor={Color.grey}
-                        viewWidth={0.84}
-                        marginTop={moderateScale(10, 0.3)}
-                        style={styles.text_input}
-                        backgroundColor={Color.lightGrey}
-                        setText={setSubject}
-                        value={subject}
-                      />
-                      <CustomText isBold style={styles.text}>
-                        date :
-                      </CustomText>
-                      <TextInputWithTitle
-                        iconSize={moderateScale(20, 0.3)}
-                        color={Color.blue}
-                        placeholder={'Enter date '}
-                        placeholderColor={Color.grey}
-                        viewWidth={0.84}
-                        marginTop={moderateScale(10, 0.3)}
-                        style={styles.text_input}
-                        backgroundColor={Color.lightGrey}
-                        setText={setDate}
-                        value={date}
-                      />
-                    </>
-                  )}
+                  <Icon
+                    name="down"
+                    onPress={() => setCertificate(!Certificate)}
+                    as={AntDesign}
+                    color={Color.black}
+                    size={moderateScale(18, 0.6)}
+                  />
                 </View>
+                {Certificate === false && (
+                  <>
+                    <CustomText isBold style={styles.text}>
+                      subject :
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'Enter subject '}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setSubject}
+                      value={subject}
+                    />
+                    <CustomText isBold style={styles.text}>
+                      date :
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'Enter date '}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setDate}
+                      value={date}
+                    />
+                    <CustomText isBold style={styles.text}>
+                      manager name :
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'Enter manager name '}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setManagerName}
+                      value={managerName}
+                    />
+                  </>
+                )}
               </View>
             </>
           ) : (
@@ -397,6 +425,7 @@ const EditCoverLetter = props => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'flex-start',
+                    // alignItems :'center'
                   }}>
                   <View>
                     <CustomText isBold style={styles.btn_txt}>
@@ -872,7 +901,7 @@ const EditCoverLetter = props => {
               </View>
             </>
           )}
-          {/* <CustomButton
+          <CustomButton
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
@@ -884,7 +913,7 @@ const EditCoverLetter = props => {
             borderRadius={moderateScale(20, 0.3)}
             bgColor={Color.white}
             marginTop={moderateScale(20, 0.6)}
-          /> */}
+          />
         </ScrollView>
       </View>
     </ImageBackground>
@@ -899,14 +928,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: windowHeight,
     justifyContent: 'center',
-    // alignItems: 'left',
-    // paddingHorizontal: moderateScale(10, 0.6),
   },
   main_view: {
     width: windowWidth,
     height: windowHeight * 0.9,
     paddingHorizontal: moderateScale(10, 0.6),
     paddingVertical: moderateScale(15, 0.6),
+    alignItems: 'center',
   },
   btn_view: {
     width: windowWidth * 0.9,

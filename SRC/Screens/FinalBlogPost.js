@@ -50,8 +50,9 @@ const FinalBlogPost = props => {
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
-              console.log('first', skills);
-              onPressConfirm();
+              navigationService.navigate('Home')
+              // console.log('first', skills);
+              // onPressConfirm();
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}

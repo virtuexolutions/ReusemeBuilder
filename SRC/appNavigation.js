@@ -23,6 +23,7 @@ import FinalCoverLetter from './Screens/FinalCoverLetter';
 import EditCoverLetter from './Screens/EditCoverLetter';
 import EditBlogPost from './Screens/EditBlogPost';
 import FinalBlogPost from './Screens/FinalBlogPost';
+import FinalEmail from './Screens/FinalEmail';
 
 enableScreens();
 const AppNavigator = () => {
@@ -59,6 +60,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="VerifyEmail" component={VerifyEmail} />
           <RootNav.Screen name="FinalBlogPost" component={FinalBlogPost} />
           <RootNav.Screen name="EditBlogPost" component={EditBlogPost} />
+          <RootNav.Screen name="FinalEmail" component={FinalEmail} />
 
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />

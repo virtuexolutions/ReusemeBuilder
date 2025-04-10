@@ -84,7 +84,7 @@ const EditBlogPost = () => {
     <ImageBackground
       style={styles.bg_container}
       source={require('../Assets/Images/bg.png')}>
-      <Header title={'Edit Resume'} hideUser={true} showBack={true} />
+      <Header title={'Edit blog'} hideUser={true} showBack={true} />
       <View style={styles.main_view}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* <View

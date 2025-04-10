@@ -216,6 +216,8 @@ const TextInputWithTitle = props => {
                   paddingTop: moderateScale(10, 0.5),
                   textAlignVertical: 'top',
                   marginLeft: moderateScale(15, 0.3),
+                  height :  props.inputHeight ,
+                  // backgroundColor :'red'
                 },
                 props.color && {
                   color: Color.black,

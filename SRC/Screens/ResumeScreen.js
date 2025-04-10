@@ -9,6 +9,8 @@ import navigationService from '../navigationService';
 
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
+  const category = props?.route?.params?.type;
+  console.log('🚀 ~ category:', category);
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -37,15 +39,14 @@ const ResumeScreen = props => {
           text={'Edit this Resume'}
           textColor={Color.darkBlue}
           onPress={() => {
-            console.log(
-              'first =-============================================= idhar hu',
-            );
-            // navigationService.navigate('EditResume'  ,{data :  data });
-            navigationService.navigate('EditCoverLetter', {
-              data: data,
-              type: 'email',
-            });
-            // navigationService.navigate('EditCoverLetter'  ,{data :  data });
+            category == 'resume'
+              ? navigationService.navigate('EditResume', {data: data})
+              : category == 'career'
+              ? navigationService.navigate('EditBlogPost', {data: data})
+              : navigationService.navigate('EditCoverLetter', {
+                  data: data,
+                  type: 'email',
+                });
           }}
           width={windowWidth * 0.65}
           height={windowHeight * 0.075}

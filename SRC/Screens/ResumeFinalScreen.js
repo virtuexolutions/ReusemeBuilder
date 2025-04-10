@@ -6,6 +6,7 @@ import { moderateScale } from 'react-native-size-matters'
 import Color from '../Assets/Utilities/Color'
 import CustomText from '../Components/CustomText'
 import CustomButton from '../Components/CustomButton'
+import navigationService from '../navigationService'
 
 const ResumeFinalScreen = (props) => {
     const data = props?.route?.params?.data;
@@ -128,6 +129,7 @@ const ResumeFinalScreen = (props) => {
                 text={'Print'}
                 textColor={Color.white}
                 onPress={() => {
+                    navigationService.navigate('Home')
                 }} width={windowWidth * 0.7}
                 height={windowHeight * 0.060}
                 borderRadius={moderateScale(20, 0.3)}

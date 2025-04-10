@@ -39,7 +39,7 @@ const Home = () => {
     {
       id: 3,
       text: 'cover',
-      subtext: 'latter',
+      subtext: 'letter',
     },
     {
       id: 4,
@@ -231,6 +231,7 @@ const Home = () => {
                 onPress={() =>
                   navigationService.navigate('ResumeScreen', {
                     data: item?.image,
+                    type :selectedCategoty?.text
                   })
                 }
                 style={styles.card}>
