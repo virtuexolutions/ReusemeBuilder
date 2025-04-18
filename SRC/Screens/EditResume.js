@@ -28,6 +28,7 @@ const EditResume = () => {
     const [details, setDetails] = useState("")
     const [skillVisible, setSkillVisible] = useState(true)
     const [skills, setSkill] = useState([])
+    console.log("🚀 ~ EditResume ~ skills:", skills)
     const [skillsVal, setSkillVal] = useState([])
     const [phone, setphone] = useState('')
     const [education, seteducation] = useState(true)
@@ -70,7 +71,7 @@ const EditResume = () => {
             DateofEnding: DateofEnding,
             summaryDetails: summaryDetails,
         }
-        navigationService.navigate('ResumeFinalScreen', { data: data, fromHome: true })
+        navigationService.navigate('ResumeFinalScreen', { data: data, fromHome: false })
         // console.log("🚀 ~ onPressConfirm ~ data:", data)
         // const url = `auth/resumes`
         // setLoading(true)

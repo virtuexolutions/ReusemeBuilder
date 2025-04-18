@@ -1,10 +1,10 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import { windowHeight, windowWidth } from '../Utillity/utils';
 import Header from '../Components/Header';
 import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
-import {moderateScale} from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import navigationService from '../navigationService';
 
 const ResumeScreen = props => {
@@ -36,14 +36,14 @@ const ResumeScreen = props => {
           />
         </View>
         <CustomButton
-          text={'Edit this Resume'}
+          text={'Edit'}
           textColor={Color.darkBlue}
           onPress={() => {
             category == 'resume'
-              ? navigationService.navigate('EditResume', {data: data})
+              ? navigationService.navigate('EditResume', { data: data })
               : category == 'career'
-              ? navigationService.navigate('EditBlogPost', {data: data})
-              : navigationService.navigate('EditCoverLetter', {
+                ? navigationService.navigate('EditBlogPost', { data: data })
+                : category === 'survay' ? navigationService.navigate('SurvaryForm') : navigationService.navigate('EditCoverLetter', {
                   data: data,
                   type: 'email',
                 });
@@ -52,6 +52,7 @@ const ResumeScreen = props => {
           height={windowHeight * 0.075}
           borderRadius={moderateScale(20, 0.3)}
           bgColor={Color.white}
+          marginTop={moderateScale(20, 0.6)}
         />
       </View>
     </ImageBackground>

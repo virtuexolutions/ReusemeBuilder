@@ -39,6 +39,7 @@ const Home = () => {
     text: 'resume',
     subtext: 'tempaletes',
   });
+  console.log("🚀 ~ Home ~ selectedCategoty:", selectedCategoty)
   const category = [
     {
       id: 1,
@@ -59,6 +60,11 @@ const Home = () => {
       id: 4,
       text: 'career',
       subtext: 'blog',
+    },
+    {
+      id: 5,
+      text: 'survay',
+      subtext: 'forms',
     },
   ];
   const resumeData = [
@@ -141,7 +147,15 @@ const Home = () => {
       image: require('../Assets/Images/email.jpeg'),
     },
   ];
-
+  const survayForm = [
+    {
+      id: 1,
+      heading: 'Survey Form',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/form_image.png'),
+    },
+  ]
 
   return (
     <ImageBackground
@@ -336,18 +350,17 @@ const Home = () => {
               showsVerticalScrollIndicator={false}
               keyExtractor={item => item.id}
               data={
-                selectedCategoty?.text == 'resume'
-                  ? resumeData
-                  : selectedCategoty?.text == 'cover'
-                    ? coverletterData
-                    : selectedCategoty?.text == 'career'
-                      ? careerBlogdata
-                      : cvdata
+                selectedCategoty?.text === 'resume' ? resumeData :
+                  selectedCategoty?.text === 'cover' ? coverletterData :
+                    selectedCategoty?.text === 'career' ? careerBlogdata :
+                      selectedCategoty?.text === 'survay' ? survayForm :
+                        cvdata
               }
               ListFooterComponent={() => {
                 return <View style={{ height: windowHeight * 0.2 }} />;
               }}
               renderItem={({ item, index }) => {
+                console.log("🚀 ~ Home ~ item:", item)
                 return (
 
                   <TouchableOpacity

@@ -60,7 +60,6 @@ const EditCoverLetter = props => {
     const data = {
       name: name,
       email: email,
-      data: date,
       month: month,
       summary: summary,
       address: address,

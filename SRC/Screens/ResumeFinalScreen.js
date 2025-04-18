@@ -132,7 +132,45 @@ const ResumeFinalScreen = (props) => {
                         marginTop: moderateScale(20, 0.6),
                         width: windowWidth * 0.5,
                     }]}>Skills</CustomText>
-                    {JSON.parse(data?.skills || '[]')?.map((item, index) => {
+                    {(typeof data?.skills === 'string' ? JSON.parse(data?.skills) : data?.skills)?.map((item, index) => {
+                        console.log("🚀 ~ { ~ item:", item)
+                        return (
+                            <CustomText
+                                key={index}
+                                style={[
+                                    styles.description,
+                                    {
+                                        fontSize: moderateScale(12, 0.6),
+                                        width: windowWidth * 0.5,
+                                    },
+                                ]}
+                            >
+                                {item}
+                            </CustomText>
+                        )
+                    })}
+                    {/* {(JSON.parse(data?.skills) || data?.skills || [])?.map((item) => {
+                        return (
+                            <CustomText
+                                key={index}
+                                style={[
+                                    styles.description,
+                                    {
+                                        fontSize: moderateScale(12, 0.6),
+                                        width: windowWidth * 0.5,
+                                    },
+                                ]}
+                            >
+                                {item}
+                            </CustomText>
+                        )
+                    })} */}
+                    {/* {data?.skills?.map((item) => {
+                        return (
+                         
+                        );
+                    })} */}
+                    {/* {JSON.parse(data?.skills || '[]')?.map((item, index) => {
                         return (
                             <CustomText
                                 key={index}
@@ -147,8 +185,7 @@ const ResumeFinalScreen = (props) => {
                                 {item}
                             </CustomText>
                         );
-                    })}
-
+                    })} */}
                     <View style={{
                         backgroundColor: '#741b47',
                         height: moderateScale(2, 0.6),

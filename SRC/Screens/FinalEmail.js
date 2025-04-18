@@ -109,9 +109,8 @@ const FinalEmail = props => {
                 /> : fromHome ? 'Go Back' : 'Save'}
             textColor={Color.darkBlue}
             onPress={() => {
-              // navigationService.navigate('Home')
-              // onPressConfirm();
-              saveEmailData()
+              fromHome ? navigationService.navigate('Home') :
+                saveEmailData()
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}
