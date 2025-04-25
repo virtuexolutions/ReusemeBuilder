@@ -15,14 +15,18 @@ import CustomText from '../Components/CustomText';
 import { moderateScale } from 'react-native-size-matters';
 import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import { useSelector } from 'react-redux';
+import CustomImage from '../Components/CustomImage';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import { object } from 'yup';
 
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
+  const tamplateType = props?.route?.params?.tamplateType;
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [summary, setSummary] = useState(true);
   const [email, setEmail] = useState('');
@@ -46,15 +50,17 @@ const EditCoverLetter = props => {
   const [companyName, setCompanyName] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
   const [subject, setSubject] = useState('');
-  const [CertificatePlaceName, setCertificatPlaceName] = useState('');
-  const [CertificatYear, setCertificatYear] = useState('');
+  const [managerEmail, setManagerEmail] = useState('');
+  const [startDate, setJobTitle] = useState('');
   const [positonName, setpositonName] = useState('');
   const [experiencePlaceName, setexperiencePlaceName] = useState('');
   const [DateofJoining, setDateofJoining] = useState('');
   const [DateofEnding, setDateofEnding] = useState('');
   const [companyCity, setCompanyCity] = useState('');
   const [summaryDetails, setsummaryDetails] = useState('');
-
+  const [logoImageModal, setLogoImageModal] = useState(false)
+  const [image, setImage] = useState({})
+  console.log("🚀 ~ image:", image)
   const userData = useSelector(state => state.commonReducer.userData);
   const onPressConfirm = () => {
     const data = {
@@ -99,56 +105,187 @@ const EditCoverLetter = props => {
         <ScrollView showsVerticalScrollIndicator={false}>
           {type == 'email' ? (
             <>
-              <View
-                style={[
-                  styles.btn_view,
-                  {
-                    height:
-                      personalDataTab === true
-                        ? windowHeight * 0.11
-                        : windowHeight * 0.3,
-                  },
-                ]}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                  }}>
+              {tamplateType === 'companyEmail' ? (
+                <>
                   <View>
-                    <CustomText isBold style={styles.btn_txt}>
-                      Personal Data
+                    <CustomText isBold style={[styles.text, {
+                      color: Color.white
+                    }]}>
+                      company Logo :
                     </CustomText>
-                    <CustomText style={styles.btn_sub_txt}>
-                      Complete your personal Data make your resume even better
-                    </CustomText>
+                    <TouchableOpacity
+                      onPress={() => setLogoImageModal(true)}
+                      style={{
+                        width: windowWidth * 0.3,
+                        height: windowWidth * 0.3,
+                        backgroundColor: Color.lightGrey,
+                        borderRadius: moderateScale(10, 0.6),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <CustomImage
+                        source={Object.keys(image).length > 0 ? { uri: image.uri } : require('../Assets/Images/no_image.jpg')}
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </TouchableOpacity>
                   </View>
-                  <Icon
-                    name="down"
-                    onPress={() => setPersonalDataTab(!personalDataTab)}
-                    as={AntDesign}
-                    color={Color.black}
-                    size={moderateScale(18, 0.6)}
+                  <CustomText isBold style={[styles.text, {
+                    color: Color.white
+                  }]}>
+                    company Name :
+                  </CustomText>
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Enter your company name '}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setCompanyName}
+                    value={companyName}
                   />
-                </View>
-                {personalDataTab === false && (
-                  <>
-                    <CustomText isBold style={styles.text}>
-                      Name :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter your full name '}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setName}
-                      value={name}
-                    />
-                    {/* <CustomText isBold style={styles.text}>
+                  <CustomText isBold style={[styles.text, {
+                    color: Color.white
+                  }]}>
+                    company Website :
+                  </CustomText>
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Enter your company website url '}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setCompanyAddress}
+                    value={companyAddress}
+                  />
+                  <CustomText isBold style={[styles.text, {
+                    color: Color.white
+                  }]}>
+                    Manager Name
+                  </CustomText>
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Enter your Manager Name '}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setManagerName}
+                    value={managerName}
+                  />
+                  <CustomText isBold style={[styles.text, {
+                    color: Color.white
+                  }]}>
+                    Manager Email
+                  </CustomText>
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Enter your Manager Email '}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setManagerEmail}
+                    value={managerEmail}
+                  />
+                  <CustomText isBold style={[styles.text, {
+                    color: Color.white
+                  }]}>
+                    Job title
+                  </CustomText>
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Enter your   Job title'}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setpositonName}
+                    value={positonName}
+                  />
+
+                  <CustomText isBold style={[styles.text, {
+                    color: Color.white
+                  }]}>
+                    Start Date
+                  </CustomText>
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Start Date '}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setDateofJoining}
+                    value={DateofJoining}
+                  />
+                </>
+              ) : (
+                <>
+                  <View
+                    style={[
+                      styles.btn_view,
+                      {
+                        height:
+                          personalDataTab === true
+                            ? windowHeight * 0.11
+                            : windowHeight * 0.3,
+                      },
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                      }}>
+                      <View>
+                        <CustomText isBold style={styles.btn_txt}>
+                          Personal Data
+                        </CustomText>
+                        <CustomText style={styles.btn_sub_txt}>
+                          Complete your personal Data make your resume even better
+                        </CustomText>
+                      </View>
+                      <Icon
+                        name="down"
+                        onPress={() => setPersonalDataTab(!personalDataTab)}
+                        as={AntDesign}
+                        color={Color.black}
+                        size={moderateScale(18, 0.6)}
+                      />
+                    </View>
+                    {personalDataTab === false && (
+                      <>
+                        <CustomText isBold style={styles.text}>
+                          Name :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter your full name '}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setName}
+                          value={name}
+                        />
+                        {/* <CustomText isBold style={styles.text}>
                       Email :
                     </CustomText>
                     <TextInputWithTitle
@@ -235,181 +372,184 @@ const EditCoverLetter = props => {
                         />
                       </View>
                     </View> */}
-                    <CustomText isBold style={styles.text}>
-                      Phone Number :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter your Phone Number'}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setphone}
-                      value={phone}
-                    />
-                  </>
-                )}
-              </View>
-              <View
-                style={[
-                  styles.btn_view,
-                  {
-                    height:
-                      summary === true
-                        ? windowHeight * 0.11
-                        : windowHeight * 0.31,
-                    marginTop: moderateScale(15, 0.6),
-                  },
-                ]}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                  }}>
-                  <View>
-                    <CustomText isBold style={styles.btn_txt}>
-                      description
-                    </CustomText>
-                    <CustomText
-                      style={[
-                        styles.btn_sub_txt,
-                        {
-                          color: Color.veryLightGray,
-                          width: windowWidth * 0.8,
-                          marginTop: moderateScale(15, 0.6),
-                        },
-                      ]}>
-                      Enter a brief description of your professional background
-                      of your choosen specific skill.
-                    </CustomText>
+                        <CustomText isBold style={styles.text}>
+                          Phone Number :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter your Phone Number'}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setphone}
+                          value={phone}
+                        />
+                      </>
+                    )}
                   </View>
-                  <Icon
-                    name="down"
-                    onPress={() => setSummary(!summary)}
-                    as={AntDesign}
-                    color={Color.black}
-                    size={moderateScale(18, 0.6)}
-                  />
-                </View>
-                {summary === false && (
-                  <>
-                    <CustomText isBold style={styles.text}>
-                      Summary :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Details'}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      inputHeight={windowHeight * 0.145}
-                      viewHeight={0.15}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setDetails}
-                      value={details}
-                      multiline
-                    />
-                  </>
-                )}
-              </View>
-              <View
-                style={[
-                  styles.btn_view,
-                  {
-                    height:
-                      Certificate === true
-                        ? windowHeight * 0.09
-                        : windowHeight * 0.4,
-                    marginTop: moderateScale(15, 0.6),
-                    alignSelf: 'center',
-                  },
-                ]}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                  }}>
-                  <View>
-                    <CustomText isBold style={styles.btn_txt}>
-                      subject
-                    </CustomText>
-                    <CustomText
-                      style={[
-                        styles.btn_sub_txt,
-                        {
-                          color: Color.veryLightGray,
-                          width: windowWidth * 0.8,
-                        },
-                      ]}>
-                      Enter your subject for cover Letter
-                    </CustomText>
+                  <View
+                    style={[
+                      styles.btn_view,
+                      {
+                        height:
+                          summary === true
+                            ? windowHeight * 0.11
+                            : windowHeight * 0.31,
+                        marginTop: moderateScale(15, 0.6),
+                      },
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                      }}>
+                      <View>
+                        <CustomText isBold style={styles.btn_txt}>
+                          description
+                        </CustomText>
+                        <CustomText
+                          style={[
+                            styles.btn_sub_txt,
+                            {
+                              color: Color.veryLightGray,
+                              width: windowWidth * 0.8,
+                              marginTop: moderateScale(15, 0.6),
+                            },
+                          ]}>
+                          Enter a brief description of your professional background
+                          of your choosen specific skill.
+                        </CustomText>
+                      </View>
+                      <Icon
+                        name="down"
+                        onPress={() => setSummary(!summary)}
+                        as={AntDesign}
+                        color={Color.black}
+                        size={moderateScale(18, 0.6)}
+                      />
+                    </View>
+                    {summary === false && (
+                      <>
+                        <CustomText isBold style={styles.text}>
+                          Summary :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Details'}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          inputHeight={windowHeight * 0.145}
+                          viewHeight={0.15}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setDetails}
+                          value={details}
+                          multiline
+                        />
+                      </>
+                    )}
                   </View>
-                  <Icon
-                    name="down"
-                    onPress={() => setCertificate(!Certificate)}
-                    as={AntDesign}
-                    color={Color.black}
-                    size={moderateScale(18, 0.6)}
-                  />
-                </View>
-                {Certificate === false && (
-                  <>
-                    <CustomText isBold style={styles.text}>
-                      subject :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter subject '}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setSubject}
-                      value={subject}
-                    />
-                    <CustomText isBold style={styles.text}>
-                      date :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter date '}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setDate}
-                      value={date}
-                    />
-                    <CustomText isBold style={styles.text}>
-                      manager name :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter manager name '}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setManagerName}
-                      value={managerName}
-                    />
-                  </>
-                )}
-              </View>
+                  <View
+                    style={[
+                      styles.btn_view,
+                      {
+                        height:
+                          Certificate === true
+                            ? windowHeight * 0.09
+                            : windowHeight * 0.4,
+                        marginTop: moderateScale(15, 0.6),
+                        alignSelf: 'center',
+                      },
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                      }}>
+                      <View>
+                        <CustomText isBold style={styles.btn_txt}>
+                          subject
+                        </CustomText>
+                        <CustomText
+                          style={[
+                            styles.btn_sub_txt,
+                            {
+                              color: Color.veryLightGray,
+                              width: windowWidth * 0.8,
+                            },
+                          ]}>
+                          Enter your subject for cover Letter
+                        </CustomText>
+                      </View>
+                      <Icon
+                        name="down"
+                        onPress={() => setCertificate(!Certificate)}
+                        as={AntDesign}
+                        color={Color.black}
+                        size={moderateScale(18, 0.6)}
+                      />
+                    </View>
+                    {Certificate === false && (
+                      <>
+                        <CustomText isBold style={styles.text}>
+                          subject :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter subject '}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setSubject}
+                          value={subject}
+                        />
+                        <CustomText isBold style={styles.text}>
+                          date :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter date '}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setDate}
+                          value={date}
+                        />
+                        <CustomText isBold style={styles.text}>
+                          manager name :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter manager name '}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setManagerName}
+                          value={managerName}
+                        />
+                      </>
+                    )}
+                  </View>
+                </>
+              )}
             </>
+
           ) : (
             <>
               <View
@@ -907,8 +1047,8 @@ const EditCoverLetter = props => {
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
-              // console.log('first', skills);
-              onPressConfirm();
+              tamplateType === 'companyEmail' ? navigationService.navigate('EmailTamplate2') :
+                onPressConfirm();
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}
@@ -918,6 +1058,11 @@ const EditCoverLetter = props => {
           />
         </ScrollView>
       </View>
+      <ImagePickerModal
+        show={logoImageModal}
+        setShow={setLogoImageModal}
+        setFileObject={setImage}
+      />
     </ImageBackground>
   );
 };

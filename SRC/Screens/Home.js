@@ -145,7 +145,16 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email.jpeg'),
+      type: 'simpleEmail'
     },
+    {
+      id: 2,
+      heading: 'Creative',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/email_tamplate2.jpeg'),
+      type: 'companyEmail'
+    }
   ];
   const survayForm = [
     {
@@ -154,6 +163,27 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/form_image.png'),
+    },
+    {
+      id: 2,
+      heading: 'Customer Survey Form',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/customer_survey.jpeg'),
+    },
+    {
+      id: 3,
+      heading: 'Feedback form',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/feedback_form.jpeg'),
+    },
+    {
+      id: 4,
+      heading: 'Progress FeedBack Form',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/feedback_form2.jpeg'),
     },
   ]
 
@@ -367,7 +397,8 @@ const Home = () => {
                     onPress={() =>
                       navigationService.navigate('ResumeScreen', {
                         data: item?.image,
-                        type: selectedCategoty?.text
+                        type: selectedCategoty?.text,
+                        tamplateType: item?.type
                       })
                     }
                     style={styles.card}>

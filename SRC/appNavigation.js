@@ -27,6 +27,10 @@ import FinalEmail from './Screens/FinalEmail';
 import SavedTemplates from './Screens/SavedTemplates';
 import SurvaryForm from './Screens/SurvaryForm';
 import EditSurveyForm from './Screens/EditSurveyForm';
+import EmailTamplate2 from './Screens/EmailTamplate2';
+import CustomerSurveyForm from './Screens/CustomerSurveyForm';
+import FeedBackForm from './Screens/FeedBackForm';
+import ProgressFeedback from './Screens/ProgressFeedback';
 
 enableScreens();
 const AppNavigator = () => {
@@ -74,6 +78,10 @@ const AppNavigator = () => {
           <RootNav.Screen name="EditCoverLetter" component={EditCoverLetter} />
           <RootNav.Screen name="SurvaryForm" component={SurvaryForm} />
           <RootNav.Screen name="EditSurveyForm" component={EditSurveyForm} />
+          <RootNav.Screen name="EmailTamplate2" component={EmailTamplate2} />
+          <RootNav.Screen name="CustomerSurveyForm" component={CustomerSurveyForm} />
+          <RootNav.Screen name="FeedBackForm" component={FeedBackForm} />
+          <RootNav.Screen name="ProgressFeedback" component={ProgressFeedback} />
           <RootNav.Screen
             name="FinalCoverLetter"
             component={FinalCoverLetter}

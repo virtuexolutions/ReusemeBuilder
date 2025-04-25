@@ -10,7 +10,9 @@ import navigationService from '../navigationService';
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
   const category = props?.route?.params?.type;
-  console.log('🚀 ~ category:', category);
+  const tamplateType = props?.route?.params?.tamplateType;
+  console.log("🚀 ~ tamplateType:", tamplateType)
+
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -43,9 +45,10 @@ const ResumeScreen = props => {
               ? navigationService.navigate('EditResume', { data: data })
               : category == 'career'
                 ? navigationService.navigate('EditBlogPost', { data: data })
-                : category === 'survay' ? navigationService.navigate('SurvaryForm') : navigationService.navigate('EditCoverLetter', {
+                : category === 'survay' ? navigationService.navigate('EditSurvayForm') : navigationService.navigate('EditCoverLetter', {
                   data: data,
                   type: 'email',
+                  tamplateType: tamplateType
                 });
           }}
           width={windowWidth * 0.65}
