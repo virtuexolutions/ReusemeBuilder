@@ -7,26 +7,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
-import { windowHeight, windowWidth } from '../Utillity/utils';
+import React, {useState} from 'react';
+import {windowHeight, windowWidth} from '../Utillity/utils';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import { moderateScale } from 'react-native-size-matters';
-import { Icon } from 'native-base';
+import {moderateScale} from 'react-native-size-matters';
+import {Icon} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import CustomImage from '../Components/CustomImage';
 import ImagePickerModal from '../Components/ImagePickerModal';
-import { object } from 'yup';
+import {object} from 'yup';
 
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
+  console.log('🚀 ~ type:', type);
   const tamplateType = props?.route?.params?.tamplateType;
+  console.log('🚀 ~ tamplateType:', tamplateType);
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [summary, setSummary] = useState(true);
   const [email, setEmail] = useState('');
@@ -58,9 +60,9 @@ const EditCoverLetter = props => {
   const [DateofEnding, setDateofEnding] = useState('');
   const [companyCity, setCompanyCity] = useState('');
   const [summaryDetails, setsummaryDetails] = useState('');
-  const [logoImageModal, setLogoImageModal] = useState(false)
-  const [image, setImage] = useState({})
-  console.log("🚀 ~ image:", image)
+  const [logoImageModal, setLogoImageModal] = useState(false);
+  const [image, setImage] = useState({});
+  console.log('🚀 ~ image:', image);
   const userData = useSelector(state => state.commonReducer.userData);
   const onPressConfirm = () => {
     const data = {
@@ -85,11 +87,11 @@ const EditCoverLetter = props => {
       details: details,
       managerName: managerName,
       subject: subject,
-      email: userData?.email
+      email: userData?.email,
     };
-    type == 'email' ?
-      navigationService.navigate('FinalEmail', { data: body }) :
-      navigationService.navigate('FinalCoverLetter', { data: data });
+    type == 'email'
+      ? navigationService.navigate('FinalEmail', {data: body})
+      : navigationService.navigate('FinalCoverLetter', {data: data});
   };
 
   return (
@@ -108,9 +110,14 @@ const EditCoverLetter = props => {
               {tamplateType === 'companyEmail' ? (
                 <>
                   <View>
-                    <CustomText isBold style={[styles.text, {
-                      color: Color.white
-                    }]}>
+                    <CustomText
+                      isBold
+                      style={[
+                        styles.text,
+                        {
+                          color: Color.white,
+                        },
+                      ]}>
                       company Logo :
                     </CustomText>
                     <TouchableOpacity
@@ -122,17 +129,25 @@ const EditCoverLetter = props => {
                         borderRadius: moderateScale(10, 0.6),
                         justifyContent: 'center',
                         alignItems: 'center',
-                      }}
-                    >
+                      }}>
                       <CustomImage
-                        source={Object.keys(image).length > 0 ? { uri: image.uri } : require('../Assets/Images/no_image.jpg')}
-                        style={{ width: '100%', height: '100%' }}
+                        source={
+                          Object.keys(image).length > 0
+                            ? {uri: image.uri}
+                            : require('../Assets/Images/no_image.jpg')
+                        }
+                        style={{width: '100%', height: '100%'}}
                       />
                     </TouchableOpacity>
                   </View>
-                  <CustomText isBold style={[styles.text, {
-                    color: Color.white
-                  }]}>
+                  <CustomText
+                    isBold
+                    style={[
+                      styles.text,
+                      {
+                        color: Color.white,
+                      },
+                    ]}>
                     company Name :
                   </CustomText>
                   <TextInputWithTitle
@@ -147,9 +162,14 @@ const EditCoverLetter = props => {
                     setText={setCompanyName}
                     value={companyName}
                   />
-                  <CustomText isBold style={[styles.text, {
-                    color: Color.white
-                  }]}>
+                  <CustomText
+                    isBold
+                    style={[
+                      styles.text,
+                      {
+                        color: Color.white,
+                      },
+                    ]}>
                     company Website :
                   </CustomText>
                   <TextInputWithTitle
@@ -164,9 +184,14 @@ const EditCoverLetter = props => {
                     setText={setCompanyAddress}
                     value={companyAddress}
                   />
-                  <CustomText isBold style={[styles.text, {
-                    color: Color.white
-                  }]}>
+                  <CustomText
+                    isBold
+                    style={[
+                      styles.text,
+                      {
+                        color: Color.white,
+                      },
+                    ]}>
                     Manager Name
                   </CustomText>
                   <TextInputWithTitle
@@ -181,9 +206,14 @@ const EditCoverLetter = props => {
                     setText={setManagerName}
                     value={managerName}
                   />
-                  <CustomText isBold style={[styles.text, {
-                    color: Color.white
-                  }]}>
+                  <CustomText
+                    isBold
+                    style={[
+                      styles.text,
+                      {
+                        color: Color.white,
+                      },
+                    ]}>
                     Manager Email
                   </CustomText>
                   <TextInputWithTitle
@@ -198,9 +228,14 @@ const EditCoverLetter = props => {
                     setText={setManagerEmail}
                     value={managerEmail}
                   />
-                  <CustomText isBold style={[styles.text, {
-                    color: Color.white
-                  }]}>
+                  <CustomText
+                    isBold
+                    style={[
+                      styles.text,
+                      {
+                        color: Color.white,
+                      },
+                    ]}>
                     Job title
                   </CustomText>
                   <TextInputWithTitle
@@ -216,9 +251,14 @@ const EditCoverLetter = props => {
                     value={positonName}
                   />
 
-                  <CustomText isBold style={[styles.text, {
-                    color: Color.white
-                  }]}>
+                  <CustomText
+                    isBold
+                    style={[
+                      styles.text,
+                      {
+                        color: Color.white,
+                      },
+                    ]}>
                     Start Date
                   </CustomText>
                   <TextInputWithTitle
@@ -243,7 +283,7 @@ const EditCoverLetter = props => {
                         height:
                           personalDataTab === true
                             ? windowHeight * 0.11
-                            : windowHeight * 0.3,
+                            : windowHeight * 0.56,
                       },
                     ]}>
                     <View
@@ -257,7 +297,8 @@ const EditCoverLetter = props => {
                           Personal Data
                         </CustomText>
                         <CustomText style={styles.btn_sub_txt}>
-                          Complete your personal Data make your resume even better
+                          Complete your personal Data make your resume even
+                          better
                         </CustomText>
                       </View>
                       <Icon
@@ -285,37 +326,37 @@ const EditCoverLetter = props => {
                           setText={setName}
                           value={name}
                         />
+                        <CustomText isBold style={styles.text}>
+                          Email :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter your email '}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setEmail}
+                          value={email}
+                        />
+                        <CustomText isBold style={styles.text}>
+                          Address :
+                        </CustomText>
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Enter your Address '}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setAddress}
+                          value={address}
+                        />
                         {/* <CustomText isBold style={styles.text}>
-                      Email :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter your email '}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setEmail}
-                      value={email}
-                    />
-                    <CustomText isBold style={styles.text}>
-                      Address :
-                    </CustomText>
-                    <TextInputWithTitle
-                      iconSize={moderateScale(20, 0.3)}
-                      color={Color.blue}
-                      placeholder={'Enter your Address '}
-                      placeholderColor={Color.grey}
-                      viewWidth={0.84}
-                      marginTop={moderateScale(10, 0.3)}
-                      style={styles.text_input}
-                      backgroundColor={Color.lightGrey}
-                      setText={setAddress}
-                      value={address}
-                    />
-                    <CustomText isBold style={styles.text}>
                       {' '}
                       city :
                     </CustomText>
@@ -397,7 +438,7 @@ const EditCoverLetter = props => {
                         height:
                           summary === true
                             ? windowHeight * 0.11
-                            : windowHeight * 0.31,
+                            : windowHeight * 0.33,
                         marginTop: moderateScale(15, 0.6),
                       },
                     ]}>
@@ -420,8 +461,8 @@ const EditCoverLetter = props => {
                               marginTop: moderateScale(15, 0.6),
                             },
                           ]}>
-                          Enter a brief description of your professional background
-                          of your choosen specific skill.
+                          Enter a brief description of your professional
+                          background of your choosen specific skill.
                         </CustomText>
                       </View>
                       <Icon
@@ -462,7 +503,7 @@ const EditCoverLetter = props => {
                         height:
                           Certificate === true
                             ? windowHeight * 0.09
-                            : windowHeight * 0.4,
+                            : windowHeight * 0.43,
                         marginTop: moderateScale(15, 0.6),
                         alignSelf: 'center',
                       },
@@ -549,7 +590,6 @@ const EditCoverLetter = props => {
                 </>
               )}
             </>
-
           ) : (
             <>
               <View
@@ -1047,8 +1087,20 @@ const EditCoverLetter = props => {
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
-              tamplateType === 'companyEmail' ? navigationService.navigate('EmailTamplate2') :
-                onPressConfirm();
+              tamplateType === 'companyEmail' || 'attendencepolicy'
+                ? navigationService.navigate('EditEmailTamplate2', {
+                    data: {
+                      name: name,
+                      email: email,
+                      address: address,
+                      contact: phone,
+                      description: details,
+                      subject: subject,
+                      date: date,
+                      managerName: managerName,
+                    },
+                  })
+                : onPressConfirm();
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}

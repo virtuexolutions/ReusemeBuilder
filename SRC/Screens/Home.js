@@ -172,6 +172,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email-temp.jpeg'),
+      tamplateType : 'attendencepolicy'
     },
   ];
   const survayForm = [
@@ -427,7 +428,7 @@ const Home = () => {
                   return <View style={{ height: windowHeight * 0.2 }} />;
                 }}
                 renderItem={({ item, index }) => {
-                  console.log("🚀 ~ Home ~ item:", item)
+                  console.log('================= >>> > >>>' ,item)
                   return (
                     <TouchableOpacity
                       onPress={() =>
@@ -435,6 +436,7 @@ const Home = () => {
                           detailData: item,
                           data: item?.image,
                           type: selectedCategoty?.text,
+                          tamplateType: item?.tamplateType
                         })
                       }
                       style={styles.card}>
@@ -445,6 +447,7 @@ const Home = () => {
                               detailData: item,
                               data: item?.image,
                               type: selectedCategoty?.text,
+                              tamplateType: item?.tamplateType
                             })
                           }
                           source={item?.image}

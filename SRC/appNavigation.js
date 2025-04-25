@@ -32,6 +32,7 @@ import FeedBackForm from './Screens/FeedBackForm';
 import ProgressFeedback from './Screens/ProgressFeedback';
 import ChecklistScreen from './Screens/ChecklistScreen';
 import ChecklistForm from './Screens/ChecklistForm';
+import EditEmailTamplate2 from './Screens/EditEmailTamplate2';
 // import SavedTemplates from './Screens/SavedTemplates';
 // import SurvaryForm from './Screens/SurvaryForm';
 // import EditSurveyForm from './Screens/EditSurveyForm';
@@ -57,7 +58,7 @@ const AppNavigator = () => {
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
-          // initialRouteName={'ChecklistForm'}
+          // initialRouteName={'EditEmailTamplate2'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
@@ -66,7 +67,6 @@ const AppNavigator = () => {
           />
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
 
-          {/* <RootNav.Screen name="SavedTemplates" component={SavedTemplates} /> */}
           <RootNav.Screen name="SignupScreen" component={SignupScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />
@@ -78,6 +78,7 @@ const AppNavigator = () => {
             name="OnboardingScreen"
             component={OnboardingScreen}
           />
+          <RootNav.Screen name="EditEmailTamplate2"component={EditEmailTamplate2} />
 
           <RootNav.Screen name="EditBlogPost" component={EditBlogPost} />
           <RootNav.Screen name="FinalEmail" component={FinalEmail} />
@@ -90,9 +91,15 @@ const AppNavigator = () => {
           {/* <RootNav.Screen name="SurvaryForm" component={SurvaryForm} /> */}
           <RootNav.Screen name="EditSurveyForm" component={EditSurveyForm} />
           <RootNav.Screen name="EmailTamplate2" component={EmailTamplate2} />
-          <RootNav.Screen name="CustomerSurveyForm" component={CustomerSurveyForm} />
+          <RootNav.Screen
+            name="CustomerSurveyForm"
+            component={CustomerSurveyForm}
+          />
           <RootNav.Screen name="FeedBackForm" component={FeedBackForm} />
-          <RootNav.Screen name="ProgressFeedback" component={ProgressFeedback} />
+          <RootNav.Screen
+            name="ProgressFeedback"
+            component={ProgressFeedback}
+          />
           <RootNav.Screen name="ChecklistScreen" component={ChecklistScreen} />
 
           <RootNav.Screen

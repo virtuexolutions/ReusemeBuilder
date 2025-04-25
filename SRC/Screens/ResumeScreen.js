@@ -1,18 +1,19 @@
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import { windowHeight, windowWidth } from '../Utillity/utils';
+import {windowHeight, windowWidth} from '../Utillity/utils';
 import Header from '../Components/Header';
 import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 import navigationService from '../navigationService';
 
 const ResumeScreen = props => {
+  console.log("🚀 ~ props:", props)
   const data = props?.route?.params?.data;
   const detailData = props?.route?.params?.detailData;
   const category = props?.route?.params?.type;
   const tamplateType = props?.route?.params?.tamplateType;
-  console.log("🚀 ~ tamplateType:", tamplateType)
+  console.log('🚀 ~ =================== tamplateType:', tamplateType);
 
   return (
     <ImageBackground
@@ -44,16 +45,19 @@ const ResumeScreen = props => {
           textColor={Color.darkBlue}
           onPress={() => {
             if (category === 'resume') {
-              navigationService.navigate('EditResume', { data: data });
+              navigationService.navigate('EditResume', {data: data});
             } else if (category === 'career') {
-              navigationService.navigate('EditBlogPost', { data: data });
+              navigationService.navigate('EditBlogPost', {data: data});
             } else if (category === 'survay') {
-              navigationService.navigate('ChecklistForm', { data: data , type: '' });
+              navigationService.navigate('ChecklistForm', {
+                data: data,
+                type: '',
+              });
             } else {
               navigationService.navigate('EditCoverLetter', {
                 data: data,
                 type: 'email',
-                tamplateType: tamplateType
+                tamplateType: tamplateType,
               });
             }
           }}
