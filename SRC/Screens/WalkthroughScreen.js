@@ -1,4 +1,4 @@
-import {Icon} from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
 import {
   ImageBackground,
@@ -8,17 +8,17 @@ import {
   View,
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import {moderateScale} from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import ScreenBoiler from '../Components/ScreenBoiler';
-import {setWalkThrough} from '../Store/slices/auth';
-import {windowHeight, windowWidth} from '../Utillity/utils';
-import {useRef} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import { setWalkThrough } from '../Store/slices/auth';
+import { windowHeight, windowWidth } from '../Utillity/utils';
+import { useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const WalkThroughScreen = props => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const WalkThroughScreen = props => {
   ];
   console.log(slidesref.current, 'indexxxxxxx');
 
-  const RenderSlider = ({item}) => {
+  const RenderSlider = ({ item }) => {
     return (
       <ImageBackground
         imageStyle={{
@@ -119,30 +119,30 @@ const WalkThroughScreen = props => {
         // backgroundColor:"red", 
         // zIndex:1, 
         // right:moderateScale(130,0.2),
-        top:moderateScale(12,0.2), width: windowWidth * 0.2, 
-      paddingVertical:moderateScale(12,0.2),
-      borderRadius:(windowWidth * 0.2)/2,
-      justifyContent:"center",
-      alignItems:"center",
-      borderWidth:1,
-      borderColor:Color.white,
-      // position:"absolute",
+        top: moderateScale(12, 0.2), width: windowWidth * 0.2,
+        paddingVertical: moderateScale(12, 0.2),
+        borderRadius: (windowWidth * 0.2) / 2,
+        justifyContent: "center",
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: Color.white,
+        // position:"absolute",
 
 
-      // paddingHorizontal:moderateScale(4,0.3),
-      // height: windowWidth * 0.1
-    }
+        // paddingHorizontal:moderateScale(4,0.3),
+        // height: windowWidth * 0.1
+      }
       }>
 
-      <CustomText
-        onPress={() => {
-          dispatch(setWalkThrough(true));
-        }}
-        style={{color:Color.white}}
+        <CustomText
+          onPress={() => {
+            dispatch(setWalkThrough(true));
+          }}
+          style={{ color: Color.white }}
         >
-        Done
-      </CustomText>
-          </View>
+          Done
+        </CustomText>
+      </View>
     );
   };
   // const RenderSkipBtn = () => {
@@ -172,13 +172,13 @@ const WalkThroughScreen = props => {
       renderDoneButton={
         RenderDoneBtn
       }
-      dotStyle={{display:"none"}}
-      activeDotStyle={{display:"none"}}
+      dotStyle={{ display: "none" }}
+      activeDotStyle={{ display: "none" }}
 
-      // // ref={slidesref}
-      // renderPagination={activeindex => {
-      //   console.log('activeeeeeee ,index ', activeindex);
-      // }}
+    // // ref={slidesref}
+    // renderPagination={activeindex => {
+    //   console.log('activeeeeeee ,index ', activeindex);
+    // }}
     />
   );
 };
@@ -216,6 +216,6 @@ const styles = StyleSheet.create({
 });
 
 export default WalkThroughScreen;
-const BoldText = ({children}) => {
-  return <Text style={{fontWeight: 'bold'}}>{children}</Text>;
+const BoldText = ({ children }) => {
+  return <Text style={{ fontWeight: 'bold' }}>{children}</Text>;
 };
