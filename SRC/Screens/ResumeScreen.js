@@ -10,7 +10,6 @@ import navigationService from '../navigationService';
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
   const detailData = props?.route?.params?.detailData;
-
   const category = props?.route?.params?.type;
   const tamplateType = props?.route?.params?.tamplateType;
   console.log("🚀 ~ tamplateType:", tamplateType)
@@ -44,26 +43,19 @@ const ResumeScreen = props => {
           text={'Edit'}
           textColor={Color.darkBlue}
           onPress={() => {
-            category == 'resume'
-              ? navigationService.navigate('EditResume', { data: data })
-              : category == 'career'
-                ? navigationService.navigate('EditBlogPost', { data: data })
-                : category === 'survay' ? navigationService.navigate('EditSurvayForm') : navigationService.navigate('EditCoverLetter', {
-                  data: data,
-                  type: 'email',
-                  tamplateType: tamplateType
-                })
-                  ? navigationService.navigate('EditBlogPost', {
-                    data: data,
-                    type: detailData,
-                  })
-                  : category === 'survay'
-                    ? navigationService.navigate('ChecklistForm', { data: data })
-                    : navigationService.navigate('EditCoverLetter', {
-                      data: data,
-                      type: 'email',
-                      tamplateType: tamplateType
-                    });
+            if (category === 'resume') {
+              navigationService.navigate('EditResume', { data: data });
+            } else if (category === 'career') {
+              navigationService.navigate('EditBlogPost', { data: data });
+            } else if (category === 'survay') {
+              navigationService.navigate('ChecklistForm', { data: data , type: '' });
+            } else {
+              navigationService.navigate('EditCoverLetter', {
+                data: data,
+                type: 'email',
+                tamplateType: tamplateType
+              });
+            }
           }}
           width={windowWidth * 0.65}
           height={windowHeight * 0.075}

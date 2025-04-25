@@ -180,7 +180,8 @@ const Home = () => {
       heading: 'Survey Form',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-      // image: require('../Assets/Images/form_image.png'),
+      image: require('../Assets/Images/form_image.png'),
+      // templeteType : 
     },
     {
       id: 2,
@@ -428,18 +429,24 @@ const Home = () => {
                 renderItem={({ item, index }) => {
                   console.log("🚀 ~ Home ~ item:", item)
                   return (
-
                     <TouchableOpacity
                       onPress={() =>
                         navigationService.navigate('ResumeScreen', {
+                          detailData: item,
                           data: item?.image,
                           type: selectedCategoty?.text,
-                          tamplateType: item?.type
                         })
                       }
                       style={styles.card}>
                       <View style={styles.card_image}>
                         <CustomImage
+                          onPress={() =>
+                            navigationService.navigate('ResumeScreen', {
+                              detailData: item,
+                              data: item?.image,
+                              type: selectedCategoty?.text,
+                            })
+                          }
                           source={item?.image}
                           style={{
                             height: '100%',
@@ -447,26 +454,36 @@ const Home = () => {
                           }}
                         />
                       </View>
-                      <View style={styles.ratingView}>
-                        <Rating
-                          type="custom"
-                          startingValue={4}
-                          ratingCount={5}
-                          imageSize={moderateScale(12, 0.3)}
-                          style={
-                            {
-                              // width: windowWidth * 0.04,
+                      <View style={styles.content}>
+                        <View>
+                          <CustomText style={styles.heading}>
+                            {item?.heading}
+                          </CustomText>
+                          <CustomText style={styles.description}>
+                            {item?.description}
+                          </CustomText>
+                        </View>
+                        <View style={styles.ratingView}>
+                          <Rating
+                            type="custom"
+                            startingValue={4}
+                            ratingCount={5}
+                            imageSize={moderateScale(12, 0.3)}
+                            style={
+                              {
+                                // width: windowWidth * 0.04,
+                              }
                             }
-                          }
-                          ratingBackgroundColor={'white'}
-                        />
-                        <CustomText
-                          style={{
-                            fontSize: moderateScale(12, 0.2),
-                            color: Color.grey,
-                          }}>
-                          1/16
-                        </CustomText>
+                            ratingBackgroundColor={'white'}
+                          />
+                          <CustomText
+                            style={{
+                              fontSize: moderateScale(12, 0.2),
+                              color: Color.grey,
+                            }}>
+                            1/16
+                          </CustomText>
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );
