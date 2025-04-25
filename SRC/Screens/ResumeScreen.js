@@ -9,6 +9,8 @@ import navigationService from '../navigationService';
 
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
+  const detailData = props?.route?.params?.detailData;
+
   const category = props?.route?.params?.type;
   const tamplateType = props?.route?.params?.tamplateType;
   console.log("🚀 ~ tamplateType:", tamplateType)
@@ -21,6 +23,7 @@ const ResumeScreen = props => {
       <View
         style={{
           justifyContent: 'center',
+
           alignItems: 'center',
         }}>
         <View
@@ -49,7 +52,18 @@ const ResumeScreen = props => {
                   data: data,
                   type: 'email',
                   tamplateType: tamplateType
-                });
+                })
+                  ? navigationService.navigate('EditBlogPost', {
+                    data: data,
+                    type: detailData,
+                  })
+                  : category === 'survay'
+                    ? navigationService.navigate('ChecklistForm', { data: data })
+                    : navigationService.navigate('EditCoverLetter', {
+                      data: data,
+                      type: 'email',
+                      tamplateType: tamplateType
+                    });
           }}
           width={windowWidth * 0.65}
           height={windowHeight * 0.075}
