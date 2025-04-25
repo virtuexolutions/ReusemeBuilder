@@ -6,40 +6,38 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
-import { windowHeight, windowWidth } from '../Utillity/utils';
-import { moderateScale } from 'react-native-size-matters';
+import {windowHeight, windowWidth} from '../Utillity/utils';
+import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import SearchContainer from '../Components/SearchContainer';
-import { FlatList, Icon, ScrollView } from 'native-base';
+import {FlatList, Icon, ScrollView} from 'native-base';
 import CustomImage from '../Components/CustomImage';
-import { Rating } from 'react-native-ratings';
-import { useSelector } from 'react-redux';
+import {Rating} from 'react-native-ratings';
+import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
-import { useIsFocused } from '@react-navigation/core';
-import { Get } from '../Axios/AxiosInterceptorFunction';
-import { date } from 'yup';
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {useIsFocused} from '@react-navigation/core';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {date} from 'yup';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Home = () => {
   const userData = useSelector(state => state.commonReducer.userData);
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
-  const [loading, setLoading] = useState(false)
-  const [saveresumeData, setSaveResumeData] = useState([])
-  console.log("🚀 ~ Home ~ saveresumeData:", saveresumeData)
-  const [emailData, setEmailData] = useState([])
-  const [dropDown, setDropDown] = useState(false)
-  const [showCategory, setshowCategory] = useState('resume')
+  const [loading, setLoading] = useState(false);
+  const [saveresumeData, setSaveResumeData] = useState([]);
+  const [emailData, setEmailData] = useState([]);
+  const [dropDown, setDropDown] = useState(false);
+  const [showCategory, setshowCategory] = useState('resume');
   const [selectedCategoty, setSelectedCategory] = useState({
     id: 1,
     text: 'resume',
     subtext: 'tempaletes',
   });
-  console.log("🚀 ~ Home ~ selectedCategoty:", selectedCategoty)
   const category = [
     {
       id: 1,
@@ -70,18 +68,12 @@ const Home = () => {
   const resumeData = [
     {
       id: 1,
-      heading: 'Creative ',
+      heading: 'Creative',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/resume.jpeg'),
     },
-    // {
-    //   id: 2,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    //   image: require('../Assets/Images/resume.jpeg'),
-    // },
+  
     // {
     //   id: 3,
     //   heading: 'Creative',
@@ -136,6 +128,25 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/blogbg.png'),
+      type: 'blog',
+    },
+    {
+      id: 2,
+      heading: 'welcome OnBoarding',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/onboard.jpeg'),
+      type: 'OnBoarding',
+      templeteType: 1,
+    },
+    {
+      id: 3,
+      heading: 'welcome OnBoarding',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/onboard3.jpeg'),
+      type: 'OnBoarding',
+      templeteType: 2,
     },
   ];
   const cvdata = [
@@ -146,6 +157,13 @@ const Home = () => {
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email.jpeg'),
     },
+    {
+      id: 2,
+      heading: 'late attendence policy',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/email-temp.jpeg'),
+    },
   ];
   const survayForm = [
     {
@@ -153,9 +171,17 @@ const Home = () => {
       heading: 'Survey Form',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-      image: require('../Assets/Images/form_image.png'),
+      // image: require('../Assets/Images/form_image.png'),
     },
-  ]
+    {
+      id: 2,
+      heading: ' compliance checklist',
+      description:
+        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+      image: require('../Assets/Images/checklist.jpeg'),
+      type: 'checklist',
+    },
+  ];
 
   return (
     <ImageBackground
@@ -174,9 +200,9 @@ const Home = () => {
           height: windowHeight * 0.07,
           paddingHorizontal: moderateScale(10, 0.6),
           marginVertical: moderateScale(10, 0.6),
-          flexDirection: "row",
+          flexDirection: 'row',
           justifyContent: 'space-between',
-          alignItems: "center"
+          alignItems: 'center',
         }}>
         <SearchContainer
           width={windowWidth * 0.8}
@@ -184,22 +210,24 @@ const Home = () => {
           // rightIcon={true}
           placeHolder={'search ..'}
           input={true}
-        // data=
+          // data=
         />
-        <TouchableOpacity onPress={() => navigationService.navigate('SavedTemplates')} style={{
-          width: windowWidth * 0.12,
-          height: windowWidth * 0.12,
-          borderRadius: moderateScale(12, 0.6),
-          alignItems: "center",
-          justifyContent: 'center',
-          backgroundColor: Color.white
-        }}>
+        <TouchableOpacity
+          onPress={() => navigationService.navigate('SavedTemplates')}
+          style={{
+            width: windowWidth * 0.12,
+            height: windowWidth * 0.12,
+            borderRadius: moderateScale(12, 0.6),
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: Color.white,
+          }}>
           <Icon
             name={'save-alt'}
             as={MaterialIcons}
             size={moderateScale(22, 0.6)}
             color={Color.darkBlue}
-            style={{ alignSelf: "center", }}
+            style={{alignSelf: 'center'}}
           />
         </TouchableOpacity>
       </View>
@@ -222,7 +250,7 @@ const Home = () => {
           horizontal
           data={category}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) => {
+          renderItem={({item, index}) => {
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -247,15 +275,23 @@ const Home = () => {
           ]}>
           {selectedCategoty?.text} {selectedCategoty?.subtext}
         </CustomText>
-        {selectedCategoty?.text === 'Saved' ?
-          <TouchableOpacity onPress={() => setDropDown(!dropDown)} style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: "center"
-          }}>
-            <CustomText style={[styles.txt, {
-              marginRight: moderateScale(3, 0.6)
-            }]}>Select category</CustomText>
+        {selectedCategoty?.text === 'Saved' ? (
+          <TouchableOpacity
+            onPress={() => setDropDown(!dropDown)}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <CustomText
+              style={[
+                styles.txt,
+                {
+                  marginRight: moderateScale(3, 0.6),
+                },
+              ]}>
+              Select category
+            </CustomText>
             <Icon
               name={dropDown ? 'up' : 'down'}
               as={AntDesign}
@@ -263,34 +299,34 @@ const Home = () => {
               color={Color.white}
             />
           </TouchableOpacity>
-          :
+        ) : (
           <CustomText style={styles.txt}>See more</CustomText>
-        }
+        )}
         {dropDown && (
           <View style={styles.con}>
-            {category.map((item) => {
+            {category.map(item => {
               return (
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingHorizontal: moderateScale(10, 0.6),
-                    paddingVertical: moderateScale(1, 0.6)
+                    paddingVertical: moderateScale(1, 0.6),
                   }}>
                   <CustomText
                     onPress={() => {
-                      setshowCategory(item?.text)
-                      setDropDown(false)
+                      setshowCategory(item?.text);
+                      setDropDown(false);
                     }}
                     style={{
                       fontSize: moderateScale(14, 0.6),
                       color: Color.darkBlue,
                       paddingHorizontal: moderateScale(5, 0.6),
-                      textTransform: 'capitalize'
+                      textTransform: 'capitalize',
                     }}>
                     {item?.text === 'Saved' ? '' : item?.text}
                   </CustomText>
-                  {showCategory === item?.text &&
+                  {showCategory === item?.text && (
                     <Icon
                       style={{
                         paddingTop: moderateScale(2, 0.6),
@@ -300,11 +336,10 @@ const Home = () => {
                       size={moderateScale(14, 0.6)}
                       color={Color.darkBlue}
                     />
-                  }
+                  )}
                 </View>
-              )
-            })
-            }
+              );
+            })}
             {/* <View
               style={{
                 flexDirection: 'row',
@@ -335,89 +370,101 @@ const Home = () => {
           paddingHorizontal: moderateScale(10, 0.6),
           paddingBottom: moderateScale(12, 0.2),
         }}>
-        {loading ? <ActivityIndicator size="small"
-          style={{
-            marginTop: moderateScale(20, 0.6)
-          }}
-          color={Color.darkBlue} />
-          : (
-            <FlatList
-              style={{
-                // width: '100%',
-                height: '100%',
-                // backgroundColor:"red"
-              }}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={item => item.id}
-              data={
-                selectedCategoty?.text === 'resume' ? resumeData :
-                  selectedCategoty?.text === 'cover' ? coverletterData :
-                    selectedCategoty?.text === 'career' ? careerBlogdata :
-                      selectedCategoty?.text === 'survay' ? survayForm :
-                        cvdata
-              }
-              ListFooterComponent={() => {
-                return <View style={{ height: windowHeight * 0.2 }} />;
-              }}
-              renderItem={({ item, index }) => {
-                console.log("🚀 ~ Home ~ item:", item)
-                return (
-
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigationService.navigate('ResumeScreen', {
-                        data: item?.image,
-                        type: selectedCategoty?.text
-                      })
-                    }
-                    style={styles.card}>
-                    <View style={styles.card_image}>
-                      <CustomImage
-                        source={item?.image}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
-                      />
+        {loading ? (
+          <ActivityIndicator
+            size="small"
+            style={{
+              marginTop: moderateScale(20, 0.6),
+            }}
+            color={Color.darkBlue}
+          />
+        ) : (
+          <FlatList
+            style={{
+              // width: '100%',
+              height: '100%',
+              // backgroundColor:"red"
+            }}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.id}
+            data={
+              selectedCategoty?.text === 'resume'
+                ? resumeData
+                : selectedCategoty?.text === 'cover'
+                ? coverletterData
+                : selectedCategoty?.text === 'career'
+                ? careerBlogdata
+                : selectedCategoty?.text === 'survay'
+                ? survayForm
+                : cvdata
+            }
+            ListFooterComponent={() => {
+              return <View style={{height: windowHeight * 0.2}} />;
+            }}
+            renderItem={({item, index}) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigationService.navigate('ResumeScreen', {
+                      detailData: item,
+                      data: item?.image,
+                      type: selectedCategoty?.text,
+                    })
+                  }
+                  style={styles.card}>
+                  <View style={styles.card_image}>
+                    <CustomImage
+                      onPress={() =>
+                        navigationService.navigate('ResumeScreen', {
+                          detailData: item,
+                          data: item?.image,
+                          type: selectedCategoty?.text,
+                        })
+                      }
+                      source={item?.image}
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                      }}
+                    />
+                  </View>
+                  <View style={styles.content}>
+                    <View>
+                      <CustomText style={styles.heading}>
+                        {item?.heading}
+                      </CustomText>
+                      <CustomText style={styles.description}>
+                        {item?.description}
+                      </CustomText>
                     </View>
-                    <View style={styles.content}>
-                      <View>
-                        <CustomText style={styles.heading}>
-                          {item?.heading}
-                        </CustomText>
-                        <CustomText style={styles.description}>
-                          {item?.description}
-                        </CustomText>
-                      </View>
-                      <View style={styles.ratingView}>
-                        <Rating
-                          type="custom"
-                          startingValue={4}
-                          ratingCount={5}
-                          imageSize={moderateScale(12, 0.3)}
-                          style={
-                            {
-                              // width: windowWidth * 0.04,
-                            }
+                    <View style={styles.ratingView}>
+                      <Rating
+                        type="custom"
+                        startingValue={4}
+                        ratingCount={5}
+                        imageSize={moderateScale(12, 0.3)}
+                        style={
+                          {
+                            // width: windowWidth * 0.04,
                           }
-                          ratingBackgroundColor={'white'}
-                        />
-                        <CustomText
-                          style={{
-                            fontSize: moderateScale(12, 0.2),
-                            color: Color.grey,
-                          }}>
-                          1/16
-                        </CustomText>
-                      </View>
+                        }
+                        ratingBackgroundColor={'white'}
+                      />
+                      <CustomText
+                        style={{
+                          fontSize: moderateScale(12, 0.2),
+                          color: Color.grey,
+                        }}>
+                        1/16
+                      </CustomText>
                     </View>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          )
-        }
-        <View style={{ height: windowHeight * 0.14 }} />
+                  </View>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        )}
+        <View style={{height: windowHeight * 0.14}} />
       </View>
     </ImageBackground>
   );

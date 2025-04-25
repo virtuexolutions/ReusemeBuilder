@@ -1,30 +1,32 @@
+import {Icon} from 'native-base';
+import React, {useState} from 'react';
 import {
-  FlatList,
   ImageBackground,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
-import Header from '../Components/Header';
-import Color from '../Assets/Utilities/Color';
-import CustomText from '../Components/CustomText';
 import {moderateScale} from 'react-native-size-matters';
-import {Icon} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import TextInputWithTitle from '../Components/TextInputWithTitle';
+import Color from '../Assets/Utilities/Color';
 import CustomButton from '../Components/CustomButton';
-import navigationService from '../navigationService';
-import ImagePickerModal from '../Components/ImagePickerModal';
-import {object} from 'yup';
 import CustomImage from '../Components/CustomImage';
+import CustomText from '../Components/CustomText';
+import Header from '../Components/Header';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
+import navigationService from '../navigationService';
+import {windowHeight, windowWidth} from '../Utillity/utils';
 // import Entypo from 'react-native-vector-icons/Entypo'
 
-const EditBlogPost = () => {
+const EditBlogPost = props => {
+  const design_data = props?.route?.params?.type;
+  console.log(
+    '🚀 ~ detaildesign_data?.type====================== :',
+    design_data,
+  );
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [description, setDescription] = useState(true);
   const [email, setEmail] = useState('');
@@ -55,10 +57,12 @@ const EditBlogPost = () => {
   const [DateofJoining, setDateofJoining] = useState('');
   const [DateofEnding, setDateofEnding] = useState('');
   const [companyCity, setCompanyCity] = useState('');
-  const [summaryDetails, setsummaryDetails] = useState('');
+  const [bestRegards, setBestRegards] = useState('');
+  const [designation, setDesignation] = useState('');
+
   const [image, setImage] = useState({});
-  console.log('🚀 ~ EditBlogPost ~ image:', image?.uri);
   const [isImage, setIsImage] = useState(false);
+  console.log('🚀 ~ isImage:', isImage);
   const onPressConfirm = () => {
     const data = {
       //   name: name,
@@ -77,14 +81,32 @@ const EditBlogPost = () => {
       //   subject: subject,
       //   date: date,
     };
-    navigationService.navigate('FinalBlogPost', {data: data});
+    const onBoardData = {
+      image: image?.uri,
+      heading: heading,
+      details: details,
+      companyName: companyName,
+      name: name,
+      regards: bestRegards,
+      designation: designation,
+    };
+    design_data?.type == 'blog'
+      ? navigationService.navigate('FinalBlogPost', {data: data})
+      : navigationService.navigate('OnboardingScreen', {
+          data: onBoardData,
+          design_data: design_data,
+        });
   };
 
   return (
     <ImageBackground
       style={styles.bg_container}
       source={require('../Assets/Images/bg.png')}>
-      <Header title={'Edit blog'} hideUser={true} showBack={true} />
+      <Header
+        title={design_data?.type == 'blog' ? 'Edit blog' : 'edit onBoard'}
+        hideUser={true}
+        showBack={true}
+      />
       <View style={styles.main_view}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* <View
@@ -248,7 +270,9 @@ const EditBlogPost = () => {
                 height:
                   description === true
                     ? windowHeight * 0.11
-                    : windowHeight * 0.53,
+                    : design_data?.type == 'OnBoarding'
+                    ? windowHeight * 0.99
+                    : windowHeight * 0.54,
                 marginTop: moderateScale(15, 0.6),
               },
             ]}>
@@ -260,7 +284,9 @@ const EditBlogPost = () => {
               }}>
               <View>
                 <CustomText isBold style={styles.btn_txt}>
-                  blog data
+                  {design_data?.type == 'blog'
+                    ? 'blog data'
+                    : 'welcome on board data'}
                 </CustomText>
                 <CustomText
                   style={[
@@ -289,6 +315,9 @@ const EditBlogPost = () => {
                 </CustomText>
                 <TouchableOpacity
                   onPress={() => {
+                    console.log(
+                      '======================= > >> >> >> > here in m',
+                    );
                     setIsImage(true);
                   }}
                   style={[
@@ -309,6 +338,12 @@ const EditBlogPost = () => {
                     />
                   ) : (
                     <Icon
+                      onPress={() => {
+                        console.log(
+                          '======================= > >> >> >> > here in m',
+                        );
+                        setIsImage(true);
+                      }}
                       as={Entypo}
                       name="camera"
                       size={moderateScale(20, 0.6)}
@@ -316,8 +351,80 @@ const EditBlogPost = () => {
                     />
                   )}
                 </TouchableOpacity>
+
+                {design_data?.type == 'OnBoarding' && (
+                  <>
+                    <CustomText isBold style={styles.text}>
+                      company name :
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={' company name'}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      // inputHeight={windowHeight * 0.07}
+                      viewHeight={0.06}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setCompanyName}
+                      value={companyName}
+                    />
+                    <CustomText isBold style={styles.text}>
+                      designation:
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'designation'}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      viewHeight={0.06}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setDesignation}
+                      value={designation}
+                    />
+
+                    <CustomText isBold style={styles.text}>
+                      name :
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'name'}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      viewHeight={0.06}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setName}
+                      value={name}
+                    />
+                    <CustomText isBold style={styles.text}>
+                      best regards :
+                    </CustomText>
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={' regards'}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      viewHeight={0.06}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setBestRegards}
+                      value={bestRegards}
+                    />
+                  </>
+                )}
                 <CustomText isBold style={styles.text}>
-                  heading :
+                  {design_data?.type == 'blog' ? 'heading' : 'welcome heading'}{' '}
+                  :
                 </CustomText>
                 <TextInputWithTitle
                   iconSize={moderateScale(20, 0.3)}
@@ -325,14 +432,12 @@ const EditBlogPost = () => {
                   placeholder={'heading'}
                   placeholderColor={Color.grey}
                   viewWidth={0.84}
-                  // inputHeight={windowHeight * 0.07}
                   viewHeight={0.06}
                   marginTop={moderateScale(10, 0.3)}
                   style={styles.text_input}
                   backgroundColor={Color.lightGrey}
                   setText={setHeading}
                   value={heading}
-                  //   multiline
                 />
                 <CustomText isBold style={styles.text}>
                   description :
@@ -343,7 +448,7 @@ const EditBlogPost = () => {
                   placeholder={'Details'}
                   placeholderColor={Color.grey}
                   viewWidth={0.84}
-                  // inputHeight={windowHeight * 0.07}
+                  inputHeight={windowHeight * 0.14}
                   viewHeight={0.15}
                   marginTop={moderateScale(10, 0.3)}
                   style={styles.text_input}
@@ -610,6 +715,7 @@ const EditBlogPost = () => {
               borderRadius={moderateScale(20, 0.3)}
               bgColor={Color.white}
               marginTop={moderateScale(20, 0.6)}
+              marginBottom={moderateScale(20, 0.6)}
             />
           </View>
           <ImagePickerModal

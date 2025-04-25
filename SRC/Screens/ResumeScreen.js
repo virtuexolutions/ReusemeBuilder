@@ -1,16 +1,17 @@
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import { windowHeight, windowWidth } from '../Utillity/utils';
+import {windowHeight, windowWidth} from '../Utillity/utils';
 import Header from '../Components/Header';
 import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 import navigationService from '../navigationService';
 
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
+  const detailData = props?.route?.params?.detailData;
+
   const category = props?.route?.params?.type;
-  console.log('🚀 ~ category:', category);
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -19,6 +20,7 @@ const ResumeScreen = props => {
       <View
         style={{
           justifyContent: 'center',
+
           alignItems: 'center',
         }}>
         <View
@@ -40,10 +42,15 @@ const ResumeScreen = props => {
           textColor={Color.darkBlue}
           onPress={() => {
             category == 'resume'
-              ? navigationService.navigate('EditResume', { data: data })
+              ? navigationService.navigate('EditResume', {data: data})
               : category == 'career'
-                ? navigationService.navigate('EditBlogPost', { data: data })
-                : category === 'survay' ? navigationService.navigate('SurvaryForm') : navigationService.navigate('EditCoverLetter', {
+              ? navigationService.navigate('EditBlogPost', {
+                  data: data,
+                  type: detailData,
+                })
+              : category === 'survay'
+              ? navigationService.navigate('ChecklistForm', {data: data})
+              : navigationService.navigate('EditCoverLetter', {
                   data: data,
                   type: 'email',
                 });

@@ -75,6 +75,8 @@ const TextInputWithTitle = props => {
           props.multiline && {
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
+            // height :'100%' ,
+            // backgroundColor :'red'
           },
           props.viewHeight && {
             height: windowHeight * props.viewHeight,

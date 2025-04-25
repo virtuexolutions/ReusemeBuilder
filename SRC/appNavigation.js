@@ -1,32 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import navigationService from './navigationService';
-import { useSelector } from 'react-redux';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React from 'react';
+import {enableScreens} from 'react-native-screens';
+import {moderateScale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
 import Drawer from './Drawer/Drawer';
-import LoginScreen from './Screens/LoginScreen';
-import VerifyNumber from './Screens/VerifyNumber';
+import navigationService from './navigationService';
 import ChangePassword from './Screens/ChangePassword';
-import ResetPassword from './Screens/ResetPassword';
-import VerifyEmail from './Screens/VerifyEmail';
-import { moderateScale } from 'react-native-size-matters';
-import { enableScreens } from 'react-native-screens';
-import Home from './Screens/Home';
-import SplashScreen from './Screens/SplashScreen';
-import WalkThroughScreen from './Screens/WalkthroughScreen';
-import SignupScreen from './Screens/SignupScreen';
-import ResumeScreen from './Screens/ResumeScreen';
-import EditResume from './Screens/EditResume';
-import ResumeFinalScreen from './Screens/ResumeFinalScreen';
-import FinalCoverLetter from './Screens/FinalCoverLetter';
-import EditCoverLetter from './Screens/EditCoverLetter';
 import EditBlogPost from './Screens/EditBlogPost';
+import EditCoverLetter from './Screens/EditCoverLetter';
+import EditResume from './Screens/EditResume';
 import FinalBlogPost from './Screens/FinalBlogPost';
+import FinalCoverLetter from './Screens/FinalCoverLetter';
 import FinalEmail from './Screens/FinalEmail';
-import SavedTemplates from './Screens/SavedTemplates';
-import SurvaryForm from './Screens/SurvaryForm';
+import Home from './Screens/Home';
+import LoginScreen from './Screens/LoginScreen';
+import ResetPassword from './Screens/ResetPassword';
+import ResumeFinalScreen from './Screens/ResumeFinalScreen';
+import ResumeScreen from './Screens/ResumeScreen';
+import SignupScreen from './Screens/SignupScreen';
+import SplashScreen from './Screens/SplashScreen';
+import VerifyEmail from './Screens/VerifyEmail';
+import VerifyNumber from './Screens/VerifyNumber';
+import WalkThroughScreen from './Screens/WalkthroughScreen';
+import OnboardingScreen from './Screens/OnboardingScreen';
 import EditSurveyForm from './Screens/EditSurveyForm';
+import ChecklistScreen from './Screens/ChecklistScreen';
+import ChecklistForm from './Screens/ChecklistForm';
+// import SavedTemplates from './Screens/SavedTemplates';
+// import SurvaryForm from './Screens/SurvaryForm';
+// import EditSurveyForm from './Screens/EditSurveyForm';
 
 enableScreens();
 const AppNavigator = () => {
@@ -41,39 +45,48 @@ const AppNavigator = () => {
       walkThrough == false
         ? 'WalkthroughScreen'
         : token == null
-          ? 'LoginScreen'
-          : // ? 'Start'
+        ? 'LoginScreen'
+        : // ? 'Start'
           'Home';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
-          screenOptions={{ headerShown: false }}>
+          // initialRouteName={'ChecklistForm'}
+          screenOptions={{headerShown: false}}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
             name="WalkthroughScreen"
             component={WalkThroughScreen}
           />
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
-          <RootNav.Screen name="SavedTemplates" component={SavedTemplates} />
+
+          {/* <RootNav.Screen name="SavedTemplates" component={SavedTemplates} /> */}
           <RootNav.Screen name="SignupScreen" component={SignupScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />
-
           <RootNav.Screen name="VerifyEmail" component={VerifyEmail} />
           <RootNav.Screen name="FinalBlogPost" component={FinalBlogPost} />
+          <RootNav.Screen name="ChecklistForm" component={ChecklistForm} />
+
+          <RootNav.Screen
+            name="OnboardingScreen"
+            component={OnboardingScreen}
+          />
+
           <RootNav.Screen name="EditBlogPost" component={EditBlogPost} />
           <RootNav.Screen name="FinalEmail" component={FinalEmail} />
-
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="ResumeScreen" component={ResumeScreen} />
           <RootNav.Screen name="EditResume" component={EditResume} />
           <RootNav.Screen name="EditCoverLetter" component={EditCoverLetter} />
-          <RootNav.Screen name="SurvaryForm" component={SurvaryForm} />
+          {/* <RootNav.Screen name="SurvaryForm" component={SurvaryForm} /> */}
           <RootNav.Screen name="EditSurveyForm" component={EditSurveyForm} />
+          <RootNav.Screen name="ChecklistScreen" component={ChecklistScreen} />
+
           <RootNav.Screen
             name="FinalCoverLetter"
             component={FinalCoverLetter}
