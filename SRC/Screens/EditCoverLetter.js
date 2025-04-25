@@ -27,6 +27,7 @@ import { object } from 'yup';
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
   const tamplateType = props?.route?.params?.tamplateType;
+  console.log("🚀 ~ tamplateType:", tamplateType)
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [summary, setSummary] = useState(true);
   const [email, setEmail] = useState('');
@@ -87,9 +88,20 @@ const EditCoverLetter = props => {
       subject: subject,
       email: userData?.email
     };
-    type == 'email' ?
-      navigationService.navigate('FinalEmail', { data: body }) :
-      navigationService.navigate('FinalCoverLetter', { data: data });
+    const details = {
+      companyName: companyName,
+      companyAddress: companyAddress,
+      managerEmail: managerEmail,
+      managerName: managerName,
+      positonName: positonName,
+      startDate: startDate,
+      image: image
+    }
+    tamplateType === 'companyEmail'
+      ? navigationService.navigate('EmailTamplate2', { data: details })
+      : type === 'email'
+        ? navigationService.navigate('FinalEmail', { data: body })
+        : navigationService.navigate('FinalCoverLetter', { data: data });
   };
 
   return (
@@ -1047,8 +1059,7 @@ const EditCoverLetter = props => {
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
-              tamplateType === 'companyEmail' ? navigationService.navigate('EmailTamplate2') :
-                onPressConfirm();
+              onPressConfirm();
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}

@@ -14,9 +14,10 @@ import navigationService from '../navigationService'
 import { Post } from '../Axios/AxiosInterceptorFunction'
 import { useSelector } from 'react-redux'
 
-const EditResume = () => {
+const EditResume = props => {
     const token = useSelector(state => state.authReducer.token);
     console.log("🚀 ~ EditResume ~ token:", token)
+    const tamplateType = props?.route?.params?.tamplateType;
     const [personalDataTab, setPersonalDataTab] = useState(true)
     const [summary, setSummary] = useState(true)
     const [email, setEmail] = useState('')
@@ -91,7 +92,7 @@ const EditResume = () => {
         <ImageBackground
             style={styles.bg_container}
             source={require('../Assets/Images/bg.png')}>
-            <Header title={'Edit Resume'} hideUser={true} showBack={true} />
+            <Header title={'Edit '} hideUser={true} showBack={true} />
             <View style={styles.main_view}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={[styles.btn_view, {

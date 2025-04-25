@@ -11,615 +11,456 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import React, { useState } from 'react';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import {moderateScale} from 'react-native-size-matters';
-import {Icon} from 'native-base';
+import { moderateScale } from 'react-native-size-matters';
+import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
-import {Post} from '../Axios/AxiosInterceptorFunction';
-import {useSelector} from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
+import CustomImage from '../Components/CustomImage';
+import ImagePickerModal from '../Components/ImagePickerModal';
 
-const ChecklistForm = () => {
+const ChecklistForm = props => {
   const token = useSelector(state => state.authReducer.token);
-  console.log('🚀 ~ EditResume ~ token:', token);
-  const [personalDataTab, setPersonalDataTab] = useState(true);
-  const [summary, setSummary] = useState(true);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [month, setMonth] = useState(new Date());
-  const [year, setYear] = useState(new Date());
-  const [details, setDetails] = useState('');
+  const tamplateType = props?.route?.params?.tamplateType;
+  const detailData = props?.route?.params?.data;
+  console.log(" ChecklistForm🚀 ~ detailData:", detailData)
   const [skillVisible, setSkillVisible] = useState(true);
   const [skills, setSkill] = useState([]);
-  console.log('🚀 ~ EditResume ~ skills:', skills);
   const [skillsVal, setSkillVal] = useState([]);
-  const [phone, setphone] = useState('');
-  const [education, seteducation] = useState(true);
-  const [experience, setexperience] = useState(true);
-  const [Certificate, setCertificate] = useState(true);
-  const [degreeName, setDegreeName] = useState('');
-  const [degreePlaceName, setdegreePlaceName] = useState('');
-  const [degreeYear, setdegreeYear] = useState('');
-  const [CertificateName, setCertificateName] = useState('');
-  const [CertificatePlaceName, setCertificatPlaceName] = useState('');
-  const [CertificatYear, setCertificatYear] = useState('');
-  const [positonName, setpositonName] = useState('');
-  const [experiencePlaceName, setexperiencePlaceName] = useState('');
-  const [DateofJoining, setDateofJoining] = useState('');
-  const [DateofEnding, setDateofEnding] = useState('');
-  const [summaryDetails, setsummaryDetails] = useState('');
+  const [optionsVal, setoptionsVal] = useState([]);
+  const [options, setOptions] = useState([]);
+  console.log("🚀 ~ options:", options)
+  const [optionsVisible, setOptionsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [logoImageModal, setLogoImageModal] = useState(false)
+  const [image, setImage] = useState({})
+  const [companyName, setCompanyName] = useState('');
+  console.log("🚀 ~ image:", image)
   const onPressConfirm = async () => {
     const data = {
-    //   name: name,
-    //   email: email,
-    //   date: date,
-    //   month: month,
-    //   summary: summary,
-    //   address: address,
-    //   details: details,
       skills: skills,
-    //   phone: phone,
-    //   education: education,
-    //   degreeName: degreeName,
-    //   degreePlaceName: degreePlaceName,
-    //   degreeYear: degreeYear,
-    //   CertificateName: CertificateName,
-    //   CertificatePlaceName: CertificatePlaceName,
-    //   CertificatYear: CertificatYear,
-    //   positonName: positonName,
-    //   experiencePlaceName: experiencePlaceName,
-    //   DateofJoining: DateofJoining,
-    //   DateofEnding: DateofEnding,
-    //   summaryDetails: summaryDetails,
+      options: options,
+      image: image?.uri,
+      templeteType: detailData?.templeteType,
+      companyName: companyName
     };
-    navigationService.navigate('ChecklistScreen', {
-      data: data,
-      fromHome: false,
-    });
-    // console.log("🚀 ~ onPressConfirm ~ data:", data)
-    // const url = `auth/resumes`
-    // setLoading(true)
-    // const response = await Post(url, data, apiHeader(token))
-    // setLoading(false)
-    // console.log("🚀 ~ onPressConfirm ~ response:", response?.data)
-    // if (response?.data != undefined) {
-    //     setLoading(false)
-    //     navigationService.navigate('ResumeFinalScreen', { data: data })
-    //     Platform.OS == 'android'
-    //         ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-    //         : Alert.alert('Saved');
-    // }
+
+    switch (data?.templeteType) {
+      case 'checklist':
+        navigationService.navigate('ChecklistScreen', {
+          data: data,
+          fromHome: false,
+        });
+        break;
+      case 'customerForm':
+        navigationService.navigate('CustomerSurveyForm', {
+          data: data,
+          fromHome: false,
+        });
+        break;
+      case 'feedbackForm':
+        navigationService.navigate('FeedBackForm', {
+          data: data,
+          fromHome: false,
+        });
+        break;
+      case 'progressForm':
+        navigationService.navigate('ProgressFeedback', {
+          data: data,
+          fromHome: false,
+        });
+        break;
+      default:
+        navigationService.navigate('SurvaryForm', {
+          data: data,
+          fromHome: false,
+        });
+    }
   };
+
 
   return (
     <ImageBackground
       style={styles.bg_container}
       source={require('../Assets/Images/bg.png')}>
-      <Header title={'Edit Resume'} hideUser={true} showBack={true} />
+      <Header title={'Edit '} hideUser={true} showBack={true} />
       <View style={styles.main_view}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* <View style={[styles.btn_view, {
-                        height: personalDataTab === true ? windowHeight * 0.11 : windowHeight * 0.7,
-                    }]}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                        }}>
-                            <View>
-                                <CustomText isBold style={styles.btn_txt}>Personal Data</CustomText>
-                                <CustomText style={styles.btn_sub_txt}>Complete your personal Data make your resume even better</CustomText>
-                            </View>
-                            <Icon name='down' onPress={() => setPersonalDataTab(!personalDataTab)} as={AntDesign} color={Color.black} size={moderateScale(18, 0.6)} />
-                        </View>
-                        {personalDataTab === false &&
-                            <>
-                                <CustomText isBold style={styles.text}>Name :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your full name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setName}
-                                    value={name}
-                                />
-                                <CustomText isBold style={styles.text}>Email :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your email '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setEmail}
-                                    value={email}
-                                />
-                                <CustomText isBold style={styles.text}>Address :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your Address '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setAddress}
-                                    value={address}
-                                />
-                                <CustomText isBold style={styles.text}>Date of Birth :</CustomText>
-                                <View style={styles.row_view}>
-                                    <View>
-                                        <CustomText isBold style={styles.sub_text}>Date</CustomText>
-                                        <TextInputWithTitle
-                                            iconSize={moderateScale(20, 0.3)}
-                                            color={Color.blue}
-                                            placeholder={'00'}
-                                            placeholderColor={Color.grey}
-                                            viewWidth={0.25}
-                                            marginTop={moderateScale(10, 0.3)}
-                                            style={styles.text_input}
-                                            backgroundColor={Color.lightGrey}
-                                            setText={setDate}
-                                            value={date}
-                                        />
-                                    </View>
-                                    <View>
-                                        <CustomText isBold style={styles.sub_text}>Month</CustomText>
-                                        <TextInputWithTitle
-                                            iconSize={moderateScale(20, 0.3)}
-                                            color={Color.blue}
-                                            placeholder={'01'}
-                                            placeholderColor={Color.grey}
-                                            viewWidth={0.25}
-                                            marginTop={moderateScale(10, 0.3)}
-                                            style={styles.text_input}
-                                            backgroundColor={Color.lightGrey}
-                                            setText={setMonth}
-                                            value={month}
-                                        />
-                                    </View>
-                                    <View>
-                                        <CustomText isBold style={styles.sub_text}>Year</CustomText>
-                                        <TextInputWithTitle
-                                            iconSize={moderateScale(20, 0.3)}
-                                            color={Color.blue}
-                                            placeholder={'1999'}
-                                            placeholderColor={Color.grey}
-                                            viewWidth={0.25}
-                                            marginTop={moderateScale(10, 0.3)}
-                                            style={styles.text_input}
-                                            backgroundColor={Color.lightGrey}
-                                            setText={setYear}
-                                            value={year}
-                                        />
-                                    </View>
-                                </View>
-                                <CustomText isBold style={styles.text}>Phone Number :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your Phone Number'}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setphone}
-                                    value={phone}
-                                />
-                            </>
-                        }
-                    </View>
-                    <View style={[styles.btn_view, {
-                        height: summary === true ? windowHeight * 0.11 : windowHeight * 0.36,
-                        marginTop: moderateScale(15, 0.6)
-                    }]}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                        }}>
-                            <View>
-                                <CustomText isBold style={styles.btn_txt}>Summary</CustomText>
-                                <CustomText style={[styles.btn_sub_txt, {
-                                    color: Color.veryLightGray,
-                                    width: windowWidth * 0.8
-                                }]}>Enter a brief description of your professional background of your choosen specific skill.</CustomText>
-                            </View>
-                            <Icon name='down' onPress={() => setSummary(!summary)} as={AntDesign} color={Color.black} size={moderateScale(18, 0.6)} />
-                        </View>
-                        {summary === false &&
-                            <>
-                                <CustomText isBold style={styles.text}>Summary :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Details'}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    viewHeight={0.2}
-                                    inputHeight={windowHeight * 0.195}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setDetails}
-                                    value={details}
-                                    multiline
-                                />
-                            </>
-                        }
-                    </View> */}
-          <View
-            style={[
-              styles.btn_view,
-              {
-                height:
-                  skillVisible === true
-                    ? windowHeight * 0.11
-                    : skills.length > 1
-                    ? windowWidth * 0.78
-                    : windowHeight * 0.3,
-                marginTop: moderateScale(15, 0.6),
-              },
-            ]}>
+          {tamplateType === 'checklist' ? (
+
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-              }}>
-              <View>    
-                <CustomText isBold style={styles.btn_txt}>
-                  document
-                </CustomText>
-                <CustomText
-                  style={[
-                    styles.btn_sub_txt,
-                    {
-                      color: Color.veryLightGray,
-                      width: windowWidth * 0.8,
-                    },
-                  ]}>
-                  Enter a skill with is match from professional background.
-                </CustomText>
+              style={[
+                styles.btn_view,
+                {
+                  height:
+                    skillVisible === true
+                      ? windowHeight * 0.11
+                      : skills.length > 1
+                        ? windowWidth * 0.78
+                        : windowHeight * 0.3,
+                  marginTop: moderateScale(15, 0.6),
+                },
+              ]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                }}>
+                <View>
+                  <CustomText isBold style={styles.btn_txt}>
+                    document
+                  </CustomText>
+                  <CustomText
+                    style={[
+                      styles.btn_sub_txt,
+                      {
+                        color: Color.veryLightGray,
+                        width: windowWidth * 0.8,
+                      },
+                    ]}>
+                    Enter a skill with is match from professional background.
+                  </CustomText>
+                </View>
+                <Icon
+                  name="down"
+                  onPress={() => setSkillVisible(!skillVisible)}
+                  as={AntDesign}
+                  color={Color.black}
+                  size={moderateScale(18, 0.6)}
+                />
               </View>
-              <Icon
-                name="down"
-                onPress={() => setSkillVisible(!skillVisible)}
-                as={AntDesign}
-                color={Color.black}
-                size={moderateScale(18, 0.6)}
-              />
-            </View>
-            {skillVisible === false && (
-              <>
-                <FlatList
-                  numColumns={3}
-                  data={skills}
-                  renderItem={({item}) => {
-                    return (
-                      <View
-                        style={{
-                          backgroundColor: Color.lightGrey,
-                        //   width: windowWidth * 0.26,
-                        padding :moderateScale(2,.6) ,
-                          marginRight: moderateScale(10, 0.6),
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          height: moderateScale(30, 0.6),
-                          borderRadius: moderateScale(30, 0.6),
-                          marginTop: moderateScale(6, 0.6),
-                          flexDirection: 'row',
-                          paddingHorizontal: moderateScale(8, 0.6),
-                        }}>
-                        <CustomText
+              {skillVisible === false && (
+                <>
+                  <FlatList
+                    numColumns={3}
+                    data={skills}
+                    renderItem={({ item }) => {
+                      return (
+                        <View
                           style={{
-                            color: Color.blue,
-                            fontSize: moderateScale(10, 0.6),
+                            backgroundColor: Color.lightGrey,
+                            padding: moderateScale(2, .6),
+                            marginRight: moderateScale(10, 0.6),
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            height: moderateScale(30, 0.6),
+                            borderRadius: moderateScale(30, 0.6),
+                            marginTop: moderateScale(6, 0.6),
+                            flexDirection: 'row',
+                            paddingHorizontal: moderateScale(8, 0.6),
                           }}>
-                          {item}
-                        </CustomText>
-                        <Icon
-                          name="cross"
-                          as={Entypo}
-                          color={Color.red}
-                          size={moderateScale(18, 0.6)}
-                        />
-                      </View>
-                    );
+                          <CustomText
+                            style={{
+                              color: Color.blue,
+                              fontSize: moderateScale(10, 0.6),
+                            }}>
+                            {item}
+                          </CustomText>
+                          <Icon
+                            name="cross"
+                            as={Entypo}
+                            color={Color.red}
+                            size={moderateScale(18, 0.6)}
+                          />
+                        </View>
+                      );
+                    }}
+                  />
+                  <TextInputWithTitle
+                    iconSize={moderateScale(20, 0.3)}
+                    color={Color.blue}
+                    placeholder={'Add Document Name'}
+                    placeholderColor={Color.grey}
+                    viewWidth={0.84}
+                    marginTop={moderateScale(10, 0.3)}
+                    style={styles.text_input}
+                    backgroundColor={Color.lightGrey}
+                    setText={setSkillVal}
+                    value={skillsVal}
+                  />
+                  <CustomButton
+                    text={'Add'}
+                    textColor={Color.white}
+                    onPress={() => {
+                      console.log('first', skills);
+                      setSkill([...skills, skillsVal]);
+                    }}
+                    width={windowWidth * 0.4}
+                    height={windowHeight * 0.06}
+                    borderRadius={moderateScale(20, 0.3)}
+                    bgColor={Color.darkBlue}
+                    marginTop={moderateScale(10, 0.6)}
+                  />
+                </>
+              )}
+            </View>
+          ) : (
+            <>
+              <View>
+                <CustomText isBold style={[styles.text, {
+                  color: Color.white
+                }]}>
+                  company Logo :
+                </CustomText>
+                <TouchableOpacity
+                  onPress={() => setLogoImageModal(true)}
+                  style={{
+                    width: windowWidth * 0.3,
+                    height: windowWidth * 0.3,
+                    backgroundColor: Color.lightGrey,
+                    borderRadius: moderateScale(10, 0.6),
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
-                />
-                <TextInputWithTitle
-                  iconSize={moderateScale(20, 0.3)}
-                  color={Color.blue}
-                  placeholder={'Add Document Name'}
-                  placeholderColor={Color.grey}
-                  viewWidth={0.84}
-                  marginTop={moderateScale(10, 0.3)}
-                  style={styles.text_input}
-                  backgroundColor={Color.lightGrey}
-                  setText={setSkillVal}
-                  value={skillsVal}
-                />
-                <CustomButton
-                  text={'Add'}
-                  textColor={Color.white}
-                  onPress={() => {
-                    console.log('first', skills);
-                    setSkill([...skills, skillsVal]);
-                    // setSkill([...skills, { id: uuidv4(), value: skillsVal }])
-                  }}
-                  width={windowWidth * 0.4}
-                  height={windowHeight * 0.06}
-                  borderRadius={moderateScale(20, 0.3)}
-                  bgColor={Color.darkBlue}
-                  marginTop={moderateScale(10, 0.6)}
-                />
-              </>
-            )}
-          </View>
-          {/* <View style={[styles.btn_view, {
-                        height: education === true ? windowHeight * 0.11 : windowHeight * 0.5,
-                        marginTop: moderateScale(15, 0.6)
-                    }]}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                        }}>
-                            <View>
-                                <CustomText isBold style={styles.btn_txt}>Education</CustomText>
-                                <CustomText style={[styles.btn_sub_txt, {
-                                    color: Color.veryLightGray,
-                                    width: windowWidth * 0.8
-                                }]}>Enter description of your degress</CustomText>
-                            </View>
-                            <Icon name='down' onPress={() => seteducation(!education)} as={AntDesign} color={Color.black} size={moderateScale(18, 0.6)} />
-                        </View>
-                        {education === false &&
-                            <>
-                                <CustomText isBold style={styles.text}>Degree Name :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your degree name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setDegreeName}
-                                    value={degreeName}
-                                />
-                                <CustomText isBold style={styles.text}>Place Name</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter Place name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setdegreePlaceName}
-                                    value={degreePlaceName}
-                                />
-                                <CustomText isBold style={styles.text}>Year</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter Year '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setdegreeYear}
-                                    value={degreeYear}
-                                />
-                                <CustomButton
-                                    text={'Add Education'}
-                                    textColor={Color.white}
-                                    onPress={() => {
-                                        console.log("first", skills);
-                                        setSkill([...skills, skillsVal])
-                                    }} width={windowWidth * 0.7}
-                                    height={windowHeight * 0.060}
-                                    borderRadius={moderateScale(20, 0.3)}
-                                    bgColor={Color.darkBlue}
-                                    marginTop={moderateScale(20, 0.6)}
-                                />
-                            </>
-                        }
-                    </View>
-                    <View style={[styles.btn_view, {
-                        height: experience === true ? windowHeight * 0.11 : windowHeight * 0.75,
-                        marginTop: moderateScale(15, 0.6)
-                    }]}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                        }}>
-                            <View>
-                                <CustomText isBold style={styles.btn_txt}>Experience</CustomText>
-                                <CustomText style={[styles.btn_sub_txt, {
-                                    color: Color.veryLightGray,
-                                    width: windowWidth * 0.8
-                                }]}>Enter description of your Experience</CustomText>
-                            </View>
-                            <Icon name='down' onPress={() => setexperience(!experience)} as={AntDesign} color={Color.black} size={moderateScale(18, 0.6)} />
-                        </View>
-                        {experience === false &&
-                            <>
-                                <CustomText isBold style={styles.text}>Positon Name</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your Positon name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setpositonName}
-                                    value={positonName}
-                                />
-                                <CustomText isBold style={styles.text}>Place Name</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter Place name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setexperiencePlaceName}
-                                    value={experiencePlaceName}
-                                />
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View>
-                                        <CustomText isBold style={styles.text}>Date of Joining</CustomText>
-                                        <TextInputWithTitle
-                                            iconSize={moderateScale(20, 0.3)}
-                                            color={Color.blue}
-                                            placeholder={'Enter Joining '}
-                                            placeholderColor={Color.grey}
-                                            viewWidth={0.42}
-                                            marginTop={moderateScale(10, 0.3)}
-                                            style={styles.text_input}
-                                            backgroundColor={Color.lightGrey}
-                                            setText={setDateofJoining}
-                                            value={DateofJoining}
-                                        />
-                                    </View>
-                                    <View style={{ marginLeft: moderateScale(10, 0.6) }}>
-                                        <CustomText isBold style={styles.text}>Date of Ending</CustomText>
-                                        <TextInputWithTitle
-                                            iconSize={moderateScale(20, 0.3)}
-                                            color={Color.blue}
-                                            placeholder={'Enter ending '}
-                                            placeholderColor={Color.grey}
-                                            viewWidth={0.42}
-                                            marginTop={moderateScale(10, 0.3)}
-                                            style={styles.text_input}
-                                            backgroundColor={Color.lightGrey}
-                                            setText={setDateofEnding}
-                                            value={DateofEnding}
-                                        />
-                                    </View>
-                                </View>
-                                <CustomText isBold style={styles.text}>Summary :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Details'}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    viewHeight={0.2}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setsummaryDetails}
-                                    value={summaryDetails}
-                                    multiline
-                                />
-                                <CustomButton
-                                    text={'Add Experience'}
-                                    textColor={Color.white}
-                                    onPress={() => {
-                                        console.log("first", skills);
-                                        setSkill([...skills, skillsVal])
-                                    }} width={windowWidth * 0.7}
-                                    height={windowHeight * 0.060}
-                                    borderRadius={moderateScale(20, 0.3)}
-                                    bgColor={Color.darkBlue}
-                                    marginTop={moderateScale(20, 0.6)}
-                                />
-                            </>
-                        }
-                    </View> */}
-          {/* <View style={[styles.btn_view, {
-                        height: Certificate === true ? windowHeight * 0.11 : windowHeight * 0.45,
-                        marginTop: moderateScale(15, 0.6)
-                    }]}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                        }}>
-                            <View>
-                                <CustomText isBold style={styles.btn_txt}>Certification</CustomText>
-                                <CustomText style={[styles.btn_sub_txt, {
-                                    color: Color.veryLightGray,
-                                    width: windowWidth * 0.8
-                                }]}>Enter description of your Certification</CustomText>
-                            </View>
-                            <Icon name='down' onPress={() => setCertificate(!Certificate)} as={AntDesign} color={Color.black} size={moderateScale(18, 0.6)} />
-                        </View>
-                        {Certificate === false &&
-                            <>
-                                <CustomText isBold style={styles.text}>Certificate Name :</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter your degree name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setCertificateName}
-                                    value={CertificateName}
-                                />
-                                <CustomText isBold style={styles.text}>Certificate Place Name</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter Place name '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setCertificatPlaceName}
-                                    value={CertificatePlaceName}
-                                />
-                                <CustomText isBold style={styles.text}>Year</CustomText>
-                                <TextInputWithTitle
-                                    iconSize={moderateScale(20, 0.3)}
-                                    color={Color.blue}
-                                    placeholder={'Enter Year '}
-                                    placeholderColor={Color.grey}
-                                    viewWidth={0.84}
-                                    marginTop={moderateScale(10, 0.3)}
-                                    style={styles.text_input}
-                                    backgroundColor={Color.lightGrey}
-                                    setText={setCertificatYear}
-                                    value={CertificatYear}
-                                />
-                            </>
-                        }
-                    </View> */}
+                >
+                  <CustomImage
+                    source={{ uri: image?.uri }}
+                    style={{ width: '100%', height: '100%', backgroundColor: 'red' }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <CustomText isBold style={[styles.text, {
+                color: Color.white
+              }]}>
+                company Name :
+              </CustomText>
+              <TextInputWithTitle
+                iconSize={moderateScale(20, 0.3)}
+                color={Color.blue}
+                placeholder={'Enter your company name '}
+                placeholderColor={Color.grey}
+                viewWidth={0.84}
+                marginTop={moderateScale(10, 0.3)}
+                style={styles.text_input}
+                backgroundColor={Color.lightGrey}
+                setText={setCompanyName}
+                value={companyName}
+              />
+              <View
+                style={[
+                  styles.btn_view,
+                  {
+                    height:
+                      skillVisible === true
+                        ? windowHeight * 0.11
+                        : skills.length > 1
+                          ? windowWidth * 0.78
+                          : windowHeight * 0.3,
+                    marginTop: moderateScale(15, 0.6),
+                  },
+                ]}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                  }}>
+                  <View>
+                    <CustomText isBold style={styles.btn_txt}>
+                      Question
+                    </CustomText>
+                    <CustomText
+                      style={[
+                        styles.btn_sub_txt,
+                        {
+                          color: Color.veryLightGray,
+                          width: windowWidth * 0.8,
+                        },
+                      ]}>
+                      Enter a Question with is match from Survey form.
+                    </CustomText>
+                  </View>
+                  <Icon
+                    name="down"
+                    onPress={() => setSkillVisible(!skillVisible)}
+                    as={AntDesign}
+                    color={Color.black}
+                    size={moderateScale(18, 0.6)}
+                  />
+                </View>
+                {skillVisible === false && (
+                  <>
+                    <FlatList
+                      data={skills}
+                      renderItem={({ item }) => {
+                        return (
+                          <View
+                            style={{
+                              backgroundColor: Color.lightGrey,
+                              padding: moderateScale(2, .6),
+                              marginRight: moderateScale(10, 0.6),
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              height: moderateScale(30, 0.6),
+                              borderRadius: moderateScale(30, 0.6),
+                              marginTop: moderateScale(6, 0.6),
+                              flexDirection: 'row',
+                              paddingHorizontal: moderateScale(8, 0.6),
+                            }}>
+                            <CustomText
+                              style={{
+                                color: Color.blue,
+                                fontSize: moderateScale(10, 0.6),
+                              }}>
+                              {item}
+                            </CustomText>
+                            <Icon
+                              name="cross"
+                              as={Entypo}
+                              color={Color.red}
+                              size={moderateScale(18, 0.6)}
+                            />
+                          </View>
+                        );
+                      }}
+                    />
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'Add Document Name'}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setSkillVal}
+                      value={skillsVal}
+                    />
+                    <CustomButton
+                      text={'Add'}
+                      textColor={Color.white}
+                      onPress={() => {
+                        console.log('first', skills);
+                        setSkill([...skills, skillsVal]);
+                      }}
+                      width={windowWidth * 0.4}
+                      height={windowHeight * 0.06}
+                      borderRadius={moderateScale(20, 0.3)}
+                      bgColor={Color.darkBlue}
+                      marginTop={moderateScale(10, 0.6)}
+                    />
+                  </>
+                )}
+              </View>
+              <View
+                style={[
+                  styles.btn_view,
+                  {
+                    height:
+                      optionsVisible === true
+                        ? windowHeight * 0.11
+                        : options.length > 1
+                          ? windowWidth * 0.78
+                          : windowHeight * 0.3,
+                    marginTop: moderateScale(15, 0.6),
+                  },
+                ]}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                  }}>
+                  <View>
+                    <CustomText isBold style={styles.btn_txt}>
+                      options
+                    </CustomText>
+                    <CustomText
+                      style={[
+                        styles.btn_sub_txt,
+                        {
+                          color: Color.veryLightGray,
+                          width: windowWidth * 0.8,
+                        },
+                      ]}>
+                      Enter a option with is match from Survey form.
+                    </CustomText>
+                  </View>
+                  <Icon
+                    name="down"
+                    onPress={() => setOptionsVisible(!optionsVisible)}
+                    as={AntDesign}
+                    color={Color.black}
+                    size={moderateScale(18, 0.6)}
+                  />
+                </View>
+                {optionsVisible === false && (
+                  <>
+                    <FlatList
+                      data={options}
+                      renderItem={({ item }) => {
+                        return (
+                          <View
+                            style={{
+                              backgroundColor: Color.lightGrey,
+                              padding: moderateScale(2, .6),
+                              marginRight: moderateScale(10, 0.6),
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              height: moderateScale(30, 0.6),
+                              borderRadius: moderateScale(30, 0.6),
+                              marginTop: moderateScale(6, 0.6),
+                              flexDirection: 'row',
+                              paddingHorizontal: moderateScale(8, 0.6),
+                            }}>
+                            <CustomText
+                              style={{
+                                color: Color.blue,
+                                fontSize: moderateScale(10, 0.6),
+                              }}>
+                              {item}
+                            </CustomText>
+                            <Icon
+                              name="cross"
+                              as={Entypo}
+                              color={Color.red}
+                              size={moderateScale(18, 0.6)}
+                            />
+                          </View>
+                        );
+                      }}
+                    />
+                    <TextInputWithTitle
+                      iconSize={moderateScale(20, 0.3)}
+                      color={Color.blue}
+                      placeholder={'Add Options Name'}
+                      placeholderColor={Color.grey}
+                      viewWidth={0.84}
+                      marginTop={moderateScale(10, 0.3)}
+                      style={styles.text_input}
+                      backgroundColor={Color.lightGrey}
+                      setText={setoptionsVal}
+                      value={optionsVal}
+                    />
+                    <CustomButton
+                      text={'Add'}
+                      textColor={Color.white}
+                      onPress={() => {
+                        setOptions([...options, optionsVal]);
+                      }}
+                      width={windowWidth * 0.4}
+                      height={windowHeight * 0.06}
+                      borderRadius={moderateScale(20, 0.3)}
+                      bgColor={Color.darkBlue}
+                      marginTop={moderateScale(10, 0.6)}
+                    />
+                  </>
+                )}
+              </View>
+            </>
+          )
+          }
+
           <CustomButton
             text={
               loading ? (
@@ -645,6 +486,11 @@ const ChecklistForm = () => {
           />
         </ScrollView>
       </View>
+      <ImagePickerModal
+        show={logoImageModal}
+        setShow={setLogoImageModal}
+        setFileObject={setImage}
+      />
     </ImageBackground>
   );
 };

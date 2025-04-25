@@ -156,15 +156,17 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email.jpeg'),
-      type: 'simpleEmail'
+      type: 'simpleEmail',
+      tamplateType: 'simpleEmail'
     },
     {
       id: 2,
-      heading: 'Creative',
+      heading: 'WelCome Email',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email_tamplate2.jpeg'),
-      type: 'companyEmail'
+      type: 'email',
+      tamplateType: 'companyEmail'
     },
     {
       id: 3,
@@ -172,6 +174,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email-temp.jpeg'),
+
     },
   ];
   const survayForm = [
@@ -181,7 +184,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/form_image.png'),
-      // templeteType : 
+      templeteType: 'SurveyForm'
     },
     {
       id: 2,
@@ -189,6 +192,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/customer_survey.jpeg'),
+      templeteType: 'customerForm'
     },
     {
       id: 3,
@@ -196,6 +200,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/feedback_form.jpeg'),
+      templeteType: 'feedbackForm'
     },
     {
       id: 4,
@@ -203,6 +208,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/feedback_form2.jpeg'),
+      templeteType: 'progressForm'
     },
     {
       id: 5,
@@ -210,6 +216,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/checklist.jpeg'),
+      templeteType: 'checklist',
       type: 'checklist',
     }
   ]
@@ -435,6 +442,7 @@ const Home = () => {
                           detailData: item,
                           data: item?.image,
                           type: selectedCategoty?.text,
+                          tamplateType: item?.tamplateType
                         })
                       }
                       style={styles.card}>
@@ -445,6 +453,7 @@ const Home = () => {
                               detailData: item,
                               data: item?.image,
                               type: selectedCategoty?.text,
+                              tamplateType: item?.tamplateType
                             })
                           }
                           source={item?.image}

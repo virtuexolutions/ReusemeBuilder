@@ -6,7 +6,9 @@ import { moderateScale } from 'react-native-size-matters'
 import CustomText from '../Components/CustomText'
 import Color from '../Assets/Utilities/Color'
 
-const FeedBackForm = () => {
+const FeedBackForm = props => {
+    const data = props?.route?.params?.data;
+    console.log("🚀FeedBackForm ~ data:", data)
     const [answers, setAnswers] = useState({});
     const handleSelect = (qIndex, option) => {
         setAnswers({ ...answers, [qIndex]: option });
@@ -72,14 +74,14 @@ const FeedBackForm = () => {
                                         alignItems: 'center',
                                         paddingVertical: 10
                                     }}>
-                                        {options.map((option, index) => (
+                                        {data?.options?.map((option, index) => (
                                             <CustomText key={index} style={{ color: Color.black, fontSize: 10 }}>
                                                 {option}
                                             </CustomText>
                                         ))}
                                     </View>
                                 </View>
-                                {surveyQuestions.map((item, index) => {
+                                {data?.skills.map((item, index) => {
                                     return (
                                         <View style={{
                                             flexDirection: 'row',
@@ -114,13 +116,6 @@ const FeedBackForm = () => {
                                         </View>
                                     )
                                 })}
-                                {/* <FlatList
-                                    data={surveyQuestions}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={renderQuestion}
-                                    scrollEnabled={false}
-                                    contentContainerStyle={{ padding: 10 }}
-                                /> */}
                             </View>
 
                             <CustomText isBold style={styles.feedbackLabel}>How else can we improve?</CustomText>
@@ -182,6 +177,7 @@ const styles = StyleSheet.create({
         // marginTop: moderateScale(20),
         marginBottom: moderateScale(10),
         alignSelf: 'center',
+
     },
     textarea: {
         width: '80%',
@@ -190,6 +186,6 @@ const styles = StyleSheet.create({
         borderColor: Color.black,
         marginBottom: moderateScale(20),
         marginTop: moderateScale(10, 0.6),
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
 })

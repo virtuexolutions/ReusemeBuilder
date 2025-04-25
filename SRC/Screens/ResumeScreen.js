@@ -9,10 +9,12 @@ import navigationService from '../navigationService';
 
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
+  console.log("🚀 ~ data:", data)
   const detailData = props?.route?.params?.detailData;
+  console.log("🚀 ~ detailData:", detailData)
   const category = props?.route?.params?.type;
   const tamplateType = props?.route?.params?.tamplateType;
-  console.log("🚀 ~ tamplateType:", tamplateType)
+  console.log(" ResumeScreen 🚀 ~ tamplateType:", tamplateType)
 
   return (
     <ImageBackground
@@ -48,7 +50,7 @@ const ResumeScreen = props => {
             } else if (category === 'career') {
               navigationService.navigate('EditBlogPost', { data: data });
             } else if (category === 'survay') {
-              navigationService.navigate('ChecklistForm', { data: data , type: '' });
+              navigationService.navigate('ChecklistForm', { data: detailData, type: tamplateType, tamplateType: detailData?.templeteType });
             } else {
               navigationService.navigate('EditCoverLetter', {
                 data: data,

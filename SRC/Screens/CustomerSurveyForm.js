@@ -21,7 +21,9 @@ const options = ['Very Bad', 'Bad', 'Neutral', 'Good', 'Excellent'];
 
 
 
-const CustomerSurveyForm = () => {
+const CustomerSurveyForm = props => {
+    const data = props?.route?.params?.data;
+    console.log("🚀 ~ data:", data)
     const [answers, setAnswers] = useState({});
     const handleSelect = (qIndex, option) => {
         setAnswers({ ...answers, [qIndex]: option });
@@ -103,7 +105,7 @@ const CustomerSurveyForm = () => {
                                     alignItems: 'center',
                                     paddingVertical: 10
                                 }}>
-                                    {options.map((option, index) => (
+                                    {data?.options.map((option, index) => (
                                         <CustomText key={index} style={{ color: Color.black, fontSize: 10 }}>
                                             {option}
                                         </CustomText>
@@ -112,7 +114,7 @@ const CustomerSurveyForm = () => {
                             </View>
 
                             <FlatList
-                                data={surveyQuestions}
+                                data={data?.skills}
                                 keyExtractor={(item, index) => index.toString()}
                                 renderItem={renderQuestion}
                                 scrollEnabled={false}
@@ -121,6 +123,9 @@ const CustomerSurveyForm = () => {
                         </View>
 
                         <CustomText isBold style={styles.feedbackLabel}>How else can we improve?</CustomText>
+                        <View style={[styles.textarea, {
+                            bottom: 100
+                        }]} />
                         <View style={styles.textarea} />
 
                         <CustomText isBold style={styles.footerText}>Thank you for your feedback</CustomText>
@@ -189,9 +194,11 @@ const styles = StyleSheet.create({
     },
     feedbackLabel: {
         fontSize: moderateScale(14),
-        // marginTop: moderateScale(20),
         marginBottom: moderateScale(10),
         alignSelf: 'flex-start',
+        position: 'absolute',
+        bottom: 150,
+        left: 50
     },
     textarea: {
         width: '100%',
@@ -199,10 +206,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         marginBottom: moderateScale(20),
-        marginTop: moderateScale(10, 0.6)
+        marginTop: moderateScale(10, 0.6),
+        position: 'absolute',
+        bottom: 60
     },
     footerText: {
         fontSize: moderateScale(14),
         marginTop: moderateScale(20),
+        position: 'absolute',
+        bottom: 30
     },
 })

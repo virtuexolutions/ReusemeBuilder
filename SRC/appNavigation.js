@@ -1,10 +1,10 @@
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import {enableScreens} from 'react-native-screens';
-import {moderateScale} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
+import { enableScreens } from 'react-native-screens';
+import { moderateScale } from 'react-native-size-matters';
+import { useSelector } from 'react-redux';
 import Drawer from './Drawer/Drawer';
 import navigationService from './navigationService';
 import ChangePassword from './Screens/ChangePassword';
@@ -32,6 +32,7 @@ import FeedBackForm from './Screens/FeedBackForm';
 import ProgressFeedback from './Screens/ProgressFeedback';
 import ChecklistScreen from './Screens/ChecklistScreen';
 import ChecklistForm from './Screens/ChecklistForm';
+import SurvaryForm from './Screens/SurvaryForm';
 // import SavedTemplates from './Screens/SavedTemplates';
 // import SurvaryForm from './Screens/SurvaryForm';
 // import EditSurveyForm from './Screens/EditSurveyForm';
@@ -49,8 +50,8 @@ const AppNavigator = () => {
       walkThrough == false
         ? 'WalkthroughScreen'
         : token == null
-        ? 'LoginScreen'
-        : // ? 'Start'
+          ? 'LoginScreen'
+          : // ? 'Start'
           'Home';
 
     return (
@@ -58,7 +59,7 @@ const AppNavigator = () => {
         <RootNav.Navigator
           initialRouteName={firstScreen}
           // initialRouteName={'ChecklistForm'}
-          screenOptions={{headerShown: false}}>
+          screenOptions={{ headerShown: false }}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
             name="WalkthroughScreen"
@@ -73,7 +74,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="VerifyEmail" component={VerifyEmail} />
           <RootNav.Screen name="FinalBlogPost" component={FinalBlogPost} />
           <RootNav.Screen name="ChecklistForm" component={ChecklistForm} />
-
+          <RootNav.Screen name="SurvaryForm" component={SurvaryForm} />
           <RootNav.Screen
             name="OnboardingScreen"
             component={OnboardingScreen}

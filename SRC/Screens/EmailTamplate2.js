@@ -5,8 +5,12 @@ import { windowHeight, windowWidth } from '../Utillity/utils'
 import { moderateScale } from 'react-native-size-matters'
 import CustomText from '../Components/CustomText'
 import CustomImage from '../Components/CustomImage'
+import Color from '../Assets/Utilities/Color'
 
-const EmailTamplate2 = () => {
+const EmailTamplate2 = props => {
+    const data = props?.route?.params?.data;
+    console.log("🚀 ~ data:", data)
+
     return (
         <ImageBackground
             style={styles.bg_container}
@@ -38,11 +42,11 @@ const EmailTamplate2 = () => {
                                     // marginTop:moderateScale(10,0.6)
                                 }
                             }>
-                                <CustomText numberOfLines={2} style={styles.subject_text}>{'Welcome to [Company NAme] - Your Journey Start Here!'}</CustomText>
+                                <CustomText numberOfLines={2} style={styles.subject_text}>{`Welcome to${' '} ${data?.companyName} - Your Journey Start Here!`}</CustomText>
                             </View>
                         </View>
                         <CustomText isBold style={styles.subject_text}>{"Dear Olivia"}</CustomText>
-                        <CustomText numberOfLines={2} style={styles.paragraph}>Welcome to [Company Name]! We're thrilled to have you join us as our new {`{Job Title}`} starting on {`{Start Date}`}.</CustomText>
+                        <CustomText numberOfLines={2} style={styles.paragraph}>{`Welcome to ${''} ${data?.companyName}! We're thrilled to have you join us as our new ${data?.positonName} starting on ${data?.startDate}`}.</CustomText>
                         <CustomText style={styles.paragraph}>To help you get started, we've created a personalized pre-onboarding portal for you.
                             Please take a moment to complete the following tasks before your first day:</CustomText>
                         <View style={styles.list}>
@@ -51,11 +55,11 @@ const EmailTamplate2 = () => {
                             <CustomText style={styles.listItem}>3. Explore resources about our company, culture, and benefits.</CustomText>
                         </View>
                         <CustomText style={styles.paragraph}>
-                            Access your portal here: <CustomText style={styles.link}>[Link to Portal]</CustomText>
+                            Access your portal here: <CustomText style={styles.link}>{data?.companyAddress}</CustomText>
                         </CustomText>
 
                         <CustomText style={styles.paragraph}>
-                            If you have any questions, don't hesitate to reach out to {`{HR Contact Name}`} at {`{HR Contact Email}`}.
+                            {`If you have any questions, don't hesitate to reach out to ${data?.managerName} at ${data?.managerEmail}.`}
                         </CustomText>
 
                         <CustomText style={styles.paragraph}>
@@ -64,12 +68,12 @@ const EmailTamplate2 = () => {
 
                         <CustomText style={styles.closing}>Best regards,</CustomText>
 
-                        <CustomText style={styles.signature}>{`{Manager Name}`}</CustomText>
-                        <CustomText style={styles.signature}>{`{Manager Title}`}</CustomText>
+                        <CustomText style={styles.signature}>{`${data?.managerName}`}</CustomText>
+                        <CustomText style={styles.signature}>{`${data?.managerEmail}`}</CustomText>
                         <View style={{
                             width: windowWidth * 0.3,
                             height: windowWidth * 0.3,
-                            backgroundColor: 'red',
+                            backgroundColor: Color.lightGrey,
                             position: "absolute",
                             right: 20,
                             bottom: 40
@@ -77,7 +81,7 @@ const EmailTamplate2 = () => {
                             <CustomImage style={{
                                 width: '100%',
                                 height: "100%"
-                            }} source={require('../Assets/Images/dummyman5.png')} />
+                            }} source={{ uri: data?.image }} />
                         </View>
                     </View>
                 </ScrollView>

@@ -7,7 +7,8 @@ import CustomText from '../Components/CustomText'
 import Color from '../Assets/Utilities/Color'
 import { mode } from 'native-base/lib/typescript/theme/tools'
 
-const ProgressFeedback = () => {
+const ProgressFeedback = props => {
+    const data = props?.route?.params?.data;
     return (
         <ImageBackground
             style={styles.bg_container}
