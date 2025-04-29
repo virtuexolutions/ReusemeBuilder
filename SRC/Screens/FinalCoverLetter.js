@@ -7,26 +7,36 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import React, { useState } from 'react';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import {moderateScale} from 'react-native-size-matters';
-import {Icon} from 'native-base';
+import { moderateScale } from 'react-native-size-matters';
+import { Icon } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 
 const FinalCoverLetter = props => {
   const data = props?.route?.params?.data;
+  const token = useSelector(state => state.authReducer.token);
+
+  const onPressSave = async () => {
+    const url = 'auth/cover-letter'
+    const response = await Post(url, data, apiHeader(token))
+    console.log("🚀 ~ onPressSave ~ response:", response?.data)
+  }
+
   return (
     <ImageBackground
       style={styles.bg_container}
       source={require('../Assets/Images/bg.png')}>
-      <Header title={'Edit cover letter'} hideUser={true} showBack={true} />
+      <Header title={' cover letter'} hideUser={true} showBack={true} />
       <View style={styles.main_view}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ImageBackground
@@ -125,13 +135,12 @@ const FinalCoverLetter = props => {
               </CustomText>
             </View>
           </ImageBackground>
-
           <CustomButton
             text={'confirm'}
             textColor={Color.darkBlue}
             onPress={() => {
-              navigationService.navigate('Home');
-              // onPressConfirm();
+              // navigationService.navigate('Home');
+              onPressSave();
             }}
             width={windowWidth * 0.8}
             height={windowHeight * 0.06}

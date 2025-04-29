@@ -1,17 +1,21 @@
 import { FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../Components/Header'
-import { windowHeight, windowWidth } from '../Utillity/utils'
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils'
 import Color from '../Assets/Utilities/Color'
 import { moderateScale } from 'react-native-size-matters'
 import CustomText from '../Components/CustomText'
 import { ZStack } from 'native-base'
 import { Rating } from 'react-native-ratings'
 import TextInputWithTitle from '../Components/TextInputWithTitle'
+import { Post } from '../Axios/AxiosInterceptorFunction'
+import { useSelector } from 'react-redux'
 
 const SurvaryForm = () => {
     const [answers, setAnswers] = useState({});
     console.log("🚀 ~ SurvaryForm ~ answers:", answers)
+    const token = useSelector(state => state.authReducer.token);
+    const [loading, setLoading] = useState(false)
 
     const questions = [
         {
@@ -75,6 +79,22 @@ const SurvaryForm = () => {
             text: 'What suggestions do you have to improve our onboarding process?',
         },
     ];
+
+
+    const onPressSave = async () => {
+        const url = 'auth/survey'
+        const body = {
+            question: data?.skills,
+            options: data?.skills
+        }
+        setLoading(true)
+        const response = await Post(url, body, apiHeader(token))
+        console.log("🚀 ~ onPressSave ~ response:", response?.data)
+        setLoading(false)
+        if (response?.data != undefined) {
+            navigationService.navigate("Home")
+        }
+    }
 
     const handleAnswer = (id, value) => {
         setAnswers(prev => ({ ...prev, [id]: value }));

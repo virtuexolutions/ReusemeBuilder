@@ -1,30 +1,52 @@
 import {
+  ActivityIndicator,
   ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import CustomText from '../Components/CustomText';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
-import {moderateScale} from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import Header from '../Components/Header';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import CustomButton from '../Components/CustomButton';
+import { useSelector } from 'react-redux';
 
 const ChecklistScreen = props => {
   const data = props?.route?.params?.data;
-  console.log('🚀 ~ data:', data?.skills);
+  console.log('🚀ChecklistScreen ~ data:', data?.skills);
+  const [loading, setLoading] = useState(false)
   const tableData = [
-    {no: 1, document: 'Tax Forms', response: 'Submitted'},
-    {no: 2, document: 'Certifications', response: 'Submitted'},
-    {no: 3, document: 'Tax Forms', response: 'Not Submitted'},
-    {no: 4, document: 'Certifications', response: 'Not Submitted'},
-    {no: 5, document: 'Tax Forms', response: 'Valid'},
-    {no: 6, document: 'Certifications', response: 'Valid'},
-    {no: 7, document: 'Tax Forms', response: 'Expiring on 01-11-2025'},
-    {no: 8, document: 'Certifications', response: 'Expiring on 01-11-2025'},
+    { no: 1, document: 'Tax Forms', response: 'Submitted' },
+    { no: 2, document: 'Certifications', response: 'Submitted' },
+    { no: 3, document: 'Tax Forms', response: 'Not Submitted' },
+    { no: 4, document: 'Certifications', response: 'Not Submitted' },
+    { no: 5, document: 'Tax Forms', response: 'Valid' },
+    { no: 6, document: 'Certifications', response: 'Valid' },
+    { no: 7, document: 'Tax Forms', response: 'Expiring on 01-11-2025' },
+    { no: 8, document: 'Certifications', response: 'Expiring on 01-11-2025' },
   ];
+  const token = useSelector(state => state.authReducer.token);
+
+  const onPressSave = async () => {
+    const url = 'auth/survey'
+    const body = {
+      question: data?.skills,
+      options: data?.skills
+    }
+    setLoading(true)
+    const response = await Post(url, body, apiHeader(token))
+    console.log("🚀 ~ onPressSave ~ response:", response?.data)
+    setLoading(false)
+    if (response?.data != undefined) {
+      navigationService.navigate("Home")
+    }
+  }
+
 
   return (
     <ImageBackground
@@ -49,14 +71,14 @@ const ChecklistScreen = props => {
               style={[
                 styles.cell,
                 styles.headerCell,
-                {width: windowWidth * 0.075},
+                { width: windowWidth * 0.075 },
               ]}>
               #
             </CustomText>
-            <CustomText style={[styles.cell, styles.headerCell, {flex: 3}]}>
+            <CustomText style={[styles.cell, styles.headerCell, { flex: 3 }]}>
               DOCUMENTS
             </CustomText>
-            <CustomText style={[styles.cell, styles.headerCell, {flex: 3}]}>
+            <CustomText style={[styles.cell, styles.headerCell, { flex: 3 }]}>
               RESPONSE
             </CustomText>
           </View>
@@ -65,19 +87,17 @@ const ChecklistScreen = props => {
           {data?.skills?.map((item, index) => {
             return (
               <View key={index} style={styles.tableRow}>
-                <CustomText style={[styles.cell, {width: windowWidth * 0.075}]}>
+                <CustomText style={[styles.cell, { width: windowWidth * 0.075 }]}>
                   {index + 1}
                 </CustomText>
-                <CustomText style={[styles.cell, {flex: 3}]}>{item}</CustomText>
-                <CustomText style={[styles.cell, {flex: 3}]}>
+                <CustomText style={[styles.cell, { flex: 3 }]}>{item}</CustomText>
+                <CustomText style={[styles.cell, { flex: 3 }]}>
                   {item.response}
                 </CustomText>
               </View>
             );
           })}
         </View>
-
-        {/* Compliance Status */}
         <View style={styles.complianceBox}>
           <CustomText style={styles.complianceLabel}>
             Compliance Status
@@ -87,6 +107,25 @@ const ChecklistScreen = props => {
           </CustomText>
         </View>
       </ScrollView>
+      <CustomButton
+        text={loading ? <ActivityIndicator
+          style={styles.indicatorStyle}
+          size="small"
+          color={Color.blue}
+        /> : 'Save'}
+        textColor={Color.darkBlue}
+        onPress={() => {
+          onPressSave()
+        }}
+        style={{
+          marginBottom: moderateScale(20, 0.6)
+        }}
+        width={windowWidth * 0.8}
+        height={windowHeight * 0.065}
+        borderRadius={moderateScale(20, 0.3)}
+        bgColor={Color.white}
+        marginTop={moderateScale(20, 0.6)}
+      />
     </ImageBackground>
   );
 };

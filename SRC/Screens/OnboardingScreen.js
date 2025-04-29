@@ -1,18 +1,43 @@
-import React from 'react';
-import {ImageBackground, ScrollView, StyleSheet, View} from 'react-native';
-import {moderateScale} from 'react-native-size-matters';
+import React, { useState } from 'react';
+import { ActivityIndicator, ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import { useSelector } from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const OnboardingScreen = props => {
   const data = props?.route?.params?.data;
   const data1 = props?.route?.params?.design_data;
   console.log('🚀 ~ data1:', data1?.templeteType);
+  const token = useSelector(state => state.authReducer.token);
+  const [loading, setLoading] = useState(false)
+
+  const onPressConfirm = async () => {
+    const url = 'auth/career-blog'
+    const body = {
+      details: data?.details,
+      heading: data?.heading,
+      image: data?.image,
+      company_name: data?.companyName,
+      name: data?.name,
+      description: data?.bestRegards,
+    }
+    setLoading(true)
+    const response = await Post(url, body, apiHeader(token))
+    console.log("🚀 ~ onPressSave ~ response:", response)
+    setLoading(false)
+    if (response?.data != undefined) {
+      setLoading(false)
+      navigationService.navigate('Home')
+    }
+  }
+
   return (
     <ImageBackground
       style={styles.bg_container}
@@ -24,7 +49,7 @@ const OnboardingScreen = props => {
             <CustomText style={styles.h1_text}>{data?.companyName}</CustomText>
             <CustomText style={styles.h2_text}>{data?.heading}</CustomText>
             <View style={styles.image_con}>
-              <CustomImage style={styles.image} source={{uri: data?.image}} />
+              <CustomImage style={styles.image} source={{ uri: data?.image }} />
             </View>
             <CustomText style={styles.h3_text}>{data?.name}</CustomText>
             <CustomText style={styles.h4_text}>{data?.designation}</CustomText>
@@ -54,7 +79,7 @@ const OnboardingScreen = props => {
             <CustomText style={styles.h1_text}>{data?.companyName}</CustomText>
             <CustomText style={styles.h2_text}>{data?.heading}</CustomText>
             <View style={styles.circle_image}>
-              <CustomImage style={styles.image} source={{uri: data?.image}} />
+              <CustomImage style={styles.image} source={{ uri: data?.image }} />
             </View>
             <CustomText style={styles.h3_text}>{data?.name}</CustomText>
             <CustomText style={styles.h4_text}>{data?.designation}</CustomText>
@@ -85,12 +110,17 @@ const OnboardingScreen = props => {
           </ImageBackground>
         )}
         <CustomButton
-          text={'save'}
+          text={loading ? <ActivityIndicator
+            style={styles.indicatorStyle}
+            size="small"
+            color={Color.blue}
+          /> : 'save'}
           textColor={Color.darkBlue}
           onPress={() => {
-            navigationService.navigate('Home');
+            // navigationService.navigate('Home');
             // console.log('first', skills);
             // onPressConfirm();
+            onPressConfirm()
           }}
           width={windowWidth * 0.8}
           height={windowHeight * 0.06}

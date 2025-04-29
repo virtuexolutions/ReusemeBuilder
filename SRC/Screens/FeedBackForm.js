@@ -1,15 +1,21 @@
-import { FlatList, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, I18nManager, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../Components/Header'
 import { windowHeight, windowWidth } from '../Utillity/utils'
 import { moderateScale } from 'react-native-size-matters'
 import CustomText from '../Components/CustomText'
 import Color from '../Assets/Utilities/Color'
+import CustomButton from '../Components/CustomButton'
+import { Post } from '../Axios/AxiosInterceptorFunction'
+import { useSelector } from 'react-redux'
+import navigationService from '../navigationService'
 
 const FeedBackForm = props => {
     const data = props?.route?.params?.data;
     console.log("🚀FeedBackForm ~ data:", data)
     const [answers, setAnswers] = useState({});
+    const token = useSelector(state => state.authReducer.token);
+    const [loading, setLoading] = useState(false)
     const handleSelect = (qIndex, option) => {
         setAnswers({ ...answers, [qIndex]: option });
     };
@@ -26,6 +32,21 @@ const FeedBackForm = props => {
 
     const options = ['Very Bad', 'Bad', 'Neutral', 'Good', 'Excellent'];
 
+    const onPressSave = async () => {
+        const url = 'auth/survey'
+        const body = {
+            question: data?.skills,
+            options: data?.skills
+        }
+        setLoading(true)
+        const response = await Post(url, body, token)
+        console.log("🚀 ~ onPressSave ~ response:", response?.data)
+        setLoading(false)
+        if (response?.data != undefined) {
+            navigationService.navigate("Home")
+        }
+    }
+
     return (
         <ImageBackground
             style={styles.bg_container}
@@ -39,9 +60,7 @@ const FeedBackForm = props => {
                             width: windowWidth * 0.96,
                             height: windowWidth * 0.26
                         }}>
-
                         </View>
-
                         <View style={{ paddingVertical: moderateScale(20, 0.6), paddingHorizontal: moderateScale(10, 0.6) }}>
                             <CustomText isBold style={[styles.text, { width: windowWidth * 0.8 }]}>Please fill out this feedback form as you see fit to help us improve our service</CustomText>
                             <View style={styles.row}>
@@ -117,11 +136,33 @@ const FeedBackForm = props => {
                                     )
                                 })}
                             </View>
-
+                        </View>
+                        <View style={{
+                            position: "absolute",
+                            bottom: 10,
+                            width: windowWidth,
+                            alignSelf: 'center'
+                        }}>
                             <CustomText isBold style={styles.feedbackLabel}>How else can we improve?</CustomText>
                             <View style={styles.textarea} />
                         </View>
                     </View>
+                    <CustomButton
+                        text={loading ? <ActivityIndicator
+                            style={styles.indicatorStyle}
+                            size="small"
+                            color={Color.blue}
+                        /> : 'Save'}
+                        textColor={Color.darkBlue}
+                        onPress={() => {
+                            onPressSave()
+                        }}
+                        width={windowWidth * 0.8}
+                        height={windowHeight * 0.065}
+                        borderRadius={moderateScale(20, 0.3)}
+                        bgColor={Color.white}
+                        marginTop={moderateScale(20, 0.6)}
+                    />
                 </ScrollView>
             </View >
         </ImageBackground >
@@ -148,7 +189,7 @@ const styles = StyleSheet.create({
     },
     tamplate_background_view: {
         width: windowWidth * 0.96,
-        height: windowHeight,
+        height: windowHeight * 0.9,
         backgroundColor: "#f6f0e4"
     },
     text: {
@@ -171,6 +212,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#000',
         height: moderateScale(15, 0.6),
+    },
+    indicatorStyle: {
+        paddingRight: 5,
+        paddingLeft: I18nManager.isRTL ? 5 : 0,
     },
     feedbackLabel: {
         fontSize: moderateScale(14),

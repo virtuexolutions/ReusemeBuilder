@@ -112,14 +112,8 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/coverletter.png'),
+      type: 'coverLetter'
     },
-    // {
-    //   id: 2,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    //   image: require('../Assets/Images/resume.jpeg'),
-    // },
   ];
   const careerBlogdata = [
     {
@@ -150,15 +144,15 @@ const Home = () => {
     },
   ];
   const cvdata = [
-    {
-      id: 1,
-      heading: 'Creative',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-      image: require('../Assets/Images/email.jpeg'),
-      type: 'simpleEmail',
-      tamplateType: 'simpleEmail'
-    },
+    // {
+    //   id: 1,
+    //   heading: 'Creative',
+    //   description:
+    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
+    //   image: require('../Assets/Images/email.jpeg'),
+    //   type: 'simpleEmail',
+    //   tamplateType: 'simpleEmail'
+    // },
     {
       id: 2,
       heading: 'WelCome Email',
@@ -174,7 +168,7 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email-temp.jpeg'),
-      tamplateType : 'attendencepolicy'
+      tamplateType: 'attendencepolicy'
     },
   ];
   const survayForm = [
@@ -434,7 +428,7 @@ const Home = () => {
                   return <View style={{ height: windowHeight * 0.2 }} />;
                 }}
                 renderItem={({ item, index }) => {
-                  console.log('================= >>> > >>>' ,item)
+                  console.log('================= >>> > >>>', item)
                   return (
                     <TouchableOpacity
                       onPress={() =>

@@ -1,24 +1,15 @@
-import { FlatList, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../Components/Header'
-import { windowHeight, windowWidth } from '../Utillity/utils'
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils'
 import { moderateScale } from 'react-native-size-matters'
 import Color from '../Assets/Utilities/Color'
 import { Icon } from 'native-base'
 import MaterialCommunityIcons
     from 'react-native-vector-icons/MaterialCommunityIcons'
 import CustomText from '../Components/CustomText'
-const surveyQuestions = [
-    'How satisfied were you with the overall experience?',
-    'Did you find our product/service easy to use?',
-    'Would you recommend our product/service to others?',
-    'Was our customer service helpful and responsive?',
-    'Do you have any suggestions for improvement?',
-    'How likely are you to use our product/service again in the future?'
-];
-
-const options = ['Very Bad', 'Bad', 'Neutral', 'Good', 'Excellent'];
-
+import CustomButton from '../Components/CustomButton'
+import { useSelector } from 'react-redux'
 
 
 const CustomerSurveyForm = props => {
@@ -28,6 +19,20 @@ const CustomerSurveyForm = props => {
     const handleSelect = (qIndex, option) => {
         setAnswers({ ...answers, [qIndex]: option });
     };
+    const token = useSelector(state => state.authReducer.token);
+
+    const [loading, setLoading] = useState(false)
+
+    const surveyQuestions = [
+        'How satisfied were you with the overall experience?',
+        'Did you find our product/service easy to use?',
+        'Would you recommend our product/service to others?',
+        'Was our customer service helpful and responsive?',
+        'Do you have any suggestions for improvement?',
+        'How likely are you to use our product/service again in the future?'
+    ];
+
+    const options = ['Very Bad', 'Bad', 'Neutral', 'Good', 'Excellent'];
 
     const renderQuestion = ({ item, index }) => (
         <View style={{
@@ -62,6 +67,23 @@ const CustomerSurveyForm = props => {
             </View>
         </View>
     );
+
+
+    const onPressSave = async () => {
+        const url = 'auth/survey'
+        const body = {
+            question: data?.skills,
+            options: data?.skills
+        }
+        setLoading(true)
+        const response = await Post(url, body, apiHeader(token))
+        console.log("🚀 ~ onPressSave ~ response:", response?.data)
+        setLoading(false)
+        if (response?.data != undefined) {
+            navigationService.navigate("Home")
+        }
+    }
+
     return (
         <ImageBackground
             style={styles.bg_container}
@@ -129,8 +151,23 @@ const CustomerSurveyForm = props => {
                         <View style={styles.textarea} />
 
                         <CustomText isBold style={styles.footerText}>Thank you for your feedback</CustomText>
-
                     </View>
+                    <CustomButton
+                        text={loading ? <ActivityIndicator
+                            style={styles.indicatorStyle}
+                            size="small"
+                            color={Color.blue}
+                        /> : 'Save'}
+                        textColor={Color.darkBlue}
+                        onPress={() => {
+                            onPressSave()
+                        }}
+                        width={windowWidth * 0.8}
+                        height={windowHeight * 0.065}
+                        borderRadius={moderateScale(20, 0.3)}
+                        bgColor={Color.white}
+                        marginTop={moderateScale(20, 0.6)}
+                    />
                 </ScrollView>
             </View>
         </ImageBackground>

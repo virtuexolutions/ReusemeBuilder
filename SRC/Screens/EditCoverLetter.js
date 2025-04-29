@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
-import { windowHeight, windowWidth } from '../Utillity/utils';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import Header from '../Components/Header';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
@@ -26,9 +26,10 @@ import { object } from 'yup';
 
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
-  console.log('🚀 ~ type:', type);
+  console.log('🚀 EditCoverLetter ~ type:', type);
   const tamplateType = props?.route?.params?.tamplateType;
   console.log("🚀 ~ tamplateType:", tamplateType)
+  const token = useSelector(state => state.authReducer.token);
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [summary, setSummary] = useState(true);
   const [email, setEmail] = useState('');
@@ -64,7 +65,8 @@ const EditCoverLetter = props => {
   const [image, setImage] = useState({});
   console.log('🚀 ~ image:', image);
   const userData = useSelector(state => state.commonReducer.userData);
-  const onPressConfirm = () => {
+
+  const onPressConfirm = async () => {
     const data = {
       name: name,
       email: email,
@@ -104,6 +106,7 @@ const EditCoverLetter = props => {
         ? navigationService.navigate('FinalEmail', { data: body })
         : navigationService.navigate('FinalCoverLetter', { data: data });
   };
+
 
   return (
     <ImageBackground
@@ -495,7 +498,7 @@ const EditCoverLetter = props => {
                           placeholder={'Details'}
                           placeholderColor={Color.grey}
                           viewWidth={0.84}
-                          inputHeight={windowHeight * 0.145}
+                          inputHeight={0.15}
                           viewHeight={0.15}
                           marginTop={moderateScale(10, 0.3)}
                           style={styles.text_input}
@@ -1171,8 +1174,6 @@ const styles = StyleSheet.create({
   },
   text_input: {
     borderWidth: 1,
-    // height : windowWidth*0.5,
-    // backgroundColor :'red'
   },
   text: {
     fontSize: moderateScale(14, 0.6),

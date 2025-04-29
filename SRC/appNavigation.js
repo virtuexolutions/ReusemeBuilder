@@ -34,7 +34,7 @@ import ChecklistScreen from './Screens/ChecklistScreen';
 import ChecklistForm from './Screens/ChecklistForm';
 import SurvaryForm from './Screens/SurvaryForm';
 import EditEmailTamplate2 from './Screens/EditEmailTamplate2';
-// import SavedTemplates from './Screens/SavedTemplates';
+import SavedTemplates from './Screens/SavedTemplates';
 // import SurvaryForm from './Screens/SurvaryForm';
 // import EditSurveyForm from './Screens/EditSurveyForm';
 
@@ -67,7 +67,7 @@ const AppNavigator = () => {
             component={WalkThroughScreen}
           />
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
-
+          <RootNav.Screen name="SavedTemplates" component={SavedTemplates} />
           <RootNav.Screen name="SignupScreen" component={SignupScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />

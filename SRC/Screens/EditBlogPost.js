@@ -1,5 +1,5 @@
-import {Icon} from 'native-base';
-import React, {useState} from 'react';
+import { Icon } from 'native-base';
+import React, { useState } from 'react';
 import {
   ImageBackground,
   ScrollView,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {moderateScale} from 'react-native-size-matters';
+import { moderateScale } from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Color from '../Assets/Utilities/Color';
@@ -18,7 +18,9 @@ import Header from '../Components/Header';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import navigationService from '../navigationService';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 // import Entypo from 'react-native-vector-icons/Entypo'
 
 const EditBlogPost = props => {
@@ -27,6 +29,8 @@ const EditBlogPost = props => {
     '🚀 ~ detaildesign_data?.type====================== :',
     design_data,
   );
+  const token = useSelector(state => state.authReducer.token);
+
   const [personalDataTab, setPersonalDataTab] = useState(true);
   const [description, setDescription] = useState(true);
   const [email, setEmail] = useState('');
@@ -63,23 +67,11 @@ const EditBlogPost = props => {
   const [image, setImage] = useState({});
   const [isImage, setIsImage] = useState(false);
   console.log('🚀 ~ isImage:', isImage);
-  const onPressConfirm = () => {
+  const onPressConfirm = async () => {
     const data = {
-      //   name: name,
-      //   email: email,
-      //   data: date,
-      //   month: month,
-      //   description: description,
       image: image,
       heading: heading,
       details: details,
-      //   address: address,
-      //   phone: phone,
-      //   managerName: managerName,
-      //   companyName: companyName,
-      //   companyAddress: companyAddress,
-      //   subject: subject,
-      //   date: date,
     };
     const onBoardData = {
       image: image?.uri,
@@ -91,11 +83,11 @@ const EditBlogPost = props => {
       designation: designation,
     };
     design_data?.type == 'blog'
-      ? navigationService.navigate('FinalBlogPost', {data: data})
+      ? navigationService.navigate('FinalBlogPost', { data: data })
       : navigationService.navigate('OnboardingScreen', {
-          data: onBoardData,
-          design_data: design_data,
-        });
+        data: onBoardData,
+        design_data: design_data,
+      });
   };
 
   return (
@@ -271,8 +263,8 @@ const EditBlogPost = props => {
                   description === true
                     ? windowHeight * 0.11
                     : design_data?.type == 'OnBoarding'
-                    ? windowHeight * 0.99
-                    : windowHeight * 0.54,
+                      ? windowHeight * 0.99
+                      : windowHeight * 0.54,
                 marginTop: moderateScale(15, 0.6),
               },
             ]}>
@@ -334,7 +326,7 @@ const EditBlogPost = props => {
                         width: '100%',
                         backgroundColor: 'red',
                       }}
-                      source={{uri: image?.uri}}
+                      source={{ uri: image?.uri }}
                     />
                   ) : (
                     <Icon
