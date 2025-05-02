@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 
 const EditBlogPost = props => {
   const design_data = props?.route?.params?.type;
+  const detailData = props?.route?.params?.data;
   console.log(
     '🚀 ~ detaildesign_data?.type====================== :',
     design_data,
@@ -72,6 +73,10 @@ const EditBlogPost = props => {
       image: image,
       heading: heading,
       details: details,
+      type: design_data,
+      tamplate_title: detailData?.heading,
+      tamplate_image: null,
+      tamplate_description: detailData?.description,
     };
     const onBoardData = {
       image: image?.uri,
@@ -81,6 +86,7 @@ const EditBlogPost = props => {
       name: name,
       regards: bestRegards,
       designation: designation,
+      type: design_data
     };
     design_data?.type == 'blog'
       ? navigationService.navigate('FinalBlogPost', { data: data })
@@ -100,7 +106,7 @@ const EditBlogPost = props => {
         showBack={true}
       />
       <View style={styles.main_view}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView keyboardShouldPersistTaps={'always'} showsVerticalScrollIndicator={false}>
           {/* <View
             style={[
               styles.btn_view,

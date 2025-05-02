@@ -28,6 +28,7 @@ const Home = () => {
   const userData = useSelector(state => state.commonReducer.userData);
   const isFocused = useIsFocused();
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ Home ~ token:", token)
   const [loading, setLoading] = useState(false);
   const [saveresumeData, setSaveResumeData] = useState([]);
   const [emailData, setEmailData] = useState([]);
@@ -72,38 +73,8 @@ const Home = () => {
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/resume.jpeg'),
+      type: 'creative',
     },
-
-    // {
-    //   id: 3,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    // },
-    // {
-    //   id: 4,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    // },
-    // {
-    //   id: 5,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    // },
-    // {
-    //   id: 6,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    // },
-    // {
-    //   id: 7,
-    //   heading: 'Creative',
-    //   description:
-    //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    // },
   ];
   const coverletterData = [
     {
@@ -145,30 +116,22 @@ const Home = () => {
   ];
   const cvdata = [
     // {
-    //   id: 1,
-    //   heading: 'Creative',
+    //   id: 2,
+    //   heading: 'WelCome Email',
     //   description:
     //     'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-    //   image: require('../Assets/Images/email.jpeg'),
-    //   type: 'simpleEmail',
-    //   tamplateType: 'simpleEmail'
+    //   image: require('../Assets/Images/email_tamplate2.jpeg'),
+    //   type: 'email',
+    //   tamplateType: 'companyEmail'
     // },
     {
-      id: 2,
-      heading: 'WelCome Email',
-      description:
-        'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
-      image: require('../Assets/Images/email_tamplate2.jpeg'),
-      type: 'email',
-      tamplateType: 'companyEmail'
-    },
-    {
-      id: 3,
+      id: 1,
       heading: 'late attendence policy',
       description:
         'Land your dream job in the creative industries by using this creative resume template, which will make your application stand out.',
       image: require('../Assets/Images/email-temp.jpeg'),
-      tamplateType: 'attendencepolicy'
+      tamplateType: 'attendencepolicy',
+      type: 'attendencepolicy'
     },
   ];
   const survayForm = [

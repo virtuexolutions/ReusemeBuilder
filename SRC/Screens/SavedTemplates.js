@@ -33,6 +33,9 @@ const SavedTemplates = () => {
     const [dropDown, setDropDown] = useState(false)
     const [saveresumeData, setSaveResumeData] = useState([])
     const [emailData, setEmailData] = useState([])
+    const [coverLetter, setCoverLetter] = useState([])
+    const [career_blog, setCareerBlog] = useState([])
+    const [survayForm, setSurvayForm] = useState([])
     console.log("🚀 ~ SavedTemplates ~ emailData:", emailData)
     const [selectedCategoty, setSelectedCategory] = useState('resume')
     console.log("🚀 ~ SavedTemplates ~ selectedCategoty:", selectedCategoty)
@@ -57,17 +60,26 @@ const SavedTemplates = () => {
             text: 'career',
             subtext: 'blog',
         },
+        {
+            id: 5,
+            text: 'Survay',
+            subtext: 'Form',
+        },
     ];
 
     useEffect(() => {
         getResumeData();
         getMailData()
+        getCoverLetterData()
+        getCareerBlog()
+        getSurvayForm()
     }, [isFocused])
 
     const getMailData = async () => {
         const url = 'auth/mail'
         setLoading(true)
         const response = await Get(url, token)
+        console.log("🚀 ~ getMailData ~ response:", response?.data)
         setLoading(false)
         if (response?.data != undefined) {
             setLoading(false)
@@ -86,6 +98,78 @@ const SavedTemplates = () => {
         }
     }
 
+    const getCoverLetterData = async () => {
+        const url = 'auth/cover-letter'
+        setLoading(true)
+        const response = await Get(url, token)
+        console.log("🚀 ~ getCoverLetterData ~ response:", response?.data)
+        setLoading(false)
+        if (response?.data != undefined) {
+            setLoading(false)
+            setCoverLetter(response?.data?.data)
+        }
+    }
+
+    const getCareerBlog = async () => {
+        const url = 'auth/career-blog'
+        setLoading(true)
+        const response = await Get(url, token)
+        setLoading(false)
+        if (response?.data != undefined) {
+            setLoading(false)
+            setCareerBlog(response?.data?.data)
+        }
+    }
+
+    const getSurvayForm = async () => {
+        const url = 'auth/survey'
+        setLoading(true)
+        const response = await Get(url, token)
+        console.log("🚀 ~ getSurvayForm ~ response:", response?.data)
+        setLoading(false)
+        if (response?.data != undefined) {
+            setLoading(false)
+            setSurvayForm(response?.data?.data)
+        }
+    }
+
+    const onPressCard = (data) => {
+        if (selectedCategoty === 'Survay') {
+            switch (data?.type) {
+                case 'checklist':
+                    navigationService.navigate('ChecklistScreen', {
+                        data: data,
+                        fromHome: false,
+                    });
+                    break;
+                case 'customerForm':
+                    navigationService.navigate('CustomerSurveyForm', {
+                        data: data,
+                        fromHome: false,
+                    });
+                    break;
+                case 'feedbackForm':
+                    navigationService.navigate('FeedBackForm', {
+                        data: data,
+                        fromHome: false,
+                    });
+                    break;
+                case 'progressForm':
+                    navigationService.navigate('ProgressFeedback', {
+                        data: data,
+                        fromHome: false,
+                    });
+                    break;
+                default:
+                    navigationService.navigate('SurvaryForm', {
+                        data: data,
+                        fromHome: false,
+                    });
+            }
+        } else if (selectedCategoty === 'career') {
+
+        }
+    }
     return (
         <ImageBackground
             style={styles.bg_container}
@@ -165,7 +249,7 @@ const SavedTemplates = () => {
                             }}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={item => item.id}
-                            data={selectedCategoty === 'email' ? emailData : selectedCategoty === 'resume' ? saveresumeData : []}
+                            data={selectedCategoty === 'email' ? emailData : selectedCategoty === 'resume' ? saveresumeData : selectedCategoty === 'cover' ? coverLetter : selectedCategoty === 'Survay' ? survayForm : career_blog}
                             ListFooterComponent={() => {
                                 return <View style={{ height: windowHeight * 0.2 }} />;
                             }}
@@ -176,15 +260,11 @@ const SavedTemplates = () => {
                                 marginTop: moderateScale(20, 0.6)
                             }}>no data Found</CustomText>}
                             renderItem={({ item, index }) => {
-                                console.log("🚀 ~ SavedTemplates ~ item:", item)
+                                console.log(item, 'itemmmmmmmmmmmmmm')
                                 return (
-                                    <TouchableOpacity onPress={() => {
-                                        if (selectedCategoty === 'resume') {
-                                            navigationService.navigate('ResumeFinalScreen', { data: item, fromHome: true })
-                                        } else {
-                                            navigationService.navigate('FinalEmail', { data: item, fromHome: true })
-                                        }
-                                    }} style={styles.card}>
+                                    <TouchableOpacity onPress={() =>
+                                        onPressCard(item)
+                                    } style={styles.card}>
                                         <View style={[styles.card_image, {
                                             height: windowHeight * 0.07,
                                             width: windowWidth * 0.2,
@@ -200,16 +280,16 @@ const SavedTemplates = () => {
                                         <View style={styles.content}>
                                             <View>
                                                 <CustomText style={styles.heading}>
-                                                    {item?.name}
+                                                    {item?.tamplate_title}
                                                 </CustomText>
                                                 <CustomText numberOfLines={3} style={styles.description}>
-                                                    {selectedCategoty === 'resume' ? item?.details : item?.subject}
+                                                    {item?.tamplate_description}
                                                 </CustomText>
-                                                {selectedCategoty === 'email' &&
+                                                {/* {selectedCategoty === 'email' &&
                                                     <CustomText numberOfLines={3} style={styles.description}>
                                                         {item?.summary}
                                                     </CustomText>
-                                                }
+                                                } */}
                                             </View>
                                         </View>
                                     </TouchableOpacity>
@@ -284,7 +364,7 @@ const styles = StyleSheet.create({
     },
     con: {
         backgroundColor: Color.lightGrey,
-        height: windowHeight * 0.12,
+        height: windowHeight * 0.15,
         borderWidth: 1,
         borderColor: Color.lightGrey,
         width: windowWidth * 0.4,

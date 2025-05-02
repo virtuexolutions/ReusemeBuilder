@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 
 const ChecklistScreen = props => {
   const data = props?.route?.params?.data;
-  console.log('🚀ChecklistScreen ~ data:', data?.skills);
+  console.log('🚀ChecklistScreen ~ data:', data);
   const [loading, setLoading] = useState(false)
   const tableData = [
     { no: 1, document: 'Tax Forms', response: 'Submitted' },
@@ -36,7 +36,12 @@ const ChecklistScreen = props => {
     const url = 'auth/survey'
     const body = {
       question: data?.skills,
-      options: data?.skills
+      options: data?.options,
+      type: data?.templeteType,
+      tamplate_title: data?.tamplate_title,
+      tamplate_image: data?.tamplate_image,
+      tamplate_description: data?.tamplate_description,
+      website_url: null,
     }
     setLoading(true)
     const response = await Post(url, body, apiHeader(token))

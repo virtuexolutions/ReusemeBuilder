@@ -1,7 +1,7 @@
 import { ActivityIndicator, FlatList, I18nManager, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../Components/Header'
-import { windowHeight, windowWidth } from '../Utillity/utils'
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils'
 import { moderateScale } from 'react-native-size-matters'
 import CustomText from '../Components/CustomText'
 import Color from '../Assets/Utilities/Color'
@@ -36,10 +36,18 @@ const FeedBackForm = props => {
         const url = 'auth/survey'
         const body = {
             question: data?.skills,
-            options: data?.skills
+            options: data?.skills,
+            type: data?.templeteType,
+            tamplate_title: data?.tamplate_title,
+            tamplate_image: data?.tamplate_image,
+            tamplate_description: data?.tamplate_description,
+            company_name: data?.companyName,
+            company_logo: null,
+            website_url: null,
         }
+        console.log("🚀 ~ onPressSave ~ body:", body)
         setLoading(true)
-        const response = await Post(url, body, token)
+        const response = await Post(url, body, apiHeader(token))
         console.log("🚀 ~ onPressSave ~ response:", response?.data)
         setLoading(false)
         if (response?.data != undefined) {
@@ -100,7 +108,7 @@ const FeedBackForm = props => {
                                         ))}
                                     </View>
                                 </View>
-                                {data?.skills.map((item, index) => {
+                                {data?.skills || data?.question.map((item, index) => {
                                     return (
                                         <View style={{
                                             flexDirection: 'row',
@@ -117,7 +125,7 @@ const FeedBackForm = props => {
                                                 justifyContent: 'space-around',
                                                 alignItems: 'center',
                                             }}>
-                                                {options.map((option, oIndex) => (
+                                                {data?.options?.map((option, oIndex) => (
                                                     <TouchableOpacity
                                                         key={oIndex}
                                                         onPress={() => handleSelect(index, option)}

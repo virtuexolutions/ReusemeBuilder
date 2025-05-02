@@ -10,11 +10,13 @@ import MaterialCommunityIcons
 import CustomText from '../Components/CustomText'
 import CustomButton from '../Components/CustomButton'
 import { useSelector } from 'react-redux'
+import { Post } from '../Axios/AxiosInterceptorFunction'
+import navigationService from '../navigationService'
 
 
 const CustomerSurveyForm = props => {
     const data = props?.route?.params?.data;
-    console.log("🚀 ~ data:", data)
+    console.log("🚀CustomerSurveyForm ~ data:", data)
     const [answers, setAnswers] = useState({});
     const handleSelect = (qIndex, option) => {
         setAnswers({ ...answers, [qIndex]: option });
@@ -47,10 +49,10 @@ const CustomerSurveyForm = props => {
             <View style={{
                 width: '60%',
                 flexDirection: 'row',
-                justifyContent: 'space-around',
+                justifyContent: 'flex-end',
                 alignItems: 'center',
             }}>
-                {options.map((option, oIndex) => (
+                {data?.options.map((option, oIndex) => (
                     <TouchableOpacity
                         key={oIndex}
                         onPress={() => handleSelect(index, option)}
@@ -60,6 +62,7 @@ const CustomerSurveyForm = props => {
                             borderRadius: 8,
                             borderWidth: 1,
                             borderColor: Color.black,
+                            marginHorizontal: moderateScale(10, 0.6),
                             backgroundColor: answers[index] === option ? Color.blue : 'transparent',
                         }}
                     />
@@ -73,7 +76,11 @@ const CustomerSurveyForm = props => {
         const url = 'auth/survey'
         const body = {
             question: data?.skills,
-            options: data?.skills
+            options: data?.options,
+            type: data?.templeteType,
+            tamplate_title: data?.tamplate_title,
+            tamplate_image: data?.tamplate_image,
+            tamplate_description: data?.description
         }
         setLoading(true)
         const response = await Post(url, body, apiHeader(token))
@@ -101,7 +108,6 @@ const CustomerSurveyForm = props => {
                     }}>
                         <CustomText isBold style={styles.title}>CUSTOMER SURVEY</CustomText>
                         <CustomText style={styles.subtitle}>HELP US IMPROVE</CustomText>
-
                         <View style={styles.row}>
                             <View style={styles.inputContainer}>
                                 <CustomText isBold style={styles.label}>Your Name:</CustomText>
@@ -123,12 +129,12 @@ const CustomerSurveyForm = props => {
                                 <View style={{
                                     width: '60%',
                                     flexDirection: 'row',
-                                    justifyContent: 'space-around',
+                                    justifyContent: 'flex-end',
                                     alignItems: 'center',
-                                    paddingVertical: 10
+                                    paddingVertical: 10,
                                 }}>
                                     {data?.options.map((option, index) => (
-                                        <CustomText key={index} style={{ color: Color.black, fontSize: 10 }}>
+                                        <CustomText key={index} style={{ color: Color.black, fontSize: 10, marginHorizontal: moderateScale(15, 0.6) }}>
                                             {option}
                                         </CustomText>
                                     ))}
@@ -136,7 +142,7 @@ const CustomerSurveyForm = props => {
                             </View>
 
                             <FlatList
-                                data={data?.skills}
+                                data={data?.skills || data?.question}
                                 keyExtractor={(item, index) => index.toString()}
                                 renderItem={renderQuestion}
                                 scrollEnabled={false}

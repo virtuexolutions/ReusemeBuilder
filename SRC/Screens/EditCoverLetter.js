@@ -27,7 +27,8 @@ import { object } from 'yup';
 const EditCoverLetter = props => {
   const type = props?.route?.params?.type;
   console.log('🚀 EditCoverLetter ~ type:', type);
-  const tamplateType = props?.route?.params?.tamplateType;
+  const cardData = props?.route?.params?.data;
+  const tamplateType = props?.route?.params?.type;
   console.log("🚀 ~ tamplateType:", tamplateType)
   const token = useSelector(state => state.authReducer.token);
   const [personalDataTab, setPersonalDataTab] = useState(true);
@@ -80,6 +81,9 @@ const EditCoverLetter = props => {
       companyAddress: companyAddress,
       subject: subject,
       date: date,
+      tamplate_title: cardData?.heading,
+      tamplate_image: null,
+      tamplate_description: cardData?.description
     };
     const body = {
       name: name,
@@ -90,6 +94,9 @@ const EditCoverLetter = props => {
       managerName: managerName,
       subject: subject,
       email: userData?.email,
+      tamplate_title: cardData?.heading,
+      tamplate_image: null,
+      tamplate_description: cardData?.description
     };
     const details = {
       companyName: companyName,
@@ -98,7 +105,10 @@ const EditCoverLetter = props => {
       managerName: managerName,
       positonName: positonName,
       startDate: startDate,
-      image: image
+      image: image,
+      tamplate_title: cardData?.heading,
+      tamplate_image: null,
+      tamplate_description: cardData?.description
     }
     tamplateType === 'companyEmail'
       ? navigationService.navigate('EmailTamplate2', { data: details })
@@ -118,7 +128,7 @@ const EditCoverLetter = props => {
         showBack={true}
       />
       <View style={styles.main_view}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView keyboardShouldPersistTaps={'never'} showsVerticalScrollIndicator={false}>
           {type == 'email' ? (
             <>
               {tamplateType === 'companyEmail' ? (
@@ -492,13 +502,28 @@ const EditCoverLetter = props => {
                         <CustomText isBold style={styles.text}>
                           Summary :
                         </CustomText>
-                        <TextInputWithTitle
+                        {/* <TextInputWithTitle
                           iconSize={moderateScale(20, 0.3)}
                           color={Color.blue}
                           placeholder={'Details'}
                           placeholderColor={Color.grey}
                           viewWidth={0.84}
                           inputHeight={0.15}
+                          viewHeight={0.15}
+                          marginTop={moderateScale(10, 0.3)}
+                          style={styles.text_input}
+                          backgroundColor={Color.lightGrey}
+                          setText={setDetails}
+                          value={details}
+                          multiline
+                        /> */}
+                        <TextInputWithTitle
+                          iconSize={moderateScale(20, 0.3)}
+                          color={Color.blue}
+                          placeholder={'Details'}
+                          placeholderColor={Color.grey}
+                          viewWidth={0.84}
+                          inputHeight={windowHeight * 0.14}
                           viewHeight={0.15}
                           marginTop={moderateScale(10, 0.3)}
                           style={styles.text_input}

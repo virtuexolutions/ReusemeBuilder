@@ -9,6 +9,7 @@ import { mode } from 'native-base/lib/typescript/theme/tools'
 import CustomButton from '../Components/CustomButton'
 import { Post } from '../Axios/AxiosInterceptorFunction'
 import { useSelector } from 'react-redux'
+import navigationService from '../navigationService'
 
 const ProgressFeedback = props => {
     const data = props?.route?.params?.data;
@@ -19,7 +20,11 @@ const ProgressFeedback = props => {
         const url = 'auth/survey'
         const body = {
             question: data?.skills,
-            options: data?.skills
+            options: data?.skills,
+            type: data?.templeteType,
+            tamplate_title: data?.tamplate_title,
+            tamplate_image: data?.tamplate_image,
+            tamplate_description: data?.tamplate_description,
         }
         setLoading(true)
         const response = await Post(url, body, apiHeader(token))

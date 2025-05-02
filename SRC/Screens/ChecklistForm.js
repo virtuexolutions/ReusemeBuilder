@@ -32,27 +32,29 @@ const ChecklistForm = props => {
   const token = useSelector(state => state.authReducer.token);
   const tamplateType = props?.route?.params?.tamplateType;
   const detailData = props?.route?.params?.data;
-  console.log(" ChecklistForm🚀 ~ detailData:", detailData)
+  console.log("🚀 ~ detailData:", detailData)
   const [skillVisible, setSkillVisible] = useState(true);
   const [skills, setSkill] = useState([]);
   const [skillsVal, setSkillVal] = useState([]);
   const [optionsVal, setoptionsVal] = useState([]);
   const [options, setOptions] = useState([]);
-  console.log("🚀 ~ options:", options)
   const [optionsVisible, setOptionsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logoImageModal, setLogoImageModal] = useState(false)
   const [image, setImage] = useState({})
   const [companyName, setCompanyName] = useState('');
-  console.log("🚀 ~ image:", image)
   const onPressConfirm = async () => {
     const data = {
       skills: skills,
       options: options,
       image: image?.uri,
       templeteType: detailData?.templeteType,
-      companyName: companyName
+      companyName: companyName,
+      tamplate_title: detailData?.heading,
+      tamplate_image: detailData?.image,
+      tamplate_description: detailData?.description
     };
+    console.log("🚀 ~ onPressConfirm ~ data:", data)
 
     switch (data?.templeteType) {
       case 'checklist':
@@ -217,15 +219,15 @@ const ChecklistForm = props => {
                   style={{
                     width: windowWidth * 0.3,
                     height: windowWidth * 0.3,
+
                     backgroundColor: Color.lightGrey,
                     borderRadius: moderateScale(10, 0.6),
                     justifyContent: 'center',
-                    alignItems: 'center',
                   }}
                 >
                   <CustomImage
+                    style={{ width: '100%', height: '100%', }}
                     source={{ uri: image?.uri }}
-                    style={{ width: '100%', height: '100%', backgroundColor: 'red' }}
                   />
                 </TouchableOpacity>
               </View>

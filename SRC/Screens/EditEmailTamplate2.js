@@ -35,7 +35,7 @@ const EditEmailTamplate2 = props => {
   const onPressSaveEmail = async () => {
     const body = {
       phone: data?.contact,
-      summary: data?.description
+      summary: data?.description,
     }
     const url = 'auth/mail'
     setLoading(true)

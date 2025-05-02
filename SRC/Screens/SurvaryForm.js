@@ -1,4 +1,4 @@
-import { FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../Components/Header'
 import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils'
@@ -10,8 +10,11 @@ import { Rating } from 'react-native-ratings'
 import TextInputWithTitle from '../Components/TextInputWithTitle'
 import { Post } from '../Axios/AxiosInterceptorFunction'
 import { useSelector } from 'react-redux'
+import CustomButton from '../Components/CustomButton'
+import navigationService from '../navigationService'
 
-const SurvaryForm = () => {
+const SurvaryForm = props => {
+    const data = props?.route?.params?.data;
     const [answers, setAnswers] = useState({});
     console.log("🚀 ~ SurvaryForm ~ answers:", answers)
     const token = useSelector(state => state.authReducer.token);
@@ -85,7 +88,14 @@ const SurvaryForm = () => {
         const url = 'auth/survey'
         const body = {
             question: data?.skills,
-            options: data?.skills
+            options: data?.skills,
+            type: data?.templeteType,
+            tamplate_title: data?.tamplate_title,
+            tamplate_image: data?.tamplate_image,
+            tamplate_description: data?.tamplate_description,
+            company_name: data?.companyName,
+            company_logo: null,
+            website_url: null,
         }
         setLoading(true)
         const response = await Post(url, body, apiHeader(token))
@@ -143,13 +153,14 @@ const SurvaryForm = () => {
             style={styles.bg_container}
             source={require('../Assets/Images/bg.png')}>
             <Header title="Survey Form" hideUser={true} showBack={true} />
-            <ImageBackground
-                source={require('../Assets/Images/form_background.png')}
-                imageStyle={{ width: '107%', height: '107%', resizeMode: 'stretch' }}
-                style={styles.main_view}
-            >
-                <CustomText style={styles.heading_text}>Your Name</CustomText>
-                {/* <TextInputWithTitle
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <ImageBackground
+                    source={require('../Assets/Images/form_background.png')}
+                    imageStyle={{ width: '107%', height: '107%', resizeMode: 'stretch' }}
+                    style={styles.main_view}
+                >
+                    <CustomText style={styles.heading_text}>Your Name</CustomText>
+                    {/* <TextInputWithTitle
                     color={Color.blue}
                     placeholder={'Your Name'}
                     placeholderColor={Color.grey}
@@ -161,22 +172,40 @@ const SurvaryForm = () => {
                         alignSelf: 'center',
                     }}
                 /> */}
-                <CustomText isBold style={styles.heading}>FEEDBACK</CustomText>
-                <View style={styles.row_view}>
-                    <View style={styles.line} />
-                    <CustomText isBold style={styles.head_text}>Survey Template</CustomText>
-                    <View style={styles.line} />
-                </View>
-                <CustomText style={styles.text}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry...
-                </CustomText>
-                <FlatList
-                    data={questions}
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={renderQuestion}
-                    showsVerticalScrollIndicator={false}
+                    <CustomText isBold style={styles.heading}>FEEDBACK</CustomText>
+                    <View style={styles.row_view}>
+                        <View style={styles.line} />
+                        <CustomText isBold style={styles.head_text}>Survey Template</CustomText>
+                        <View style={styles.line} />
+                    </View>
+                    <CustomText style={styles.text}>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+                    </CustomText>
+                    <FlatList
+                        data={questions}
+                        keyExtractor={item => item.id.toString()}
+                        renderItem={renderQuestion}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </ImageBackground>
+                <CustomButton
+                    text={loading ? <ActivityIndicator
+                        style={styles.indicatorStyle}
+                        size="small"
+                        color={Color.blue}
+                    /> : 'Save'}
+                    textColor={Color.darkBlue}
+                    onPress={() => {
+                        onPressSave()
+                    }}
+                    width={windowWidth * 0.8}
+                    height={windowHeight * 0.065}
+                    borderRadius={moderateScale(20, 0.3)}
+                    bgColor={Color.white}
+                    marginTop={moderateScale(60, 0.6)}
+                    marginBottom={moderateScale(20, 0.6)}
                 />
-            </ImageBackground>
+            </ScrollView>
         </ImageBackground>
     )
 }

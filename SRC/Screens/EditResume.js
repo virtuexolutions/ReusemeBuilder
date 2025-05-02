@@ -11,13 +11,13 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import TextInputWithTitle from '../Components/TextInputWithTitle'
 import CustomButton from '../Components/CustomButton'
 import navigationService from '../navigationService'
-import { Post } from '../Axios/AxiosInterceptorFunction'
 import { useSelector } from 'react-redux'
 
 const EditResume = props => {
     const token = useSelector(state => state.authReducer.token);
     console.log("🚀 ~ EditResume ~ token:", token)
-    const tamplateType = props?.route?.params?.tamplateType;
+    const detailData = props?.route?.params?.data;
+    console.log("🚀 ~ EditResume data:", detailData)
     const [personalDataTab, setPersonalDataTab] = useState(true)
     const [summary, setSummary] = useState(true)
     const [email, setEmail] = useState('')
@@ -71,6 +71,10 @@ const EditResume = props => {
             DateofJoining: DateofJoining,
             DateofEnding: DateofEnding,
             summaryDetails: summaryDetails,
+            type: detailData?.type,
+            tamplate_title: detailData?.heading,
+            tamplate_image: null,
+            tamplate_description: detailData?.description,
         }
         navigationService.navigate('ResumeFinalScreen', { data: data, fromHome: false })
         // console.log("🚀 ~ onPressConfirm ~ data:", data)
@@ -475,6 +479,20 @@ const EditResume = props => {
                                     </View>
                                 </View>
                                 <CustomText isBold style={styles.text}>Summary :</CustomText>
+                                {/* <TextInputWithTitle
+                                    iconSize={moderateScale(20, 0.3)}
+                                    color={Color.blue}
+                                    placeholder={'Details'}
+                                    placeholderColor={Color.grey}
+                                    viewWidth={0.84}
+                                    viewHeight={0.2}
+                                    marginTop={moderateScale(10, 0.3)}
+                                    style={styles.text_input}
+                                    backgroundColor={Color.lightGrey}
+                                    setText={setsummaryDetails}
+                                    value={summaryDetails}
+                                    multiline
+                                /> */}
                                 <TextInputWithTitle
                                     iconSize={moderateScale(20, 0.3)}
                                     color={Color.blue}
@@ -482,6 +500,7 @@ const EditResume = props => {
                                     placeholderColor={Color.grey}
                                     viewWidth={0.84}
                                     viewHeight={0.2}
+                                    inputHeight={windowHeight * 0.195}
                                     marginTop={moderateScale(10, 0.3)}
                                     style={styles.text_input}
                                     backgroundColor={Color.lightGrey}

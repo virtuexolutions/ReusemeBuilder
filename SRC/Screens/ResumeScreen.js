@@ -6,13 +6,12 @@ import CustomImage from '../Components/CustomImage';
 import CustomButton from '../Components/CustomButton';
 import { moderateScale } from 'react-native-size-matters';
 import navigationService from '../navigationService';
-import { types } from '@babel/core';
 
 const ResumeScreen = props => {
   const data = props?.route?.params?.data;
   console.log("ResumeScreen🚀 ~ data:", data)
   const detailData = props?.route?.params?.detailData;
-  console.log("🚀 ~ detailData:", detailData)
+  console.log("🚀ResumeScreen ~ detailData:", detailData)
   const category = props?.route?.params?.type;
   console.log("🚀 ~ category:", category)
   const tamplateType = props?.route?.params?.tamplateType;
@@ -48,9 +47,9 @@ const ResumeScreen = props => {
           textColor={Color.darkBlue}
           onPress={() => {
             if (category === 'resume') {
-              navigationService.navigate('EditResume', { data: data });
+              navigationService.navigate('EditResume', { data: detailData });
             } else if (category === 'career') {
-              navigationService.navigate('EditBlogPost', { data: data });
+              navigationService.navigate('EditBlogPost', { data: detailData });
             } else if (category === 'survay') {
               navigationService.navigate('ChecklistForm', { data: detailData, type: tamplateType, tamplateType: detailData?.templeteType });
             } else {
