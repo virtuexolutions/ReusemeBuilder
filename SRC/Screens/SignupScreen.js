@@ -19,7 +19,7 @@ import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomButton from '../Components/CustomButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserToken } from '../Store/slices/auth';
 import { Post } from '../Axios/AxiosInterceptorFunction';
 import { setUserData } from '../Store/slices/common';
@@ -32,6 +32,7 @@ const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   console.log("🚀 ~ SignupScreen ~ email:", email)
   const [isLoading, setIsLoading] = useState(false);
+  const user_type = useSelector(state => state.authReducer.role)
 
   const signUp = async () => {
     const url = "register";
@@ -58,8 +59,9 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <SafeAreaView style={styles.container}>
-
+      <SafeAreaView style={[styles.container, {
+        backgroundColor: user_type === 'Company' ? Color.darkBlue : Color.white
+      }]}>
         <Icon
           onPress={() => {
             navigation.goBack();
@@ -67,73 +69,77 @@ const SignupScreen = ({ navigation }) => {
           as={Ionicons}
           name="arrow-back"
           size={moderateScale(25, 0.3)}
-          color={Color.blue}
+          color={user_type === 'Company' ? Color.white : Color.blue}
           style={{
             position: 'absolute',
             top: moderateScale(20, 0.3),
             left: moderateScale(10, 0.3),
           }}
         />
-        <CustomText isBold style={styles.welcomeText}>
+        <CustomText isBold style={[styles.welcomeText, {
+          color: user_type === 'Company' ? Color.white : Color.darkbrown
+        }]}>
           Sign Up!
         </CustomText>
-        <CustomText isBold style={styles.subtextStyle}>
+        <CustomText isBold style={[styles.subtextStyle, {
+          color: user_type === 'Company' ? Color.white : Color.darkbrown
+        }]}>
           Create a New Account
         </CustomText>
         <TextInputWithTitle
           iconName={'user'}
           iconType={FontAwesome}
-          color={Color.blue}
           setText={setUserName}
           value={userName}
-          placeholder={'Username'}
-          placeholderColor={Color.grey}
-          viewWidth={0.7}
+          placeholder={'Type your Email'}
+          viewWidth={0.75}
           borderBottomWidth={2}
-          borderColor={Color.blue}
-          marginTop={moderateScale(40, 0.3)}
+          color={user_type === 'Company' ? Color.white : Color.blue}
+          placeholderColor={user_type === 'Company' ? Color.white : Color.grey}
+          borderColor={user_type === 'Company' ? Color.white : Color.blue}
+          marginTop={moderateScale(30, 0.3)}
         />
         <TextInputWithTitle
           iconName={'mail'}
           iconType={Ionicons}
-          color={Color.blue}
           setText={setEmail}
           value={email}
           placeholder={'Type your Email'}
-          placeholderColor={Color.grey}
-          viewWidth={0.7}
+          viewWidth={0.75}
           borderBottomWidth={2}
-          borderColor={Color.blue}
+          color={user_type === 'Company' ? Color.white : Color.blue}
+          placeholderColor={user_type === 'Company' ? Color.white : Color.grey}
+          borderColor={user_type === 'Company' ? Color.white : Color.blue}
           marginTop={moderateScale(30, 0.3)}
         />
         <TextInputWithTitle
           iconSize={moderateScale(20, 0.3)}
           iconName={'key'}
           iconType={Ionicons}
-          color={Color.blue}
           secureText={true}
           setText={setPassword}
           value={password}
           placeholder={'Type your password'}
-          placeholderColor={Color.grey}
-          viewWidth={0.7}
+          viewWidth={0.75}
           borderBottomWidth={2}
-          borderColor={Color.blue}
+          color={user_type === 'Company' ? Color.white : Color.blue}
+          placeholderColor={user_type === 'Company' ? Color.white : Color.grey}
+          borderColor={user_type === 'Company' ? Color.white : Color.blue}
           marginTop={moderateScale(30, 0.3)}
         />
         <TextInputWithTitle
           iconSize={moderateScale(20, 0.3)}
           iconName={'key'}
           iconType={Ionicons}
-          color={Color.blue}
           secureText={true}
           setText={setConfirmPassword}
           value={confirmPassword}
           placeholder={'Confirm Your Password'}
-          placeholderColor={Color.grey}
-          viewWidth={0.7}
+          viewWidth={0.75}
           borderBottomWidth={2}
-          borderColor={Color.blue}
+          color={user_type === 'Company' ? Color.white : Color.blue}
+          placeholderColor={user_type === 'Company' ? Color.white : Color.grey}
+          borderColor={user_type === 'Company' ? Color.white : Color.blue}
           marginTop={moderateScale(30, 0.3)}
         />
         {/* <CustomButton
@@ -152,19 +158,21 @@ const SignupScreen = ({ navigation }) => {
           }}
         /> */}
         <CustomButton
-          text={'Print'}
-          textColor={Color.white}
+          text={'Create'}
+          textColor={user_type === 'Company' ? Color.darkBlue : Color.white}
           onPress={() => {
             signUp()
-          }} width={windowWidth * 0.7}
+          }}
+          isBold
+          width={windowWidth * 0.7}
           height={windowHeight * 0.060}
           borderRadius={moderateScale(20, 0.3)}
-          bgColor={Color.darkBlue}
+          bgColor={user_type === 'Company' ? Color.white : Color.darkBlue}
           marginTop={moderateScale(20, 0.6)}
         />
         <CustomText style={{
           fontSize: moderateScale(11, 0.3),
-          color: Color.darkbrown,
+          color: user_type === 'Company' ? Color.white : Color.darkbrown,
           paddingTop: windowHeight * 0.09,
 
         }}>Do You Have An Account ?</CustomText>
@@ -176,12 +184,12 @@ const SignupScreen = ({ navigation }) => {
           <CustomText
             isBold style={{
               fontSize: moderateScale(18, 0.3),
-              color: Color.blue,
+              color: user_type === 'Company' ? Color.white : Color.blue,
             }}>Log in</CustomText>
         </TouchableOpacity>
 
       </SafeAreaView>
-    </ScrollView>
+    </ScrollView >
   );
 };
 

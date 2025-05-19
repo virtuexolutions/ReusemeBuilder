@@ -35,6 +35,8 @@ import ChecklistForm from './Screens/ChecklistForm';
 import SurvaryForm from './Screens/SurvaryForm';
 import EditEmailTamplate2 from './Screens/EditEmailTamplate2';
 import SavedTemplates from './Screens/SavedTemplates';
+import StartScreen from './Screens/StartScreen';
+import Dashboard from './Screens/Dashboard';
 // import SurvaryForm from './Screens/SurvaryForm';
 // import EditSurveyForm from './Screens/EditSurveyForm';
 
@@ -51,7 +53,7 @@ const AppNavigator = () => {
       walkThrough == false
         ? 'WalkthroughScreen'
         : token == null
-          ? 'LoginScreen'
+          ? 'StartScreen'
           : // ? 'Start'
           'Home';
 
@@ -59,7 +61,7 @@ const AppNavigator = () => {
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
-          // initialRouteName={'ChecklistForm'}
+          // initialRouteName={'Dashboard'}
           screenOptions={{ headerShown: false }}>
           <RootNav.Screen name="MyDrawer" component={MyDrawer} />
           <RootNav.Screen
@@ -67,7 +69,9 @@ const AppNavigator = () => {
             component={WalkThroughScreen}
           />
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="StartScreen" component={StartScreen} />
           <RootNav.Screen name="SavedTemplates" component={SavedTemplates} />
+          <RootNav.Screen name="Dashboard" component={Dashboard} />
           <RootNav.Screen name="SignupScreen" component={SignupScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Home" component={Home} />

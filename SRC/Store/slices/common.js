@@ -17,6 +17,7 @@ const initialState = {
   pickupLocatin: {},
   dropoffLocation: {},
   rideInfo: {},
+  type: ''
 };
 
 const CommonSlice = createSlice({
@@ -36,6 +37,9 @@ const CommonSlice = createSlice({
     setUserData(state, action) {
       state.userData = action?.payload;
       // state.userData = action?.payload?.userData;
+    },
+    setUserType(state, action) {
+      state.type = action.payload;
     },
     setUserLogOut(state, action) {
       state.userData = {};
@@ -250,6 +254,7 @@ export const {
   setPickupLocation,
   setDropoffLocation,
   setRideinfo,
+  setUserType,
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;
